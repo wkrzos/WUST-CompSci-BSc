@@ -16,4 +16,4 @@ This repository serves as an organized collection of my academic journey through
 
 Feel free to explore the contents and don't hesitate to reach out for collaboration, questions, or insights related to computer science.
 
-Final note: ask before using this repo as an 'inspiration'.
+Final note: contact me at w.krzos.contact@gmail.com for permissions concerning the usage of any code present in the repository.

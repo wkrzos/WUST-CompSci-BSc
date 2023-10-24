@@ -123,59 +123,64 @@ print_endline "All tests passed.";;
 
 (* Exercise 4 *)
 
-let insert = function (list, node, position) ->
+let insert list node position =
   let rec aux lst elem pos =
-    match lst, pos with
-    | _, 0 -> elem :: lst
-    | [], _ -> [elem]
-    | hd :: tl, _ when pos <= 0 -> elem :: lst
-    | hd :: tl, _ -> hd :: (aux tl elem (pos - 1))
+    if pos = 0 then
+      elem :: lst
+    else if lst = [] then
+      [elem]
+    else if pos <= 0 then
+      elem :: lst
+    else
+      match lst with
+      | hd :: tl -> hd :: (aux tl elem (pos - 1))
   in aux list node position
 ;;
 
+
 let test_insert() =
   (* Test 1: Inserting an element at the beginning of an empty list *)
-  let result1 = insert ([], "A", 0) in
+  let result1 = insert [] "A" 0 in
   assert (result1 = ["A"]);;
 
   (* Test 2: Inserting an element at the beginning of a non-empty list *)
-  let result2 = insert (["B"; "C"], "A", 0) in
+  let result2 = insert ["B"; "C"] "A" 0 in
   assert (result2 = ["A"; "B"; "C"]);;
 
   (* Test 3: Inserting an element at the end of the list *)
-  let result3 = insert (["A"; "B"], "C", 2) in
+  let result3 = insert ["A"; "B"] "C" 2 in
   assert (result3 = ["A"; "B"; "C"]);;
 
   (* Test 4: Inserting an element out of the list's range - it should land at the end *)
-  let result4 = insert (["A"; "B"], "C", 10) in
+  let result4 = insert ["A"; "B"] "C" 10 in
   assert (result4 = ["A"; "B"; "C"]);;
 
   (* Test 5: Inserting an element at the first position (index 1) *)
-  let result5 = insert (["A"; "B"; "C"], "X", 1) in
+  let result5 = insert ["A"; "B"; "C"] "X" 1 in
   assert (result5 = ["A"; "X"; "B"; "C"]);;
 
   (* Test 6: Inserting an element at the middle position (index 2) *)
-  let result6 = insert (["A"; "B"; "C"], "Y", 2) in
+  let result6 = insert ["A"; "B"; "C"] "Y" 2 in
   assert (result6 = ["A"; "B"; "Y"; "C"]);;
 
   (* Test 7: Inserting an element at the penultimate position (index 2) *)
-  let result7 = insert (["A"; "B"; "C"], "Z", 2) in
+  let result7 = insert ["A"; "B"; "C"] "Z" 2 in
   assert (result7 = ["A"; "B"; "Z"; "C"]);;
 
   (* Test 8: Inserting an element at the end of the list where the position equals the list's length *)
-  let result8 = insert (["A"; "B"; "C"], "D", 3) in
+  let result8 = insert ["A"; "B"; "C"] "D" 3 in
   assert (result8 = ["A"; "B"; "C"; "D"]);;
 
   (* Test 9: Inserting an element at the beginning of the list when the position is negative *)
-  let result9 = insert (["B"; "C"], "A", -1) in
+  let result9 = insert ["B"; "C"] "A" (-1) in
   assert (result9 = ["A"; "B"; "C"]);;
 
   (* Test 10: Inserting an element at the second position when the position is negative *)
-  let result10 = insert (["A"; "C"], "B", -2) in
+  let result10 = insert ["A"; "C"] "B" (-2) in
   assert (result10 = ["B"; "A"; "C"]);;
 
   (* Test 11: Inserting an element at the end of the list when the position is highly negative *)
-  let result11 = insert (["A"; "B"], "C", -10) in
+  let result11 = insert ["A"; "B"] "C" (-10) in
   assert (result11 = ["C"; "A"; "B"]);;
 
 (* Run the tests *)

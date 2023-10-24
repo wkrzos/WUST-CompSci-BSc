@@ -113,11 +113,17 @@ def testIsPerfect(): Unit = {
 
 // Exercise 4
 def insert(list: List[Any], node: Any, position: Int): List[Any] = {
-  def aux(lst: List[Any], elem: Any, pos: Int): List[Any] = (lst, pos) match {
-    case (_, 0) => elem :: lst
-    case (Nil, _) => List(elem)
-    case (hd :: tl, _) if pos <= 0 => elem :: lst
-    case (hd :: tl, _) => hd :: aux(tl, elem, pos - 1)
+  def aux(lst: List[Any], elem: Any, pos: Int): List[Any] = {
+    if (pos == 0) {
+      elem :: lst
+    } else if (lst.isEmpty) {
+      List(elem)
+    } else if (pos <= 0) {
+      elem :: lst
+    } else {
+      val hd :: tl = lst
+      hd :: aux(tl, elem, pos - 1)
+    }
   }
   aux(list, node, position)
 }

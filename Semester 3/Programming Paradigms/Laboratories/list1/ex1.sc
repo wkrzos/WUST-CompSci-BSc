@@ -174,6 +174,58 @@ def testInsert(): Unit = {
   assert(result11 == List("C", "A", "B"))
 }
 
+// Modification
+
+def choice(lst1: List[Int], lst2: List[Int]): List[Int] = {
+  if (lst1.isEmpty && lst2.isEmpty) {
+    List.empty
+  } else if (lst2.isEmpty) {
+    lst1
+  } else if (lst1.isEmpty) {
+    lst2
+  } else {
+    val (hd1, tl1) = (lst1.head, lst1.tail)
+    val (hd2, tl2) = (lst2.head, lst2.tail)
+    val max_element = if (hd1 > hd2) hd1 else hd2
+    max_element :: choice(tl1, tl2)
+  }
+}
+
+def testChoice(): Unit = {
+  // Test 1: Both lists are empty
+  val result1 = choice(List.empty, List.empty)
+  assert(result1 == List.empty)
+
+  // Test 2: First list is empty
+  val result2 = choice(List.empty, List(1, 2, 3))
+  assert(result2 == List(1, 2, 3))
+
+  // Test 3: Second list is empty
+  val result3 = choice(List(4, 5, 6), List.empty)
+  assert(result3 == List(4, 5, 6))
+
+  // Test 4: Lists have the same elements at corresponding positions
+  val result4 = choice(List(1, 2, 3), List(4, 5, 6))
+  assert(result4 == List(4, 5, 6))
+
+  // Test 5: Lists have different elements at corresponding positions
+  val result5 = choice(List(5, 3, 8), List(4, 6, 2))
+  assert(result5 == List(5, 6, 8))
+
+  // Test 6: Second list is longer than the first one
+  val result6 = choice(List(1, 2), List(3, 4, 5))
+  assert(result6 == List(3, 4, 5))
+
+  // Test 7: First list is longer than the second one
+  val result7 = choice(List(1, 2, 3, 4, 5), List(6, 7))
+  assert(result7 == List(6, 7, 3, 4, 5))
+
+  // Test 8: Lists have the same elements but different lengths
+  val result8 = choice(List(1, 2, 3), List(4, 5))
+  assert(result8 == List(4, 5, 3))
+}
+
+
 // Running the tests
 testReverse4()
 println("All tests passed.")
@@ -185,4 +237,7 @@ testIsPerfect()
 println("All tests passed.")
 
 testInsert()
+println("All tests passed.")
+
+testChoice()
 println("All tests passed.")

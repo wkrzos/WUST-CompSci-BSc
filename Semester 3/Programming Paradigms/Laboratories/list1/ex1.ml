@@ -187,3 +187,59 @@ let test_insert() =
 let () =
 test_insert ();;
 print_endline "All tests passed.";;
+
+(* Modification *)
+
+let rec choice lst1 lst2 =
+  if lst1 = [] && lst2 = [] then
+    []
+  else if lst2 = [] then
+    lst1
+  else if lst1 = [] then
+    lst2
+  else
+    let hd1, tl1 = List.hd lst1, List.tl lst1 in
+    let hd2, tl2 = List.hd lst2, List.tl lst2 in
+    let max_element = if hd1 > hd2 then hd1 else hd2 in
+    max_element :: choice tl1 tl2
+;;
+
+let test_choice () =
+  (* Test 1: Both lists are empty *)
+  let result1 = choice [] [] in
+  assert (result1 = []);
+
+  (* Test 2: First list is empty *)
+  let result2 = choice [] [1; 2; 3] in
+  assert (result2 = [1; 2; 3]);
+
+  (* Test 3: Second list is empty *)
+  let result3 = choice [4; 5; 6] [] in
+  assert (result3 = [4; 5; 6]);
+
+  (* Test 4: Lists have the same elements at corresponding positions *)
+  let result4 = choice [1; 2; 3] [4; 5; 6] in
+  assert (result4 = [4; 5; 6]);
+
+  (* Test 5: Lists have different elements at corresponding positions *)
+  let result5 = choice [5; 3; 8] [4; 6; 2] in
+  assert (result5 = [5; 6; 8]);
+
+  (* Test 6: Second list is longer than the first one *)
+  let result6 = choice [1; 2] [3; 4; 5] in
+  assert (result6 = [3; 4; 5]);
+
+  (* Test 7: First list is longer than the second one *)
+  let result7 = choice [1; 2; 3; 4; 5] [6; 7] in
+  assert (result7 = [6; 7; 3; 4; 5]);
+
+  (* Test 8: Lists have the same elements but different lengths *)
+  let result8 = choice [1; 2; 3] [4; 5] in
+  assert (result8 = [4; 5; 3]);
+
+;;
+
+(* Run the tests *)
+let () =
+test_choice ();;
+print_endline "All tests passed.";;

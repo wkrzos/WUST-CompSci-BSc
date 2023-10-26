@@ -24,27 +24,27 @@ def testReverse4(): Unit = {
 }
 
 // Exercise 2
-def sumRange(s: Int, e: Int): Int = {
+def sumRange(start: Int, end_ : Int): Int = {
   def aux(acc: Int, current: Int): Int = {
-    if (current > e - 1) acc
+    if (current > end_ - 1) acc
     else aux(acc + current, current + 1)
   }
-  aux(0, s)
+  aux(0, start)
 }
 
-def prodRange(s: Int, e: Int): Int = {
+def prodRange(start: Int, end_ : Int): Int = {
   def aux(acc: Int, current: Int): Int = {
-    if (current > e - 1) acc
-    else if (s == 0) 0
+    if (current > end_ - 1) acc
+    else if (start == 0) 0
     else aux(acc * current, current + 1)
   }
-  if (s == 0) 0
-  else aux(1, s)
+  if (start == 0) 0
+  else aux(1, start)
 }
 
-def sumProd(s: Int, e: Int): (Int, Int) = {
-  val sumOfRange = sumRange(s, e)
-  val prodOfRange = prodRange(s, e)
+def sumProd(start: Int, end_ : Int): (Int, Int) = {
+  val sumOfRange = sumRange(start, end_)
+  val prodOfRange = prodRange(start, end_)
   (sumOfRange, prodOfRange)
 }
 
@@ -70,7 +70,7 @@ def testSumProd(): Unit = {
   assert(result5 == (0, 0))
 }
 
-//Excercise 3
+// Excercise 3
 def isPerfect(n: Int): Boolean = {
   def isPerfectHelper(i: Int, sum: Int): Boolean = {
     if (i >= n) {
@@ -86,7 +86,6 @@ def isPerfect(n: Int): Boolean = {
 
   isPerfectHelper(1, 0)
 }
-
 
 // Tests
 def testIsPerfect(): Unit = {
@@ -176,16 +175,16 @@ def testInsert(): Unit = {
 
 // Modification
 
-def choice(lst1: List[Int], lst2: List[Int]): List[Int] = {
-  if (lst1.isEmpty && lst2.isEmpty) {
+def choice(list1: List[Int], list2: List[Int]): List[Int] = {
+  if (list1.isEmpty && list2.isEmpty) {
     List.empty
-  } else if (lst2.isEmpty) {
-    lst1
-  } else if (lst1.isEmpty) {
-    lst2
+  } else if (list2.isEmpty) {
+    list1
+  } else if (list1.isEmpty) {
+    list2
   } else {
-    val (hd1, tl1) = (lst1.head, lst1.tail)
-    val (hd2, tl2) = (lst2.head, lst2.tail)
+    val (hd1, tl1) = (list1.head, list1.tail)
+    val (hd2, tl2) = (list2.head, list2.tail)
     val max_element = if (hd1 > hd2) hd1 else hd2
     max_element :: choice(tl1, tl2)
   }
@@ -224,7 +223,6 @@ def testChoice(): Unit = {
   val result8 = choice(List(1, 2, 3), List(4, 5))
   assert(result8 == List(4, 5, 3))
 }
-
 
 // Running the tests
 testReverse4()

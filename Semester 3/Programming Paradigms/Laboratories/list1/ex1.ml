@@ -25,31 +25,31 @@ let test_reverse4 () =
 
 (* Running the tests *)
 let () =
-test_reverse4 ();;
-print_endline "All tests passed.";;
+  test_reverse4 ();
+  print_endline "All tests passed.";;
 
 (* Exercise 2 *)
 
-let sumRange = fun (s, e) ->
+let sumRange = fun (start, end_) ->
   let rec aux acc current =
-    if current > e - 1 then acc
+    if current > end_ - 1 then acc
     else aux (acc + current) (current + 1)
-  in aux 0 s
+  in aux 0 start
 ;;
 
-let prodRange = fun (s, e) ->
+let prodRange = fun (start, end_) ->
   let rec aux acc current =
-    if current > e - 1 then acc
-    else if s = 0 then 0
+    if current > end_ - 1 then acc
+    else if start = 0 then 0
     else aux (acc * current) (current + 1)
   in
-  if s = 0 then 0
-  else aux 1 s
+  if start = 0 then 0
+  else aux 1 start
 ;;
 
-let sumProd = fun (s, e) ->
-  let sumOfRange = sumRange (s, e) in
-  let prodOfRange = prodRange (s, e) in
+let sumProd = fun (start, end_) ->
+  let sumOfRange = sumRange (start, end_) in
+  let prodOfRange = prodRange (start, end_) in
   (sumOfRange, prodOfRange)
 ;;
 
@@ -63,7 +63,7 @@ let test_sumProd() =
   assert (result2 = (0, 0));;
 
   (* Test 3: Negative numbers with an even number of factors *)
-  let result3 = sumProd (-4, -0) in
+  let result3 = sumProd (-4, 0) in
   assert (result3 = (-10, 24));;
 
   (* Test 4: Negative numbers with an odd number of factors *)
@@ -76,8 +76,8 @@ let test_sumProd() =
 
 (* Run the tests *)
 let () =
-test_sumProd ();
-print_endline "All tests passed.";;
+  test_sumProd ();
+  print_endline "All tests passed.";;
 
 (* Exercise 3 *)
 
@@ -118,8 +118,8 @@ let test_isPerfect () =
 
 (* Run the tests *)
 let () =
-test_isPerfect ();;
-print_endline "All tests passed.";;
+  test_isPerfect ();;
+  print_endline "All tests passed.";;
 
 (* Exercise 4 *)
 
@@ -185,21 +185,21 @@ let test_insert() =
 
 (* Run the tests *)
 let () =
-test_insert ();;
-print_endline "All tests passed.";;
+  test_insert ();;
+  print_endline "All tests passed.";;
 
 (* Modification *)
 
-let rec choice lst1 lst2 =
-  if lst1 = [] && lst2 = [] then
+let rec choice list1 list2 =
+  if list1 = [] && list2 = [] then
     []
-  else if lst2 = [] then
-    lst1
-  else if lst1 = [] then
-    lst2
+  else if list2 = [] then
+    list1
+  else if list1 = [] then
+    list2
   else
-    let hd1, tl1 = List.hd lst1, List.tl lst1 in
-    let hd2, tl2 = List.hd lst2, List.tl lst2 in
+    let hd1, tl1 = List.hd list1, List.tl list1 in
+    let hd2, tl2 = List.hd list2, List.tl list2 in
     let max_element = if hd1 > hd2 then hd1 else hd2 in
     max_element :: choice tl1 tl2
 ;;
@@ -241,5 +241,5 @@ let test_choice () =
 
 (* Run the tests *)
 let () =
-test_choice ();;
-print_endline "All tests passed.";;
+  test_choice ();;
+  print_endline "All tests passed.";;

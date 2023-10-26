@@ -1,6 +1,6 @@
 Permission-Based License
 
-Software - contents of this repository
+Software - any and all contents of this repository
 
 Author - Wojciech Krzos
 

@@ -132,8 +132,12 @@ let insert list node position =
     else if pos <= 0 then
       elem :: lst
     else
-      match lst with
-      | hd :: tl -> hd :: (aux tl elem (pos - 1))
+      if not (lst = []) then
+        let hd, tl = List.hd lst, List.tl lst in
+        hd :: (aux tl elem (pos - 1))
+      else
+        []
+      
   in aux list node position
 ;;
 
@@ -188,7 +192,7 @@ let () =
   test_insert ();;
   print_endline "All tests passed.";;
 
-(* Modification *)
+(* Live Coding 1 *)
 
 let rec choice list1 list2 =
   if list1 = [] && list2 = [] then
@@ -242,4 +246,54 @@ let test_choice () =
 (* Run the tests *)
 let () =
   test_choice ();;
+  print_endline "All tests passed.";;
+
+(* Live Coding 2 *)
+
+(*Napisać funkcję squish przyjmującą listę list i zwracającą listę składającą się z elementów 
+tychże list, w kolejności występowania. (OCaml i Scala)*)
+
+let squash list =
+  let rec squash_helper currList remainingLists =
+    if currList = [] then
+      if remainingLists = [] then
+        []
+      else
+        squash_helper (List.hd remainingLists) (List.tl remainingLists)
+    else
+      List.hd currList :: squash_helper (List.tl currList) remainingLists
+  in
+
+  if list = [] then
+    []
+  else
+    squash_helper (List.hd list) (List.tl list)
+;;
+
+let test_squash() =
+  (* Test 1: Squashing an empty list *)
+  let result1 = squash [] in
+  assert (result1 = []);
+
+  (* Test 2: Squashing a list with one element *)
+  let result2 = squash [[1]] in
+  assert (result2 = [1]);
+
+  (* Test 3: Squashing a list with two elements *)
+  let result3 = squash [[1]; [2]] in
+  assert (result3 = [1; 2]);
+
+  (* Test 4: Squashing a list with three elements *)
+  let result4 = squash [[1]; [2]; [3]] in
+  assert (result4 = [1; 2; 3]);
+
+  (* Test 5: Squashing a list with three elements *)
+  let result5 = squash [[1; 2]; [3; 4]; [5; 6]] in
+  assert (result5 = [1; 2; 3; 4; 5; 6]);
+
+  ;;
+
+(* Run the tests *)
+let () =
+  test_squash ();;
   print_endline "All tests passed.";;

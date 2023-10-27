@@ -70,7 +70,7 @@ def testSumProd(): Unit = {
   assert(result5 == (0, 0))
 }
 
-// Excercise 3
+// Exercise 3
 def isPerfect(n: Int): Boolean = {
   def isPerfectHelper(i: Int, sum: Int): Boolean = {
     if (i >= n) {
@@ -173,7 +173,7 @@ def testInsert(): Unit = {
   assert(result11 == List("C", "A", "B"))
 }
 
-// Modification
+// Live Coding 1
 
 def choice(list1: List[Int], list2: List[Int]): List[Int] = {
   if (list1.isEmpty && list2.isEmpty) {
@@ -224,6 +224,62 @@ def testChoice(): Unit = {
   assert(result8 == List(4, 5, 3))
 }
 
+// Live Coding 2
+
+def squash(list: List[List[Int]]): List[Int] = {
+  def squishHelper(currList: List[Int], remainingLists: List[List[Int]]): List[Int] = {
+    if (currList.isEmpty) {
+      if (remainingLists.isEmpty) {
+        Nil
+      } else {
+        squishHelper(remainingLists.head, remainingLists.tail)
+      }
+    } else {
+      currList.head :: squishHelper(currList.tail, remainingLists)
+    }
+  }
+
+  if (list.isEmpty) {
+    Nil
+  } else {
+    squishHelper(list.head, list.tail)
+  }
+}
+
+def testSquash(): Unit = {
+  // Test 1: Empty list
+  val result1 = squash(List(List.empty))
+  assert(result1 == List.empty)
+
+  // Test 2: List with one element
+  val result2 = squash(List(List(1)))
+  assert(result2 == List(1))
+
+  // Test 3: List with two different elements
+  val result3 = squash(List(List(1), List(2)))
+  assert(result3 == List(1, 2))
+
+  // Test 4: List with two equal elements
+  val result4 = squash(List(List(1), List(1)))
+  assert(result4 == List(1, 1))
+
+  // Test 5: List with three different elements
+  val result5 = squash(List(List(1), List(2), List(3)))
+  assert(result5 == List(1, 2, 3))
+
+  // Test 6: List with three equal elements
+  val result6 = squash(List(List(1), List(1), List(1)))
+  assert(result6 == List(1, 1, 1))
+
+  // Test 7: List with three elements, two of which are equal
+  val result7 = squash(List(List(1), List(1), List(2)))
+  assert(result7 == List(1, 1, 2))
+
+  // Test 8: List with three elements, two of which are equal
+  val result8 = squash(List(List(1), List(2), List(2)))
+  assert(result8 == List(1, 2, 2))
+}
+
 // Running the tests
 testReverse4()
 println("All tests passed.")
@@ -238,4 +294,7 @@ testInsert()
 println("All tests passed.")
 
 testChoice()
+println("All tests passed.")
+
+testSquash()
 println("All tests passed.")

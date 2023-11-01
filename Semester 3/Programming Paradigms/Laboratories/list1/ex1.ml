@@ -257,17 +257,18 @@ let squash list =
   let rec squash_helper currList remainingLists =
     if currList = [] then
       if remainingLists = [] then
-        []
+        []  (* If currList is empty and no remainingLists, return an empty list. *)
       else
-        squash_helper (List.hd remainingLists) (List.tl remainingLists)
+        squash_helper (List.hd remainingLists) (List.tl remainingLists) (* Recursively call squash_helper with the head of remainingLists. *)
     else
       List.hd currList :: squash_helper (List.tl currList) remainingLists
+      (* If currList is not empty, take the head of currList and recursively call squash_helper with the tail of currList. *)
   in
 
   if list = [] then
     []
   else
-    squash_helper (List.hd list) (List.tl list)
+    squash_helper (List.hd list) (List.tl list) (* Call squash_helper with the head of the input list and its tail. *)
 ;;
 
 let test_squash() =

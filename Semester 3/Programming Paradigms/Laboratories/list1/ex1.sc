@@ -228,7 +228,7 @@ def testChoice(): Unit = {
 
 def squash(list: List[List[Int]]): List[Int] = {
   def squishHelper(currList: List[Int], remainingLists: List[List[Int]]): List[Int] = {
-    if (currList.isEmpty) {
+    if (currList == Nil) {
       if (remainingLists.isEmpty) {
         Nil
       } else {
@@ -239,7 +239,7 @@ def squash(list: List[List[Int]]): List[Int] = {
     }
   }
 
-  if (list.isEmpty) {
+  if (list == Nil) {
     Nil
   } else {
     squishHelper(list.head, list.tail)

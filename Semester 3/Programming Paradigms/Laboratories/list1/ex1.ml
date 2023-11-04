@@ -81,17 +81,19 @@ let () =
 
 (* Exercise 3 *)
 
-let isPerfect n =
-  let rec sum_divisors i sum =
-    if i = 0 then sum
-    else if n mod i = 0 then
-      sum_divisors (i - 1) (sum + i)
-    else
-      sum_divisors (i - 1) sum
-  in
-  let sum = sum_divisors (n - 1) 0 in
-  sum = n
-;;
+  let isPerfect n =
+    let rec sum_divisors i sum =
+      if i = 0 then
+        sum (* If we have checked all divisors, return the sum. *)
+      else if n mod i = 0 then
+        sum_divisors (i - 1) (sum + i) (* If 'i' is a divisor, add it to the sum. *)
+      else
+        sum_divisors (i - 1) sum (* If 'i' is not a divisor, continue without adding it to the sum. *)
+    in
+    let sum = sum_divisors (n - 1) 0 in (* Start checking divisors from n - 1 and initialize sum to 0. *)
+    sum = n (* Check if the computed sum is equal to 'n' to determine if 'n' is a perfect number. *)
+  ;;
+  
 
 (* Tests *)
 
@@ -126,19 +128,18 @@ let () =
 let insert list node position =
   let rec aux lst elem pos =
     if pos = 0 then
-      elem :: lst
+      elem :: lst  (* If 'pos' is 0, insert 'elem' at the beginning of the list. *)
     else if lst = [] then
-      [elem]
+      [elem]  (* If 'lst' is empty, create a new list with just 'elem'. *)
     else if pos <= 0 then
-      elem :: lst
+      elem :: lst  (* If 'pos' is less than or equal to 0, insert 'elem' at the beginning of the list. *)
     else
-      if not (lst = []) then
+      if lst <> [] then
         let hd, tl = List.hd lst, List.tl lst in
-        hd :: (aux tl elem (pos - 1))
+        hd :: (aux tl elem (pos - 1))  (* If none of the above conditions match, recursively insert 'elem' in the tail of the list. *)
       else
-        []
-      
-  in aux list node position
+        []  (* If 'lst' is empty (an edge case), return an empty list. *)
+  in aux list node position  (* Call the 'aux' function with the input 'list', 'node', and 'position'. *)
 ;;
 
 

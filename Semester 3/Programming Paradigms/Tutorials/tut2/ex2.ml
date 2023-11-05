@@ -4,13 +4,13 @@ let rec fib n =
   else fib (n - 1) + fib (n - 2)
 ;;
 
-let fibTail number =
+let fibTail n =
   let rec fibTail' n a b =
     if n = 0 then
       a
     else
       fibTail' (n - 1) b (a + b)
-  in fibTail' number 0 1
+  in fibTail' n 0 1
 ;;
 
 fib 45;;

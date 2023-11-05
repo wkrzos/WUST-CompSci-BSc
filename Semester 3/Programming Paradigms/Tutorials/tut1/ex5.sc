@@ -1,10 +1,9 @@
 def palindrome[A](list: List[A]): Boolean = {
+
   // Define a recursive function to reverse a list
   def reverseList(lst: List[A]): List[A] = {
-    lst match {
-      case Nil => Nil // If the list is empty, return an empty list (base case)
-      case head :: tail => reverseList(tail) ::: List(head) // Reverse the tail and append the head to it
-    }
+    if (lst.isEmpty) Nil // If the list is empty, return an empty list (base case)
+    else lst.last :: reverseList(lst.init) // Reverse the list by adding the last element at the beginning of the reversed tail
   }
 
   list == reverseList(list) // Check if the input list is equal to its reverse

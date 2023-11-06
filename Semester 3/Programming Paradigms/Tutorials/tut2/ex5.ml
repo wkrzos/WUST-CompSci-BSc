@@ -6,6 +6,10 @@ let rec initSegment (list1, list2) =
   | _ -> false
 ;;
 
+(*
+The function operates by pattern matching on the two input lists, list1 and list2. In the best case, if list1 is empty, it immediately returns true, which is an O(1) operation. In the worst case, the function needs to traverse both lists until it reaches the end of either list or finds a mismatch. This can take O(min(N, M)) time, where N is the length of list1, and M is the length of list2   
+*)
+
 (* Test cases *)
 
 initSegment ([], [1; 2; 3]);;  (* Expect: true, an empty list is an initial segment of any list. *)

@@ -14,3 +14,7 @@ let root3 a =
 ;;
 
 root3 0.1;;
+
+(*
+The primary work in this function is done by the root3' helper function, which uses an iterative approach to approximate the cube root. The number of iterations required depends on the precision constant e and the initial guess. Generally, the Newton-Raphson method converges quickly, and the number of iterations is logarithmic in practice. Therefore, we can approximate the time complexity as O(log(1/e)), where e is the precision constant.   
+*)

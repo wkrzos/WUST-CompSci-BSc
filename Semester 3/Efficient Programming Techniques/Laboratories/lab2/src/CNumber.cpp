@@ -214,10 +214,135 @@ CNumber CNumber::operator*(const CNumber& pcNewVal) {
 
 
 CNumber CNumber::operator/(const CNumber& pcNewVal) {
+	// Check for divisor zero
+	if (pcNewVal.i_length == 0) {
+		std::cerr << "Error: Division by zero is undefined." << std::endl;
+		return result;
+	}
+
+	// Normalize the divisor
+	while (pcNewVal.pi_number[0] == 0) {
+		if (pcNewVal.i_length == 1) {
+			std::cerr << "Error: Division by zero is undefined." << std::endl;
+			return result;
+		}
+
+		// Shift the digits of the divisor to the left
+		for (int i = 1; i < pcNewVal.i_length; i++) {
+			pcNewVal.pi_number[i - 1] = pcNewVal.pi_number[i];
+		}
+
+		pcNewVal.i_length--;
+	}
+
+	// Initialize the result
 	CNumber result;
+	result.i_length = i_length;
+	result.pi_number = new int[result.i_length];
+
+	// Perform the division algorithm
+	int quotient = 0;
+	int remainder = 0;
+
+	for (int i = i_length - 1; i >= 0; i--) {
+		int digit = pi_number[i];
+		int tempQuotient = digit * 10 + remainder;
+
+		if (tempQuotient >= pcNewVal.pi_number[0]) {
+			quotient = tempQuotient / pcNewVal.pi_number[0];
+			remainder = tempQuotient % pcNewVal.pi_number[0];
+		}
+		else {
+			quotient = 0;
+			remainder = tempQuotient;
+		}
+
+		result.pi_number[i] = quotient;
+	}
+
+	// Adjust the result's length
+	if (result.pi_number[0] == 0) {
+		result.i_length--;
+		delete[] result.pi_number;
+		result.pi_number = new int[result.i_length];
+
+		for (int i = 0; i < result.i_length; i++) {
+			result.pi_number[i] = result.pi_number[i + 1];
+		}
+	}
+
+	// Handle special cases
+	if (pcNewVal.i_length > i_length) {
+		for (int i = 0; i < result.i_length; i++) {
+			result.pi_number[i] = 0;
+		}
+	}
 
 	return result;
 }
+
+
+/*
+* 
+*	TRYING KARATSUBA algorithm
+* 
+CNumber CNumber::operator/(const CNumber& pcNewVal) {
+	// Check for divisor zero
+	if (pcNewVal.i_length == 0) {
+		std::cerr << "Error: Division by zero is undefined." << std::endl;
+		return result;
+	}
+
+	// Normalize the divisor
+	while (pcNewVal.pi_number[0] == 0) {
+		if (pcNewVal.i_length == 1) {
+			std::cerr << "Error: Division by zero is undefined." << std::endl;
+			return result;
+		}
+
+		// Shift the digits of the divisor to the left
+		for (int i = 1; i < pcNewVal.i_length; i++) {
+			pcNewVal.pi_number[i - 1] = pcNewVal.pi_number[i];
+		}
+
+		pcNewVal.i_length--;
+	}
+
+	// Check if the dividend is smaller than the divisor
+	if (i_length < pcNewVal.i_length) {
+		// Handle special cases
+		CNumber result;
+		result.i_length = 1;
+		result.pi_number = new int[result.i_length];
+		result.pi_number[0] = 0;
+
+		return result;
+	}
+
+	// Determine the maximum length for intermediate results
+	int maxLength = std::max(i_length, pcNewVal.i_length);
+
+	// Perform division using Karatsuba algorithm
+	CNumber quotient;
+	quotient.i_length = maxLength;
+	quotient.pi_number = new int[quotient.i_length];
+
+	karatsubaDivide(pi_number, i_length, pcNewVal.pi_number, pcNewVal.i_length, quotient.pi_number);
+
+	// Adjust the quotient's length if necessary
+	if (quotient.pi_number[0] == 0) {
+		quotient.i_length--;
+		delete[] quotient.pi_number;
+		quotient.pi_number = new int[quotient.i_length];
+
+		for (int i = 0; i < quotient.i_length; i++) {
+			quotient.pi_number[i] = quotient.pi_number[i + 1];
+		}
+	}
+
+	return quotient;
+} */
+
 
 std::string CNumber::sToStr() {
 	std::ostringstream oss;

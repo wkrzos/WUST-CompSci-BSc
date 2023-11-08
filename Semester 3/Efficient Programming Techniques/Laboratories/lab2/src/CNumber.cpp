@@ -111,7 +111,50 @@ CNumber CNumber::operator+(const CNumber& pcNewVal) {
 
 
 CNumber CNumber::operator-(const CNumber& pcNewVal) {
+	// Determine the larger operand
+	bool isThisLarger = i_length > pcNewVal.i_length;
+	int largerLength = isThisLarger ? i_length : pcNewVal.i_length;
+
+	// Allocate a new array for the result
 	CNumber result;
+	result.i_length = largerLength + 1;
+	result.pi_number = new int[result.i_length];
+
+	// Perform the subtraction
+	int borrow = 0;
+	int i = isThisLarger ? i_length - 1 : pcNewVal.i_length - 1;
+	int j = isThisLarger ? pcNewVal.i_length - 1 : i_length - 1;
+	int k = result.i_length - 1;
+
+	while (i >= 0 || j >= 0 || borrow > 0) {
+		int digit1 = isThisLarger ? pi_number[i] : 0;
+		int digit2 = isThisLarger ? 0 : pcNewVal.pi_number[j];
+		int diff = digit1 - digit2 - borrow;
+
+		if (diff < 0) {
+			diff += 10;
+			borrow = 1;
+		} else {
+			borrow = 0;
+		}
+
+		result.pi_number[k] = diff;
+
+		i--;
+		j--;
+		k--;
+	}
+
+	// Adjust the result's length if the most significant digit is zero
+	if (result.pi_number[0] == 0) {
+		result.i_length--;
+		delete[] result.pi_number;
+		result.pi_number = new int[result.i_length];
+
+		for (int i = 0; i < result.i_length; i++) {
+			result.pi_number[i] = result.pi_number[i + 1];
+		}
+	}
 
 	return result;
 }

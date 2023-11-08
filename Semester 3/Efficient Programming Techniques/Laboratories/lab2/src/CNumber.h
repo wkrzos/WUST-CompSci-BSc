@@ -28,4 +28,5 @@ private:
 
 	int* pi_number;
 	int i_length;
+	boolean isNegative
 };

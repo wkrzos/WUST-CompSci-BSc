@@ -160,10 +160,58 @@ CNumber CNumber::operator-(const CNumber& pcNewVal) {
 }
 
 CNumber CNumber::operator*(const CNumber& pcNewVal) {
+	// Determine the length of the product
+	int productLength = i_length + pcNewVal.i_length;
+
+	// Create a temporary array to store the partial products
+	int* tempArray = new int[productLength];
+
+	// Initialize the temporary array with zeros
+	for (int i = 0; i < productLength; i++) {
+		tempArray[i] = 0;
+	}
+
+	// Calculate the partial products
+	for (int i = 0; i < i_length; i++) {
+		for (int j = 0; j < pcNewVal.i_length; j++) {
+			int partialProduct = pi_number[i] * pcNewVal.pi_number[j];
+			int carry = 0;
+
+			for (int k = i + j; k < productLength; k++) {
+				int digitSum = tempArray[k] + partialProduct + carry;
+				tempArray[k] = digitSum % 10;
+				carry = digitSum / 10;
+			}
+		}
+	}
+
+	// Create the result object
 	CNumber result;
+	result.i_length = productLength;
+	result.pi_number = new int[result.i_length];
+
+	// Copy the partial products to the result object
+	for (int i = 0; i < productLength; i++) {
+		result.pi_number[i] = tempArray[i];
+	}
+
+	// Adjust the result's length if the most significant digit is zero
+	if (result.pi_number[0] == 0) {
+		result.i_length--;
+		delete[] result.pi_number;
+		result.pi_number = new int[result.i_length];
+
+		for (int i = 0; i < result.i_length; i++) {
+			result.pi_number[i] = result.pi_number[i + 1];
+		}
+	}
+
+	// Delete the temporary array
+	delete[] tempArray;
 
 	return result;
 }
+
 
 CNumber CNumber::operator/(const CNumber& pcNewVal) {
 	CNumber result;

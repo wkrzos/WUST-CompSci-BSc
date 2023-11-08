@@ -71,10 +71,44 @@ void CNumber::operator=(const CNumber& pcOther) {
 }
 
 CNumber CNumber::operator+(const CNumber& pcNewVal) {
+	// Allocate a new array for the result
 	CNumber result;
+	result.i_length = std::max(i_length, pcNewVal.i_length) + 1;
+	result.pi_number = new int[result.i_length];
+
+	// Perform the addition
+	int carry = 0;
+	int i = i_length - 1;
+	int j = pcNewVal.i_length - 1;
+	int k = result.i_length - 1;
+
+	while (i >= 0 || j >= 0 || carry > 0) {
+		int digit1 = i >= 0 ? pi_number[i] : 0;
+		int digit2 = j >= 0 ? pcNewVal.pi_number[j] : 0;
+		int sum = digit1 + digit2 + carry;
+
+		result.pi_number[k] = sum % 10;
+		carry = sum / 10;
+
+		i--;
+		j--;
+		k--;
+	}
+
+	// Adjust the result's length if the most significant digit is zero
+	if (result.pi_number[0] == 0) {
+		result.i_length--;
+		delete[] result.pi_number;
+		result.pi_number = new int[result.i_length];
+
+		for (int i = 0; i < result.i_length; i++) {
+			result.pi_number[i] = result.pi_number[i + 1];
+		}
+	}
 
 	return result;
 }
+
 
 CNumber CNumber::operator-(const CNumber& pcNewVal) {
 	CNumber result;

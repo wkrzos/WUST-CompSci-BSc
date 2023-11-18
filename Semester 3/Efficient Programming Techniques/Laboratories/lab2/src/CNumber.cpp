@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "CNumber.h"
+#include <vector>
 
 using namespace std;
 
@@ -32,11 +33,6 @@ void CNumber::operator=(const int iValue) {
 			pi_number[i] = temp % 10;
 			temp /= 10;
 		}
-	}
-
-	if (isNegative) {
-		// If the original value was negative, set the most significant digit to a negative sign (-)
-		pi_number[0] = -pi_number[0];
 	}
 }
 
@@ -70,91 +66,50 @@ void CNumber::operator=(const CNumber& pcOther) {
 	}
 }
 
+// Addition operator for adding a CNumber
 CNumber CNumber::operator+(const CNumber& pcNewVal) {
-	// Allocate a new array for the result
+	int max_length = std::max(i_length, pcNewVal.i_length);
 	CNumber result;
-	result.i_length = std::max(i_length, pcNewVal.i_length) + 1;
-	result.pi_number = new int[result.i_length];
+	result.i_length = max_length;
 
-	// Perform the addition
 	int carry = 0;
-	int i = i_length - 1;
-	int j = pcNewVal.i_length - 1;
-	int k = result.i_length - 1;
 
-	while (i >= 0 || j >= 0 || carry > 0) {
-		int digit1 = i >= 0 ? pi_number[i] : 0;
-		int digit2 = j >= 0 ? pcNewVal.pi_number[j] : 0;
-		int sum = digit1 + digit2 + carry;
-
-		result.pi_number[k] = sum % 10;
+	for (int i = max_length - 1; i >= 0; i--) {
+		int sum = pi_number[i] + pcNewVal.pi_number[i] + carry;
+		result.pi_number[i] = sum % 10;
 		carry = sum / 10;
-
-		i--;
-		j--;
-		k--;
 	}
 
-	// Adjust the result's length if the most significant digit is zero
-	if (result.pi_number[0] == 0) {
-		result.i_length--;
-		delete[] result.pi_number;
-		result.pi_number = new int[result.i_length];
-
-		for (int i = 0; i < result.i_length; i++) {
-			result.pi_number[i] = result.pi_number[i + 1];
-		}
-	}
+	// Set the sign of the result
+	result.isNegative = (isNegative && !pcNewVal.isNegative) || (!isNegative && pcNewVal.isNegative);
 
 	return result;
 }
 
 
+// Updated subtraction operator
 CNumber CNumber::operator-(const CNumber& pcNewVal) {
-	// Determine the larger operand
-	bool isThisLarger = i_length > pcNewVal.i_length;
-	int largerLength = isThisLarger ? i_length : pcNewVal.i_length;
-
-	// Allocate a new array for the result
+	int max_length = std::max(i_length, pcNewVal.i_length);
 	CNumber result;
-	result.i_length = largerLength + 1;
-	result.pi_number = new int[result.i_length];
+	result.i_length = max_length;
 
-	// Perform the subtraction
-	int borrow = 0;
-	int i = isThisLarger ? i_length - 1 : pcNewVal.i_length - 1;
-	int j = isThisLarger ? pcNewVal.i_length - 1 : i_length - 1;
-	int k = result.i_length - 1;
+	int carry = 0;
 
-	while (i >= 0 || j >= 0 || borrow > 0) {
-		int digit1 = isThisLarger ? pi_number[i] : 0;
-		int digit2 = isThisLarger ? 0 : pcNewVal.pi_number[j];
-		int diff = digit1 - digit2 - borrow;
-
+	for (int i = max_length - 1; i >= 0; i--) {
+		int diff = pi_number[i] - pcNewVal.pi_number[i] - carry;
 		if (diff < 0) {
 			diff += 10;
-			borrow = 1;
-		} else {
-			borrow = 0;
+			carry = 1;
+		}
+		else {
+			carry = 0;
 		}
 
-		result.pi_number[k] = diff;
-
-		i--;
-		j--;
-		k--;
+		result.pi_number[i] = diff;
 	}
 
-	// Adjust the result's length if the most significant digit is zero
-	if (result.pi_number[0] == 0) {
-		result.i_length--;
-		delete[] result.pi_number;
-		result.pi_number = new int[result.i_length];
-
-		for (int i = 0; i < result.i_length; i++) {
-			result.pi_number[i] = result.pi_number[i + 1];
-		}
-	}
+	// Set the sign of the result
+	result.isNegative = (isNegative && !pcNewVal.isNegative) || (!isNegative && pcNewVal.isNegative);
 
 	return result;
 }
@@ -213,7 +168,7 @@ CNumber CNumber::operator*(const CNumber& pcNewVal) {
 }
 
 
-CNumber CNumber::operator/(const CNumber& pcNewVal) {
+/*CNumber CNumber::operator/(const CNumber& pcNewVal) {
 	// Check for divisor zero
 	if (pcNewVal.i_length == 0) {
 		std::cerr << "Error: Division by zero is undefined." << std::endl;
@@ -279,7 +234,7 @@ CNumber CNumber::operator/(const CNumber& pcNewVal) {
 	}
 
 	return result;
-}
+}*/
 
 
 /*

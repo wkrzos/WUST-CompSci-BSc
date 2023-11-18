@@ -58,12 +58,39 @@ int main() {
     //EXCERCISE 6
     cout << std::endl << "EXCERCISE 6" << std::endl;
 
-    CNumber num_3;
-    num_3 = num_1 + num_2;
+    CNumber num33, num22, num11;
+    string str33;
 
-    string str_2;
-    str_2 = num_3.sToStr();
+    num22 = 222;
+    num11 = 2;
+    str33 = num22.sToStr();
+    cout << str33;
 
-    cout << str_2;
+    cout << std::endl << "addition" << std::endl;
+
+    num33 = num22 + num11;  
+    str33 = num33.sToStr();
+    cout << str33;
+
+    cout << std::endl << "subtraction" << std::endl;
+
+    num33 = num22 - num11;
+    str33 = num33.sToStr();
+    cout << str33;
+
+    cout << std::endl << "multiplication" << std::endl;
+    
+    num33 = num11 * num22;
+    str33 = num33.sToStr();
+    cout << str33;
+
+    /*
+    cout << std::endl << "division" << std::endl;
+
+    num33 = num11 / num22;
+    str33 = num33.sToStr();
+    cout << str33;
+    */
+    
 
 }

@@ -127,17 +127,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Interface.cpp" />
-    <ClCompile Include="PrefixExpressionParser.cpp" />
-    <ClCompile Include="Tree.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="src\Interface.cpp" />
+    <ClCompile Include="src\Node\ConstantNode.cpp" />
+    <ClCompile Include="src\Node\Node.cpp" />
+    <ClCompile Include="src\Node\OperatorNode.cpp" />
+    <ClCompile Include="src\PrefixExpressionParser.cpp" />
+    <ClCompile Include="src\Node\VariableNode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Interface.h" />
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="PrefixExpressionParser.h" />
-    <ClInclude Include="Tree.h" />
+    <ClInclude Include="src\Node\Node.h" />
+    <ClInclude Include="src\Interface.h" />
+    <ClInclude Include="src\PrefixExpressionParser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

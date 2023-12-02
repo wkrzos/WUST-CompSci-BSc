@@ -15,33 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Node.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Tree.cpp">
+    <ClCompile Include="src\Interface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interface.cpp">
+    <ClCompile Include="src\PrefixExpressionParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PrefixExpressionParser.cpp">
+    <ClCompile Include="src\Node\Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Node\ConstantNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Node\VariableNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Node\OperatorNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Tree.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
+    <ClInclude Include="src\Interface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interface.h">
+    <ClInclude Include="src\PrefixExpressionParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PrefixExpressionParser.h">
+    <ClInclude Include="src\Node\Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

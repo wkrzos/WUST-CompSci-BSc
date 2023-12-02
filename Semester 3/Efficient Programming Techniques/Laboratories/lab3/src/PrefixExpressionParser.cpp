@@ -7,6 +7,7 @@
 #include <cstring>
 #include <cmath>
 #include <set>
+#include <map>
 
 // Node class representing a single node in the expression tree
 class Node {
@@ -18,7 +19,7 @@ public:
     virtual void printPrefix() const = 0;
     virtual void printVariables(std::set<std::string>& variableSet) const = 0;
     virtual size_t countVariables() const = 0;
-    virtual double evaluateWithValues(const std::vector<double>& values) const = 0;
+    virtual double evaluateWithValues(const std::map<std::string, double>& values) const = 0;
 };
 
 // ConstantNode class representing a constant in the expression tree
@@ -53,7 +54,7 @@ public:
         return 0;
     }
 
-    double evaluateWithValues(const std::vector<double>& values) const override {
+    double evaluateWithValues(const std::map<std::string, double>& values) const override {
         // Constants don't depend on variables
         return value;
     }
@@ -99,9 +100,9 @@ public:
         return 1;
     }
 
-    double evaluateWithValues(const std::vector<double>& values) const override {
+    double evaluateWithValues(const std::map<std::string, double>& values) const override {
         // Return the value assigned to the variable
-        return value;
+        return values.at(name);
     }
 };
 
@@ -144,7 +145,7 @@ public:
         return operand->countVariables();
     }
 
-    double evaluateWithValues(const std::vector<double>& values) const override {
+    double evaluateWithValues(const std::map<std::string, double>& values) const override {
         return std::sin(operand->evaluateWithValues(values));
     }
 };
@@ -188,7 +189,7 @@ public:
         return operand->countVariables();
     }
 
-    double evaluateWithValues(const std::vector<double>& values) const override {
+    double evaluateWithValues(const std::map<std::string, double>& values) const override {
         return std::cos(operand->evaluateWithValues(values));
     }
 };
@@ -231,7 +232,7 @@ public:
         return left->countVariables() + right->countVariables();
     }
 
-    double evaluateWithValues(const std::vector<double>& values) const override {
+    double evaluateWithValues(const std::map<std::string, double>& values) const override {
         double leftValue = left->evaluateWithValues(values);
         double rightValue = right->evaluateWithValues(values);
 
@@ -296,13 +297,23 @@ public:
 class PrefixExpressionParser {
 private:
     std::vector<std::string> tokens;
-    size_t currentTokenIndex;
+    size_t currentTokenIndex = 0;
 
     Node* parseExpression() {
-        std::string token = tokens[currentTokenIndex++];
-        if (isdigit(token[0]) || (token[0] == '-' && isdigit(token[1]))) {
-            return new ConstantNode(std::stod(token));
+        if (currentTokenIndex >= tokens.size()) {
+            // end of tokens so fill it up with ones
+            return new ConstantNode(1.0);
+
         }
+
+        std::string token = tokens[currentTokenIndex++];
+
+
+        if (isdigit(token[0]) || (token.length() >= 2 && token[0] == '-' && isdigit(token[1]))) {
+            // negative numbers should not be handled so remove the sign
+            return new ConstantNode(std::abs(std::stod(token)));
+        }
+
         else if (isalpha(token[0])) {
             if (token == "sin" || token == "cos") {
                 Node* operand = parseExpression();
@@ -421,7 +432,9 @@ private:
             delete expressionTree;
             expressionTree = newTree;
 
-            std::cout << "Formula: " << formula << std::endl;
+            std::cout << "Formula: ";
+            expressionTree->print();
+            std::cout << std::endl;
         }
         else {
             std::cerr << "Error: Invalid formula. Tree not updated." << std::endl;
@@ -456,13 +469,22 @@ private:
 
     void handleCompCommand(const std::vector<double>& values) const {
         if (expressionTree != nullptr) {
-            size_t expectedVarCount = expressionTree->countVariables();
+            std::set<std::string> variables;
+            expressionTree->printVariables(variables);
+            std::map<std::string, double> vals;
+
+            size_t expectedVarCount = variables.size();
             if (values.size() != expectedVarCount) {
                 std::cerr << "Error: Number of values provided does not match the number of variables in the formula."
                     << std::endl;
             }
             else {
-                double result = expressionTree->evaluateWithValues(values);
+                int i = 0;
+                for (std::set<std::string>::iterator it = variables.begin(); it != variables.end(); it++) {
+                    vals[*it] = values[i];
+                    i++;
+                }
+                double result = expressionTree->evaluateWithValues(vals);
                 std::cout << "Result: " << result << std::endl;
             }
         }

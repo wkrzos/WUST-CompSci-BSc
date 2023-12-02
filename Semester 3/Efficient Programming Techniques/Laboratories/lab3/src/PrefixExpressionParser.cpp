@@ -17,6 +17,8 @@ public:
     virtual void printTree(int indent = 0) const = 0;
     virtual void printPrefix() const = 0;
     virtual void printVariables(std::set<std::string>& variableSet) const = 0;
+    virtual size_t countVariables() const = 0;
+    virtual double evaluateWithValues(const std::vector<double>& values) const = 0;
 };
 
 // ConstantNode class representing a constant in the expression tree
@@ -45,6 +47,15 @@ public:
 
     void printVariables(std::set<std::string>& variableSet) const override {
         // Constants don't have variables
+    }
+
+    size_t countVariables() const override {
+        return 0;
+    }
+
+    double evaluateWithValues(const std::vector<double>& values) const override {
+        // Constants don't depend on variables
+        return value;
     }
 };
 
@@ -80,9 +91,17 @@ public:
     void printVariables(std::set<std::string>& variableSet) const override {
         // Check if the variable has been encountered before
         if (variableSet.find(name) == variableSet.end()) {
-            std::cout << name << " ";
             variableSet.insert(name); // Add the variable to the set to mark it as encountered
         }
+    }
+
+    size_t countVariables() const override {
+        return 1;
+    }
+
+    double evaluateWithValues(const std::vector<double>& values) const override {
+        // Return the value assigned to the variable
+        return value;
     }
 };
 
@@ -120,6 +139,14 @@ public:
     void printVariables(std::set<std::string>& variableSet) const override {
         operand->printVariables(variableSet);
     }
+
+    size_t countVariables() const override {
+        return operand->countVariables();
+    }
+
+    double evaluateWithValues(const std::vector<double>& values) const override {
+        return std::sin(operand->evaluateWithValues(values));
+    }
 };
 
 class CosNode : public Node {
@@ -156,6 +183,14 @@ public:
     void printVariables(std::set<std::string>& variableSet) const override {
         operand->printVariables(variableSet);
     }
+
+    size_t countVariables() const override {
+        return operand->countVariables();
+    }
+
+    double evaluateWithValues(const std::vector<double>& values) const override {
+        return std::cos(operand->evaluateWithValues(values));
+    }
 };
 
 class OperatorNode : public Node {
@@ -186,6 +221,33 @@ public:
             return std::sin(right->evaluate());
         case 'c':  // for cos
             return std::cos(right->evaluate());
+        default:
+            std::cerr << "Error: Unknown operator " << op << std::endl;
+            return 0.0;
+        }
+    }
+
+    size_t countVariables() const override {
+        return left->countVariables() + right->countVariables();
+    }
+
+    double evaluateWithValues(const std::vector<double>& values) const override {
+        double leftValue = left->evaluateWithValues(values);
+        double rightValue = right->evaluateWithValues(values);
+
+        switch (op) {
+        case '+':
+            return leftValue + rightValue;
+        case '-':
+            return leftValue - rightValue;
+        case '*':
+            return leftValue * rightValue;
+        case '/':
+            return leftValue / rightValue;
+        case 's':
+            return std::sin(rightValue);
+        case 'c':
+            return std::cos(rightValue);
         default:
             std::cerr << "Error: Unknown operator " << op << std::endl;
             return 0.0;
@@ -301,6 +363,112 @@ public:
             std::cout << std::endl;
         }
         delete expressionTree;
+    }
+};
+
+// Interface class
+class ExpressionInterface {
+private:
+    Node* expressionTree;
+
+public:
+    ExpressionInterface() : expressionTree(nullptr) {}
+
+    ~ExpressionInterface() {
+        delete expressionTree;
+    }
+
+    void executeCommand(const std::string& command) {
+        std::istringstream iss(command);
+        std::string cmd;
+        iss >> cmd;
+
+        if (cmd == "enter") {
+            // Execute 'enter' command
+            std::string formula;
+            getline(iss, formula);
+            handleEnterCommand(formula);
+        }
+        else if (cmd == "vars") {
+            // Execute 'vars' command
+            handleVarsCommand();
+        }
+        else if (cmd == "print") {
+            // Execute 'print' command
+            handlePrintCommand();
+        }
+        else if (cmd == "comp") {
+            // Execute 'comp' command
+            std::vector<double> values;
+            double value;
+            while (iss >> value) {
+                values.push_back(value);
+            }
+            handleCompCommand(values);
+        }
+        else {
+            std::cerr << "Error: Unknown command" << std::endl;
+        }
+    }
+
+private:
+    void handleEnterCommand(const std::string& formula) {
+        PrefixExpressionParser parser(formula);
+        Node* newTree = parser.parse();
+
+        if (newTree != nullptr) {
+            // Delete the old expression tree
+            delete expressionTree;
+            expressionTree = newTree;
+
+            std::cout << "Formula: " << formula << std::endl;
+        }
+        else {
+            std::cerr << "Error: Invalid formula. Tree not updated." << std::endl;
+        }
+    }
+
+    void handleVarsCommand() const {
+        if (expressionTree != nullptr) {
+            std::set<std::string> variableSet;
+            expressionTree->printVariables(variableSet);
+            std::cout << "Variables: ";
+            for (const auto& variable : variableSet) {
+                std::cout << variable << " ";
+            }
+            std::cout << std::endl;
+        }
+        else {
+            std::cerr << "Error: No formula entered. Use 'enter' command first." << std::endl;
+        }
+    }
+
+    void handlePrintCommand() const {
+        if (expressionTree != nullptr) {
+            std::cout << "Expression Tree (Prefix Form): ";
+            expressionTree->printPrefix();
+            std::cout << std::endl;
+        }
+        else {
+            std::cerr << "Error: No formula entered. Use 'enter' command first." << std::endl;
+        }
+    }
+
+    void handleCompCommand(const std::vector<double>& values) const {
+        if (expressionTree != nullptr) {
+            size_t expectedVarCount = expressionTree->countVariables();
+            if (values.size() != expectedVarCount) {
+                std::cerr << "Error: Number of values provided does not match the number of variables in the formula."
+                    << std::endl;
+            }
+            else {
+                double result = expressionTree->evaluateWithValues(values);
+                std::cout << "Result: " << result << std::endl;
+            }
+        }
+        else {
+            std::cerr << "Error: No formula entered. Use 'enter' command first." << std::endl;
+        }
     }
 };
 

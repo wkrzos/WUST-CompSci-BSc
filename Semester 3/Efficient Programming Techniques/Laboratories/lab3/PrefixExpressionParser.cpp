@@ -12,6 +12,7 @@ public:
     virtual ~Node() = default;
     virtual double evaluate() const = 0;
     virtual void print() const = 0;
+    virtual void printTree(int indent = 0) const = 0;
 };
 
 // ConstantNode class representing a constant in the expression tree
@@ -28,6 +29,10 @@ public:
 
     void print() const override {
         std::cout << value;
+    }
+
+    void printTree(int indent) const override {
+        std::cout << std::string(indent, ' ') << "ConstantNode: " << value << std::endl;
     }
 };
 
@@ -50,6 +55,10 @@ public:
 
     void print() const override {
         std::cout << name;
+    }
+
+    void printTree(int indent) const override {
+        std::cout << std::string(indent, ' ') << "VariableNode: " << name << std::endl;
     }
 };
 
@@ -90,6 +99,12 @@ public:
         std::cout << " " << op << " ";
         right->print();
         std::cout << ")";
+    }
+
+    void printTree(int indent) const override {
+        std::cout << std::string(indent, ' ') << "OperatorNode: " << op << std::endl;
+        left->printTree(indent + 2);
+        right->printTree(indent + 2);
     }
 };
 
@@ -133,11 +148,23 @@ public:
     Node* parse() {
         return parseExpression();
     }
+
+    void print() {
+        Node* expressionTree = parseExpression();
+        if (expressionTree != nullptr) {
+            std::cout << "Expression Tree: ";
+            expressionTree->print();
+            std::cout << std::endl;
+            std::cout << "Tree Structure:" << std::endl;
+            expressionTree->printTree();
+        }
+        delete expressionTree;
+    }
 };
 
 int main() {
     // Example usage
-    std::string inputExpression = "+ 1 a";
+    std::string inputExpression = "* - A / B C - / A K L";
     PrefixExpressionParser parser(inputExpression);
     Node* expressionTree = parser.parse();
 
@@ -151,6 +178,8 @@ int main() {
         std::cout << "Expression Tree: ";
         expressionTree->print();
         std::cout << std::endl;
+        std::cout << "Tree Structure:" << std::endl;
+        expressionTree->printTree();
 
         double result = expressionTree->evaluate();
         std::cout << "Result: " << result << std::endl;

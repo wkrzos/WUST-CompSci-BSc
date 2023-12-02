@@ -472,7 +472,7 @@ private:
     }
 };
 
-int main() {
+/*int main() {
     // Example usage
     std::string inputExpression = "* - 1 / 2 3 - / 4 5 cos 6";
     PrefixExpressionParser parser(inputExpression);
@@ -498,4 +498,4 @@ int main() {
     }
 
     return 0;
-}
+}*/

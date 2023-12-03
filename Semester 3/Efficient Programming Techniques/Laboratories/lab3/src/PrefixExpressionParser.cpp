@@ -255,6 +255,24 @@ public:
         }
     }
 
+    OperatorNode* traverseLeftToOperatorNode(OperatorNode* root) {
+        if (typeid(root->left) == typeid(OperatorNode)) {
+            return dynamic_cast<OperatorNode*>(root->left);
+        }
+        else if (typeid(root->left) == typeid(ConstantNode) || typeid(root->left) == typeid(VariableNode)) {
+            std::cerr << "Error: Leaf node of type ConstantNode or VariableNode encountered while traversing left." << std::endl;
+            return nullptr;
+        }
+        else if (typeid(root->left) == typeid(OperatorNode)) {
+            return traverseLeftToOperatorNode(dynamic_cast<OperatorNode*>(root->left));
+        }
+        else {
+            std::cerr << "Error: Unexpected node type encountered on the left side." << std::endl;
+            return nullptr;
+        }
+    }
+
+
     void print() const override {
         if (op == 's' || op == 'c') {
             std::cout << op;
@@ -290,6 +308,48 @@ public:
     void printVariables(std::set<std::string>& variableSet) const override {
         left->printVariables(variableSet);
         right->printVariables(variableSet);
+    }
+};
+
+class ExpressionTree {
+private:
+    Node* tree;
+
+public:
+    // Operator Overloading for +
+    Node* operator+(const Node& other) {
+        Node* newTree;
+        // Assuming traverseLeft returns a pointer to the left child
+        Node* leaf = traverseLeft(tree);
+        // Assuming Node has an assignment operator
+        *leaf = other;
+        return newTree;  // Assuming Node has a copy constructor
+    }
+
+    // Operator Overloading for =
+    OperatorNode& operator=(const OperatorNode& other) {
+        if (this != &other) {
+            op = other.op;
+            delete left;
+            left = other.left;
+            delete right;
+            right = other.right;
+        }
+        return *this;
+    }
+
+    Node* traverseLeft(Node* root) {
+
+        if (typeid(root->left) == typeid(OperatorNode)) {
+            return traverseLeft(dynamic_cast<OperatorNode*>(root->left));
+        }
+        else if (typeid(root->left) == typeid(ConstantNode) || typeid(root->left) == typeid(VariableNode)) {
+            return root->left;
+        }
+        else {
+            std::cerr << "Error: Unexpected node type encountered on the left side." << std::endl;
+            return nullptr;
+        }
     }
 };
 
@@ -417,6 +477,11 @@ public:
             }
             handleCompCommand(values);
         }
+        else if (cmd == "join") {
+            std::string formula;
+            getline(iss, formula);
+            handleJoinCommand(formula);
+        }
         else {
             std::cerr << "Error: Unknown command" << std::endl;
         }
@@ -492,32 +557,33 @@ private:
             std::cerr << "Error: No formula entered. Use 'enter' command first." << std::endl;
         }
     }
-};
 
-/*int main() {
-    // Example usage
-    std::string inputExpression = "* - 1 / 2 3 - / 4 5 cos 6";
-    PrefixExpressionParser parser(inputExpression);
-    Node* expressionTree = parser.parse();
+    void handleJoinCommand(const std::string& formula) {
+        PrefixExpressionParser parser(formula);
+        Node* newTree = parser.parse();
 
-    if (expressionTree != nullptr) {
-        std::cout << "Expression Tree: ";
-        expressionTree->print();
-        std::cout << std::endl;
-        std::cout << "Tree Structure:" << std::endl;
-        expressionTree->printTree();
-        std::cout << "Prefix Form: ";
-        expressionTree->printPrefix();
-        std::cout << std::endl;
-        std::cout << "Variables: ";
-        std::set<std::string> variableSet;
-        expressionTree->printVariables(variableSet);
-        std::cout << std::endl;
+        if (newTree != nullptr) {
 
-        double result = expressionTree->evaluate();
-        std::cout << "Result: " << result << std::endl;
-        delete expressionTree;
+            expressionTree = expressionTree + newTree;
+
+            // Delete the old expression tree
+            delete newTree;
+
+            std::cout << "Joined Formula: ";
+
+            // Add a null check before calling print
+            if (expressionTree != nullptr) {
+                expressionTree->print();
+            }
+            else {
+                std::cerr << "Error: Joined Formula is null." << std::endl;
+            }
+
+            std::cout << std::endl;
+        }
+        else {
+            std::cerr << "Error: Invalid formula. Tree not joined." << std::endl;
+        }
     }
 
-    return 0;
-}*/
+};

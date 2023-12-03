@@ -109,4 +109,26 @@ void ExpressionInterface::handleCompCommand(const std::vector<double>& values) c
     }
 }
 
-void Exp
+void ExpressionInterface::handleJoinCommand(const std::string& formula) {
+    PrefixExpressionParser parser(formula);
+    Node* newTree = parser.parse();
+
+    if (newTree != nullptr) {
+        //expressionTree = expressionTree + newTree;
+        delete newTree;
+
+        std::cout << "Joined Formula: ";
+
+        if (expressionTree != nullptr) {
+            expressionTree->print();
+        }
+        else {
+            std::cerr << "Error: Joined Formula is null." << std::endl;
+        }
+
+        std::cout << std::endl;
+    }
+    else {
+        std::cerr << "Error: Invalid formula. Tree not joined." << std::endl;
+    }
+}

@@ -33,16 +33,13 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Node\SinNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Node\CosNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ExpressionTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Main.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Node\NodeUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,12 +56,6 @@
     <ClInclude Include="src\Node\VariableNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Node\SinNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Node\CosNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Node\ConstantNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -72,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ExpressionTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Node\NodeUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

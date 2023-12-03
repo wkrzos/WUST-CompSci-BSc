@@ -4,7 +4,6 @@
 #include <map>
 #include <iostream>
 
-
 class Node {
 public:
     virtual ~Node() = default;

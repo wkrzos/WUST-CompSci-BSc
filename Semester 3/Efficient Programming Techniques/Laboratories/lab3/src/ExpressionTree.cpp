@@ -11,13 +11,13 @@ ExpressionTree ExpressionTree::operator+(const Node& other) {
     return newTree;
 }
 
-ExpressionTree& ExpressionTree::operator=(const OperatorNode& other) {
+/*ExpressionTree& ExpressionTree::operator=(const OperatorNode& other) {
     if (this != &other) {
         delete tree;
         tree = new OperatorNode(other);
     }
     return *this;
-}
+}*/
 
 Node* ExpressionTree::traverseLeft(OperatorNode* root) {
     if (root == nullptr) {

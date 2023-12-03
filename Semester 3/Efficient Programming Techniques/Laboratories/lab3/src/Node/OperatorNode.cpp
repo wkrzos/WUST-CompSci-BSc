@@ -1,6 +1,18 @@
 #include "OperatorNode.h"
+#include "NodeUtil.h"
+#include "ConstantNode.h"
+#include "VariableNode.h"
 
 OperatorNode::OperatorNode(char operation, Node* l, Node* r) : op(operation), left(l), right(r) {}
+
+OperatorNode::OperatorNode(const OperatorNode& other) : op(other.op), left(nullptr), right(nullptr) {
+    if (other.left != nullptr) {
+        left = copyNode(other.left);
+    }
+    if (other.right != nullptr) {
+        right = copyNode(other.right);
+    }
+}
 
 OperatorNode::~OperatorNode() {
     delete left;
@@ -124,9 +136,13 @@ Node* OperatorNode::getRight() {
     return right;
 }
 
-#include "SinNode.h"
-
 SinNode::SinNode(Node* op) : operand(op) {}
+
+SinNode::SinNode(const SinNode& other) : operand(nullptr) {
+    if (other.operand != nullptr) {
+        operand = copyNode(other.operand);
+    }
+}
 
 SinNode::~SinNode() {
     delete operand;
@@ -164,9 +180,13 @@ double SinNode::evaluateWithValues(const std::map<std::string, double>& values) 
     return std::sin(operand->evaluateWithValues(values));
 }
 
-#include "CosNode.h"
-
 CosNode::CosNode(Node* op) : operand(op) {}
+
+CosNode::CosNode(const CosNode& other) : operand(nullptr) {
+    if (other.operand != nullptr) {
+        operand = copyNode(other.operand);
+    }
+}
 
 CosNode::~CosNode() {
     delete operand;

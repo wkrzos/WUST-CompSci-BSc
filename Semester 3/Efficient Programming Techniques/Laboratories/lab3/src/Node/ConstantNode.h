@@ -12,6 +12,8 @@ private:
 public:
     ConstantNode(double val);
 
+    //def copy const
+
     double evaluate() const override;
 
     void print() const override;

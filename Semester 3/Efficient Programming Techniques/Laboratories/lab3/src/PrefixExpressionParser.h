@@ -5,8 +5,6 @@
 #include "Node/ConstantNode.h"
 #include "Node/VariableNode.h"
 #include "Node/OperatorNode.h"
-#include "Node/SinNode.h"
-#include "Node/CosNode.h"
 #include <iostream>
 #include <string>
 #include <vector>

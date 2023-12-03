@@ -15,6 +15,8 @@ private:
 public:
     OperatorNode(char operation, Node* l, Node* r);
 
+    OperatorNode(const OperatorNode& other);
+
     ~OperatorNode() override;
 
     double evaluate() const override;
@@ -59,6 +61,8 @@ private:
 public:
     SinNode(Node* op);
 
+    SinNode(const SinNode& other);
+
     ~SinNode() override;
 
     double evaluate() const override;
@@ -93,6 +97,8 @@ private:
 
 public:
     CosNode(Node* op);
+
+    CosNode(const CosNode& other);
 
     ~CosNode() override;
 

@@ -132,20 +132,18 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Main.h" />
     <ClCompile Include="src\Node\ConstantNode.cpp" />
-    <ClCompile Include="src\Node\CosNode.cpp" />
+    <ClCompile Include="src\Node\NodeUtil.cpp" />
     <ClCompile Include="src\Node\OperatorNode.cpp" />
-    <ClCompile Include="src\Node\SinNode.cpp" />
     <ClCompile Include="src\PrefixExpressionParser.cpp" />
     <ClCompile Include="src\Node\VariableNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ExpressionTree.h" />
     <ClInclude Include="src\Node\ConstantNode.h" />
-    <ClInclude Include="src\Node\CosNode.h" />
     <ClInclude Include="src\Node\Node.h" />
     <ClInclude Include="src\ExpressionInterface.h" />
+    <ClInclude Include="src\Node\NodeUtil.h" />
     <ClInclude Include="src\Node\OperatorNode.h" />
-    <ClInclude Include="src\Node\SinNode.h" />
     <ClInclude Include="src\Node\VariableNode.h" />
     <ClInclude Include="src\PrefixExpressionParser.h" />
   </ItemGroup>

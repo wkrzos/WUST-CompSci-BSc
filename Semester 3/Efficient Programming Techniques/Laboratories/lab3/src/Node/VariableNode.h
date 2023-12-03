@@ -15,6 +15,8 @@ private:
 public:
     VariableNode(const std::string& varName);
 
+    //def copy const
+
     void assignValue(double val);
 
     double evaluate() const override;

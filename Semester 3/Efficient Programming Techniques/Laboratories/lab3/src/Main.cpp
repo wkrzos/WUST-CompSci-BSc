@@ -1,5 +1,7 @@
+#include <iostream>
 #include <string>
-#include "PrefixExpressionParser.cpp"
+#include "ExpressionInterface.h"
+#include "PrefixExpressionParser.h"
 
 int main() {
     ExpressionInterface interface;

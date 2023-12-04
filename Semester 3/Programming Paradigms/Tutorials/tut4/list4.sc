@@ -1,42 +1,61 @@
-sealed trait Tree[+A]
-case object Empty extends Tree[Nothing]
-case class Node[A](value: A, left: Tree[A], right: Tree[A]) extends Tree[A]
+sealed trait BT[+A]
+case object Empty2 extends BT[Nothing]
+case class Node2[+A](elem: A, left: BT[A], right: BT[A]) extends BT[A]
 
-def countInternalNodes[A](tree: Tree[A]): Int = {
-  def countInternalNodesAux(t: Tree[A], acc: Int): Int = t match {
-    case Empty => 0
-    case Node(_, Empty, Empty) => acc
-    case Node(_, left, Empty) | Node(_, Empty, right) =>
-      acc + countInternalNodesAux(left, acc + 1)
-    case Node(_, right, left) =>
-      acc + countInternalNodesAux(right, acc + 1) + countInternalNodesAux(left, acc + 1)
+val tt = Node2(
+  1,
+  Node2(2, Node2(4, Empty2, Empty2), Empty2),
+  Node2(3, Node2(5, Empty2, Node2(6, Empty2, Empty2)), Empty2)
+)
+
+def breadthBT[A](tree: BT[A]) = {
+  def breadthBTAux(list: List[BT[A]]): List[A] = list match {
+    case List()         => List()
+    case Empty2 :: tail => breadthBTAux(tail)
+    case Node2(value, left, right) :: tail =>
+      value :: breadthBTAux(tail ::: List(left, right))
   }
-
-  countInternalNodesAux(tree, 0)
+  breadthBTAux(List(tree))
 }
 
-def countExternalNodes[A](tree: Tree[A]): Int = {
-  def countExternalNodesAux(t: Tree[A], acc: Int): Int = t match {
-    case Empty => acc
-    case Node(_, Empty, Empty) => 2 * (acc + 1)
-    case Node(_, left, Empty) | Node(_, Empty, right) =>
-      countExternalNodesAux(left, acc + 1) + acc + 1 + countExternalNodesAux(right, acc + 1)
-    case Node(_, left, right) =>
-      countExternalNodesAux(left, acc + 1) + countExternalNodesAux(right, acc + 1)
+def internalBT[A](tree: BT[A]) = {
+  def internalBTAux(internalTree: BT[A], acc: Int): Int = internalTree match {
+    case Empty2                       => 0
+    case Node2(value, Empty2, Empty2) => acc
+    case Node2(value, left, Empty2)   => acc + internalBTAux(left, acc + 1)
+    case Node2(value, Empty2, right)  => acc + internalBTAux(right, acc + 1)
+    case Node2(value, left, right) =>
+      acc + internalBTAux(left, acc + 1) + internalBTAux(right, acc + 1)
   }
 
-  countExternalNodesAux(tree, 0)
+  internalBTAux(tree, 0)
 }
 
-case class Graph[A](graph: A => List[A])
-
-def depthFirstSearch[A](graph: Graph[A], startNode: A): List[A] = {
-  def dfsAux(visited: Set[A], stack: List[A]): List[A] = stack match {
-    case Nil => List.empty[A]
-    case head :: tail =>
-      if (visited.contains(head)) dfsAux(visited, tail)
-      else head :: dfsAux(visited + head, graph.graph(head) ++ tail)
+def externalBT[A](tree: BT[A]) = {
+  def externalBTAux(internalTree: BT[A], acc: Int): Int = internalTree match {
+    case Empty2                       => acc
+    case Node2(value, Empty2, Empty2) => 2 * (acc + 1)
+    case Node2(value, left, Empty2)   => acc + 1 + externalBTAux(left, acc + 1)
+    case Node2(value, Empty2, right)  => acc + 1 + externalBTAux(right, acc + 1)
+    case Node2(value, left, right) =>
+      externalBTAux(left, acc + 1) + externalBTAux(right, acc + 1)
   }
 
-  dfsAux(Set.empty[A], List(startNode))
+  externalBTAux(tree, 0)
+}
+
+sealed trait Graphs[A]
+case class Graph[A](succ: A => List[A]) extends Graphs[A]
+
+def depthSearch[A](graph: Graph[A])(startNode: A) = {
+  def depthSearchAUX(visited: List[A])(toVisit: List[A]): List[A] =
+    toVisit match {
+      case List() => List()
+      case head :: tail if (visited contains head) =>
+        depthSearchAUX(visited)(tail)
+      case head :: tail =>
+        head :: depthSearchAUX(head :: visited)((graph succ head) ::: tail)
+    }
+
+  depthSearchAUX(List())(List(startNode))
 }

@@ -132,6 +132,11 @@ Node* OperatorNode::getLeft() {
     return left;
 }
 
+Node** OperatorNode::getLeftRef()
+{
+    return &left;
+}
+
 Node* OperatorNode::getRight() {
     return right;
 }
@@ -184,6 +189,12 @@ Node* SinNode::getOperand() {
     return operand;
 }
 
+Node** SinNode::getOperandRef()
+{
+    return &operand;
+}
+
+
 CosNode::CosNode(Node* op) : operand(op) {}
 
 CosNode::CosNode(const CosNode& other) : operand(nullptr) {
@@ -230,4 +241,8 @@ double CosNode::evaluateWithValues(const std::map<std::string, double>& values) 
 
 Node* CosNode::getOperand() {
     return operand;
+}
+Node** CosNode::getOperandRef()
+{
+    return &operand;
 }

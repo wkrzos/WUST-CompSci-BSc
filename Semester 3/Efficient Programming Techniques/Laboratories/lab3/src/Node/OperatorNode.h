@@ -40,6 +40,7 @@ public:
     void setRight(Node* Right);
 
     Node* getLeft();
+    Node** getLeftRef();
 
     Node* getRight();
 };
@@ -80,6 +81,7 @@ public:
     double evaluateWithValues(const std::map<std::string, double>& values) const override; 
 
     Node* getOperand();
+    Node** getOperandRef();
 };
 
 #endif // SINNODE_H
@@ -119,6 +121,7 @@ public:
     double evaluateWithValues(const std::map<std::string, double>& values) const override;
 
     Node* getOperand();
+    Node** getOperandRef();
 };
 
 #endif // COSNODE_H

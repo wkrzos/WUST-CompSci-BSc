@@ -16,9 +16,9 @@ ExpressionTree ExpressionTree::operator+(ExpressionTree& other) {
 
     ExpressionTree newTree = ExpressionTree(*this);
 
-    Node** leaf = newTree.getRoot()->traverseLeft(newTree.getRoot());
+    Node** leaf = newTree.getRoot()->traverseLeft(&newTree.root);
 
-    delete* leaf;
+    delete (*leaf);
 
     *leaf = copyNode(other.getRoot());
 

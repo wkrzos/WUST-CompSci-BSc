@@ -3,49 +3,45 @@
 #include "ConstantNode.h"
 #include "VariableNode.h"
 
-
-Node** Node::traverseLeft(Node* root) {
+Node** Node::traverseLeft(Node** root) {
     if (root == nullptr) {
         std::cerr << "Error: Root is null." << std::endl;
         return nullptr;
     }
 
-    if (typeid(*root) == typeid(OperatorNode)) {
+    if (typeid(**root) == typeid(OperatorNode)) {
 
-        OperatorNode* node = dynamic_cast<OperatorNode*>(root);
+        OperatorNode* node = dynamic_cast<OperatorNode*>(*root);
 
         if (isLeaf(node->getLeft())) {
-            Node* temp = node->getLeft();
-            return &temp;
+            return node->getLeftRef();
         }
         else {
-            return traverseLeft(node);
+            return traverseLeft(root);
         }    
     }
-    else if (typeid(*root) == typeid(SinNode)) {
-        SinNode* node = dynamic_cast<SinNode*>(root);
+    else if (typeid(**root) == typeid(SinNode)) {
+        SinNode* node = dynamic_cast<SinNode*>(*root);
 
         if (isLeaf(node->getOperand())) {
-            Node* temp = node->getOperand();
-            return &temp;
+            return node->getOperandRef();
         }
         else {
-            return traverseLeft(node);
+            return traverseLeft(root);
         }
     }
-    else if (typeid(*root) == typeid(CosNode)) {
-        SinNode* node = dynamic_cast<SinNode*>(root);
+    else if (typeid(**root) == typeid(CosNode)) {
+        SinNode* node = dynamic_cast<SinNode*>(*root);
 
         if (isLeaf(node->getOperand())) {
-            Node* temp = node->getOperand();
-            return &temp;
+            return node->getOperandRef();
         }
         else {
-            return traverseLeft(node);
+            return traverseLeft(root);
         }
     }
     else {
-        return &root;
+        return root;
     }
 }
 

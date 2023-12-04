@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5e7084f-a133-4af2-b1ef-ab4c31e6c7cb" name="Changes" comment="" />
+    <list default="true" id="a5e7084f-a133-4af2-b1ef-ab4c31e6c7cb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Efficient Programming Techniques/Laboratories/lab3/src/PrefixExpressionParser.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../../Efficient Programming Techniques/Laboratories/lab3/src/PrefixExpressionParser.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/list2/ex1.ml" beforeDir="false" afterPath="$PROJECT_DIR$/list2/ex1.ml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/list2/ex2.sc" beforeDir="false" afterPath="$PROJECT_DIR$/list2/ex2.sc" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -31,14 +36,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Laboratories&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/wojci/OneDrive/Dokumenty/GitHub/WUST-CompSci-BSc/Semester 3"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Programming Projects\WUST-CompSci-BSc\Semester 3\Programming Paradigms\Laboratories\list2" />

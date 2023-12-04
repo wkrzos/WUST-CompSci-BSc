@@ -11,7 +11,7 @@
 
 class ExpressionInterface {
 private:
-    Node* expressionTree;
+    ExpressionTree* expressionTree;
 
 public:
     ExpressionInterface();

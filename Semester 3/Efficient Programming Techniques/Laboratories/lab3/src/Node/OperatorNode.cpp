@@ -180,6 +180,10 @@ double SinNode::evaluateWithValues(const std::map<std::string, double>& values) 
     return std::sin(operand->evaluateWithValues(values));
 }
 
+Node* SinNode::getOperand() {
+    return operand;
+}
+
 CosNode::CosNode(Node* op) : operand(op) {}
 
 CosNode::CosNode(const CosNode& other) : operand(nullptr) {
@@ -222,4 +226,8 @@ size_t CosNode::countVariables() const {
 
 double CosNode::evaluateWithValues(const std::map<std::string, double>& values) const {
     return std::cos(operand->evaluateWithValues(values));
+}
+
+Node* CosNode::getOperand() {
+    return operand;
 }

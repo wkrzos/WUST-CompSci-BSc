@@ -132,6 +132,7 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Main.h" />
     <ClCompile Include="src\Node\ConstantNode.cpp" />
+    <ClCompile Include="src\Node\Node.cpp" />
     <ClCompile Include="src\Node\NodeUtil.cpp" />
     <ClCompile Include="src\Node\OperatorNode.cpp" />
     <ClCompile Include="src\PrefixExpressionParser.cpp" />

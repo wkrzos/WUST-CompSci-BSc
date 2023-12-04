@@ -1,6 +1,6 @@
 #include "ExpressionInterface.h"
 
-ExpressionInterface::ExpressionInterface() : expressionTree(nullptr) {}
+ExpressionInterface::ExpressionInterface() : expressionTree(new ExpressionTree) {}
 
 ExpressionInterface::~ExpressionInterface() {
     delete expressionTree;
@@ -42,9 +42,12 @@ void ExpressionInterface::executeCommand(const std::string& command) {
 
 void ExpressionInterface::handleEnterCommand(const std::string& formula) {
     PrefixExpressionParser parser(formula);
-    Node* newTree = parser.parse();
+    Node* newRoot = parser.parse();
 
-    if (newTree != nullptr) {
+    ExpressionTree* newTree = new ExpressionTree;
+    newTree->setRoot(newRoot);
+
+    if (newRoot != nullptr) {
         delete expressionTree;
         expressionTree = newTree;
 
@@ -58,9 +61,9 @@ void ExpressionInterface::handleEnterCommand(const std::string& formula) {
 }
 
 void ExpressionInterface::handleVarsCommand() const {
-    if (expressionTree != nullptr) {
+    if (expressionTree->getRoot() != nullptr) {
         std::set<std::string> variableSet;
-        expressionTree->printVariables(variableSet);
+        expressionTree->getRoot()->printVariables(variableSet);
         std::cout << "Variables: ";
         for (const auto& variable : variableSet) {
             std::cout << variable << " ";
@@ -75,7 +78,7 @@ void ExpressionInterface::handleVarsCommand() const {
 void ExpressionInterface::handlePrintCommand() const {
     if (expressionTree != nullptr) {
         std::cout << "Expression Tree (Prefix Form): ";
-        expressionTree->printPrefix();
+        expressionTree->getRoot()->printPrefix();
         std::cout << std::endl;
     }
     else {
@@ -86,7 +89,7 @@ void ExpressionInterface::handlePrintCommand() const {
 void ExpressionInterface::handleCompCommand(const std::vector<double>& values) const {
     if (expressionTree != nullptr) {
         std::set<std::string> variables;
-        expressionTree->printVariables(variables);
+        expressionTree->getRoot()->printVariables(variables);
         std::map<std::string, double> vals;
 
         size_t expectedVarCount = variables.size();
@@ -100,7 +103,7 @@ void ExpressionInterface::handleCompCommand(const std::vector<double>& values) c
                 vals[*it] = values[i];
                 i++;
             }
-            double result = expressionTree->evaluateWithValues(vals);
+            double result = expressionTree->getRoot()->evaluateWithValues(vals);
             std::cout << "Result: " << result << std::endl;
         }
     }
@@ -111,10 +114,15 @@ void ExpressionInterface::handleCompCommand(const std::vector<double>& values) c
 
 void ExpressionInterface::handleJoinCommand(const std::string& formula) {
     PrefixExpressionParser parser(formula);
-    Node* newTree = parser.parse();
+    Node* newRoot = parser.parse();
+
+    ExpressionTree* newTree = new ExpressionTree;
+    newTree->setRoot(newRoot);
 
     if (newTree != nullptr) {
-        //expressionTree = expressionTree + newTree;
+
+        ExpressionTree newTree2 = *expressionTree + *newTree;
+        *expressionTree = newTree2;
         delete newTree;
 
         std::cout << "Joined Formula: ";

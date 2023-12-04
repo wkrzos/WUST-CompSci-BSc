@@ -10,20 +10,24 @@
 
 class ExpressionTree {
 private:
-    Node* tree;
+    Node* root;
 
 public:
     ExpressionTree();
 
+    ExpressionTree(const ExpressionTree& other);
+
     // Operator Overloading for +
-    ExpressionTree operator+(const Node& other);
+    ExpressionTree operator+(ExpressionTree& other);
 
     // Operator Overloading for =
-    ExpressionTree& operator=(const OperatorNode& other);
+    ExpressionTree& operator=(ExpressionTree& other);
 
-    Node* traverseLeft(OperatorNode* root);
+    Node* getRoot();
 
-    // Add any necessary member functions or declarations
+    void setRoot(Node* Root);
+
+    void print() const;
 
     ~ExpressionTree();
 };

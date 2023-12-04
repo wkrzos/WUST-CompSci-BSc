@@ -14,4 +14,6 @@ public:
     virtual void printVariables(std::set<std::string>& variableSet) const = 0;
     virtual size_t countVariables() const = 0;
     virtual double evaluateWithValues(const std::map<std::string, double>& values) const = 0;
+    Node** traverseLeft(Node* root);
+    bool isLeaf(Node* node);
 };

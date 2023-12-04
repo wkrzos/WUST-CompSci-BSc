@@ -77,7 +77,9 @@ public:
 
     size_t countVariables() const override;
 
-    double evaluateWithValues(const std::map<std::string, double>& values) const override;
+    double evaluateWithValues(const std::map<std::string, double>& values) const override; 
+
+    Node* getOperand();
 };
 
 #endif // SINNODE_H
@@ -115,6 +117,8 @@ public:
     size_t countVariables() const override;
 
     double evaluateWithValues(const std::map<std::string, double>& values) const override;
+
+    Node* getOperand();
 };
 
 #endif // COSNODE_H

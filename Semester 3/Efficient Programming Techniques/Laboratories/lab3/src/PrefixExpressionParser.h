@@ -5,6 +5,7 @@
 #include "Node/ConstantNode.h"
 #include "Node/VariableNode.h"
 #include "Node/OperatorNode.h"
+#include "ExpressionTree.h"
 #include <iostream>
 #include <string>
 #include <vector>

@@ -30,9 +30,7 @@ def split3Tail[A](list: List[A]): (List[A], List[A], List[A]) = {
 split3Rec List(1, 2, 3, 4, 5, 6, 7, 8, 9)
 split3Rec List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 split3Rec List("a", "b", "c", "d", "e", "f", "g", "h", "i")
-split3Rec Nil
 
 split3Tail List(1, 2, 3, 4, 5, 6, 7, 8, 9)
 split3Tail List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 split3Tail List("a", "b", "c", "d", "e", "f", "g", "h", "i")
-split3Tail Nil

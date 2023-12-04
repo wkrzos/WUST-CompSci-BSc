@@ -18,7 +18,7 @@ Node* PrefixExpressionParser::parseExpression() {
             Node* operand = parseExpression();
             if (operand != nullptr) {
                 if (token == "sin") {
-                    return new SinNode(operand);
+                    return new SinNode(operand, operand, operand);
                 }
                 else if (token == "cos") {
                     return new CosNode(operand);

@@ -57,10 +57,12 @@ public:
 
 class SinNode : public Node {
 private:
-    Node* operand;
+    Node* operand1;
+    Node* operand2;
+    Node* operand3;
 
 public:
-    SinNode(Node* op);
+    SinNode(Node* op1, Node* op2, Node* op3);
 
     SinNode(const SinNode& other);
 

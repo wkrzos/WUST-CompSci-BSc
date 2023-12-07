@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include "ExpressionInterface.h"
 #include "PrefixExpressionParser.h"
@@ -20,3 +20,7 @@ int main() {
 
     return 0;
 }
+
+/*
+Modyfikacja: sinus ma być trzy argumentowy ale ma się liczyć dla usmy tych argumentów
+*/

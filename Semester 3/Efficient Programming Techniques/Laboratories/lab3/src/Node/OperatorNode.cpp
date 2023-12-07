@@ -141,57 +141,72 @@ Node* OperatorNode::getRight() {
     return right;
 }
 
-SinNode::SinNode(Node* op) : operand(op) {}
+SinNode::SinNode(Node* op1, Node* op2, Node* op3) : operand1(op1), operand2(op2), operand3(op3) {}
 
-SinNode::SinNode(const SinNode& other) : operand(nullptr) {
-    if (other.operand != nullptr) {
-        operand = copyNode(other.operand);
+SinNode::SinNode(const SinNode& other) : operand1(nullptr), operand2(nullptr), operand3(nullptr) {
+    if (other.operand1 != nullptr && other.operand2 != nullptr && other.operand3 != nullptr) {
+        operand1 = copyNode(other.operand1);
+        operand2 = copyNode(other.operand2);
+        operand3 = copyNode(other.operand3);
     }
 }
 
 SinNode::~SinNode() {
-    delete operand;
+    delete operand1;
+    delete operand2;
+    delete operand3;
 }
 
 double SinNode::evaluate() const {
-    return std::sin(operand->evaluate());
+    return std::sin(operand1->evaluate() + operand2->evaluate() + operand3->evaluate());
 }
 
 void SinNode::print() const {
     std::cout << "sin(";
-    operand->print();
+    operand1->print();
+    std::cout << "+";
+    operand2->print();
+    std::cout << "+";
+    operand3->print();
     std::cout << ")";
 }
 
 void SinNode::printTree(int indent) const {
     std::cout << std::string(indent, ' ') << "SinNode" << std::endl;
-    operand->printTree(indent + 2);
+    operand1->printTree(indent + 2);
 }
 
 void SinNode::printPrefix() const {
     std::cout << "sin ";
-    operand->printPrefix();
+    operand1->printPrefix();
+    std::cout << "+";
+    operand2->printPrefix();
+    std::cout << "+";
+    operand3->printPrefix();
 }
 
 void SinNode::printVariables(std::set<std::string>& variableSet) const {
-    operand->printVariables(variableSet);
+    operand1->printVariables(variableSet);
+    operand2->printVariables(variableSet);
+    operand3->printVariables(variableSet);
 }
 
 size_t SinNode::countVariables() const {
-    return operand->countVariables();
+    size_t temp = operand1->countVariables() + operand2->countVariables() + operand3->countVariables();
+    return temp;
 }
 
 double SinNode::evaluateWithValues(const std::map<std::string, double>& values) const {
-    return std::sin(operand->evaluateWithValues(values));
+    return std::sin(operand1->evaluateWithValues(values) + operand2->evaluateWithValues(values) + operand3->evaluateWithValues(values));
 }
 
 Node* SinNode::getOperand() {
-    return operand;
+    return operand1;
 }
 
 Node** SinNode::getOperandRef()
 {
-    return &operand;
+    return &operand1;
 }
 
 

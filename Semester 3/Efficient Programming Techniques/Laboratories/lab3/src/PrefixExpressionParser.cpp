@@ -15,13 +15,16 @@ Node* PrefixExpressionParser::parseExpression() {
 
     else if (isalpha(token[0])) {
         if (token == "sin" || token == "cos") {
-            Node* operand = parseExpression();
-            if (operand != nullptr) {
+            Node* operand1 = parseExpression();
+            Node* operand2 = parseExpression();
+            Node* operand3 = parseExpression();
+
+            if (operand1 != nullptr && operand2 != nullptr && operand3 != nullptr) {
                 if (token == "sin") {
-                    return new SinNode(operand);
+                    return new SinNode(operand1, operand2, operand3);
                 }
                 else if (token == "cos") {
-                    return new CosNode(operand);
+                    return new CosNode(operand1);
                 }
             }
         }

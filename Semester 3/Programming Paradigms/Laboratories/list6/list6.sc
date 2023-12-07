@@ -30,7 +30,7 @@ def evaluate(expression: List[Expression]): Option[Double] = {
           val val2 = stack.head
           stack = stack.tail
 
-          val result = applyOperation(operator, val1, val2)
+          val result = applyOperation(operator, val2, val1)
           stack = result :: stack
       }
     }
@@ -57,12 +57,12 @@ val list10 = List(Val(3.0), Val(1.0), Sum, Val(4.0), Val(4.0), Sum, Div)
 
 
 println(evaluate(list1)) // Some 4.5
-println(evaluate(list2)) // None
-println(evaluate(list3)) // Some 3.0 = A + B * C + D
+println(evaluate(list2)) // Some 0.0
+println(evaluate(list3)) // Some 6.0 = A + B * C + D
 println(evaluate(list4)) // Some 0.0
 println(evaluate(list5)) // None (Division by zero)
-println(evaluate(list6)) // Some 3.0 = (A + B) * C
-println(evaluate(list7)) // Some 1.0 = (A + B) * C
+println(evaluate(list6)) // Some 12.0 = (A + B) * C
+println(evaluate(list7)) // Some 20.0 = (A + B) * C
 println(evaluate(list8)) // Some 73.0 = A + B * C
 println(evaluate(list9)) // Some 20.0 = (A + B) * (C + D)
 println(evaluate(list10)) // Some 0.5 = (A + B) / (C + D)

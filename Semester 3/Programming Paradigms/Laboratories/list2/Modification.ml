@@ -3,7 +3,8 @@
 
 (* Solution 1 *)
 let reverseDelete n list =
-  let rec helper lst i = match (lst, i) with 
+  let rec helper lst i = 
+    match (lst, i) with 
     | (hd :: tl, i ) when i < n ->
         let (acc_ret, result) = helper (tl) (i+1) in
         if acc_ret = [] then ([], result) else (List.tl acc_ret, List.hd acc_ret :: result)

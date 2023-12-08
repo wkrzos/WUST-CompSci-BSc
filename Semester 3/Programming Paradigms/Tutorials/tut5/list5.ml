@@ -1,12 +1,25 @@
-type 'a lazy_list = Cons of 'a * (unit -> 'a lazy_list)
+(* Exercise 1 *)
+
+type 'a lazyList = Cons of 'a * (unit -> 'a lazyList);;
+
+let rec repeatElement n y =
+  if n = 0 then
+    Cons (y, fun () -> repeatElement n y)
+  else
+    Cons (y, fun () -> repeatElement (n - 1) y)
+;;
 
 let rec lrepeat k (Cons (x, xs)) =
-  let rec repeatHelper n elem =
-    if n = 0 then
-      []
+  let rec repeatKTimes m =
+    if m = 0 then
+      lrepeat k (xs ())
     else
-      elem :: repeatHelper (n - 1) elem
+      repeatElement k x :: repeatKTimes (m - 1)
   in
-  lazy (
-    repeatHelper k x @ lrepeat k (Lazy.force (xs ()))
-  )
+  lazy (List.fold_right (fun e acc -> Cons (e, fun () -> acc)) (repeatKTimes k) (lrepeat k (xs ())));;
+;;
+
+lrepeat 3 (repeatElement 2 1);;
+
+(* Exercise 2 *)
+  

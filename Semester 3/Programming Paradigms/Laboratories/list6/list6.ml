@@ -1,4 +1,4 @@
-(* Solution 1 *)
+(* Solution 1 
 type 'a lazyBinaryTree1 =
   | LEmpty
   | LNode of 'a * (unit -> 'a lazyBinaryTree1) * (unit -> 'a lazyBinaryTree1)
@@ -20,6 +20,8 @@ let lazyTreeExample =
 ;;
 
 let sumResult = treeFoldL1 (fun acc value -> acc + value) 0 lazyTreeExample;;
+
+*)
 
 (* Solution 2 *)
 

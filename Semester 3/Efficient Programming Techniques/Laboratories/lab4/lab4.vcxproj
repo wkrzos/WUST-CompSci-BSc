@@ -143,15 +143,15 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\stringUtils.cpp" />
-    <ClCompile Include="src\Tree.cpp" />
-    <ClCompile Include="src\UIInterface.cpp" />
+    <ClCompile Include="src\PrefixExpressionTree.cpp" />
+    <ClCompile Include="src\ExpressionTreeInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Parser.h" />
     <ClInclude Include="src\stringUtils.h" />
-    <ClInclude Include="src\Tree.h" />
-    <ClInclude Include="src\UIInterface.h" />
+    <ClInclude Include="src\PrefixExpressionTree.h" />
+    <ClInclude Include="src\ExpressionTreeInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

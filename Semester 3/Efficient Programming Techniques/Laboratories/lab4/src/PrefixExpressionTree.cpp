@@ -1,10 +1,10 @@
-#include "Tree.h"
+#include "PrefixExpressionTree.h"
 #include "stringUtils.h"
 #include <iostream>
 #include <sstream>
 #include <valarray>
 
-int Tree::stringToNumber(std::string str)
+int PrefixExpressionTree::stringToNumber(std::string str)
 {
     int i = 0;
 
@@ -14,11 +14,11 @@ int Tree::stringToNumber(std::string str)
 }
 
 
-Tree::Tree() : root(NULL), argsMap(), argsVector()
+PrefixExpressionTree::PrefixExpressionTree() : root(NULL), argsMap(), argsVector()
 {
 }
 
-Tree::~Tree()
+PrefixExpressionTree::~PrefixExpressionTree()
 {
     if (root != NULL)
     {
@@ -26,7 +26,7 @@ Tree::~Tree()
     }
 }
 
-Tree::Tree(const Tree& other) : root(NULL)
+PrefixExpressionTree::PrefixExpressionTree(const PrefixExpressionTree& other) : root(NULL)
 {
     if (other.root != NULL)
     {
@@ -37,7 +37,7 @@ Tree::Tree(const Tree& other) : root(NULL)
     argsVector = other.argsVector;
 }
 
-Tree& Tree::operator=(const Tree& newValue)
+PrefixExpressionTree& PrefixExpressionTree::operator=(const PrefixExpressionTree& newValue)
 {
     if (this == &newValue)
     {
@@ -62,7 +62,7 @@ Tree& Tree::operator=(const Tree& newValue)
     return *this;
 }
 
-std::string Tree::toString() const
+std::string PrefixExpressionTree::toString() const
 {
     if (root == NULL)
     {
@@ -72,15 +72,15 @@ std::string Tree::toString() const
     return root->toString();
 }
 
-int Tree::comp(std::string args)
+int PrefixExpressionTree::comp(std::string args)
 {
     int size = 0;
 
-    std::string* argsArray = argumentStringToArray(args, &size);
+    std::string* argsArray = splitStringIntoArray(args, &size);
 
     if (size != argsMap.size())
     {
-        errorStream << "Error: Wrong number of arguments, expected: " << argsMap.size() << ", got: " << size << std::endl;
+        std::cout << "Error: Wrong number of arguments, expected: " << argsMap.size() << ", got: " << size << std::endl;
 
         delete[] argsArray;
 
@@ -95,7 +95,7 @@ int Tree::comp(std::string args)
         }
         else
         {
-            errorStream << "Error: Invalid argument: " << argsArray[i] << std::endl;
+            std::cout << "Error: Invalid argument: " << argsArray[i] << std::endl;
 
             delete[] argsArray;
 
@@ -105,7 +105,7 @@ int Tree::comp(std::string args)
 
     if (root == NULL)
     {
-        errorStream << "Error: No formula" << std::endl;
+        std::cout << "Error: No formula" << std::endl;
 
         delete[] argsArray;
 
@@ -119,7 +119,7 @@ int Tree::comp(std::string args)
     return result;
 }
 
-std::string Tree::getArgumentsList() const
+std::string PrefixExpressionTree::getArgumentsList() const
 {
     std::string result = "";
 
@@ -136,9 +136,9 @@ std::string Tree::getArgumentsList() const
     return result;
 }
 
-Tree Tree::operator+(const Tree& newValue) const
+PrefixExpressionTree PrefixExpressionTree::operator+(const PrefixExpressionTree& newValue) const
 {
-    Tree result = *this;
+    PrefixExpressionTree result = *this;
 
     if (result.root == NULL)
     {
@@ -178,16 +178,7 @@ Tree Tree::operator+(const Tree& newValue) const
     return result;
 }
 
-std::string Tree::getErrorAndClear()
-{
-    std::string error = this->errorStream.str();
-
-    errorStream.clear();
-
-    return error;
-}
-
-void Tree::printNodes() const
+void PrefixExpressionTree::printNodes() const
 {
     if (root != NULL)
     {
@@ -198,7 +189,7 @@ void Tree::printNodes() const
     }
 }
 
-int Tree::comp(Node* currentNode)
+int PrefixExpressionTree::comp(Node* currentNode)
 {
     if (currentNode->getNodeType() == VALUE)
     {
@@ -252,7 +243,7 @@ int Tree::comp(Node* currentNode)
 
         if (argsIterator == argsMap.end())
         {
-            errorStream << "Error: Unknown argument: " << currentNode->getValue() << std::endl;
+            std::cout << "Error: Unknown argument: " << currentNode->getValue() << std::endl;
             return -1;
         }
 
@@ -262,13 +253,13 @@ int Tree::comp(Node* currentNode)
     return -1;
 }
 
-void Tree::clearArguments()
+void PrefixExpressionTree::clearArguments()
 {
     argsMap.clear();
     argsVector.clear();
 }
 
-void Tree::setArgumentValue(std::string arg, int value)
+void PrefixExpressionTree::setArgumentValue(std::string arg, int value)
 {
     std::map<std::string, int>::const_iterator argsIterator = argsMap.find(arg);
 
@@ -280,7 +271,7 @@ void Tree::setArgumentValue(std::string arg, int value)
     argsMap[arg] = value;
 }
 
-void Tree::removeArgument(std::string arg)
+void PrefixExpressionTree::removeArgument(std::string arg)
 {
     std::map<std::string, int>::const_iterator argsIterator = argsMap.find(arg);
 
@@ -299,7 +290,7 @@ void Tree::removeArgument(std::string arg)
     }
 }
 
-void Tree::setArgumentValueByIndex(int index, int value)
+void PrefixExpressionTree::setArgumentValueByIndex(int index, int value)
 {
     if (index >= argsVector.size())
     {
@@ -309,20 +300,10 @@ void Tree::setArgumentValueByIndex(int index, int value)
     argsMap[argsVector[index]] = value;
 }
 
-void Tree::setRoot(Node* newRoot) {
+void PrefixExpressionTree::setRoot(Node* newRoot) {
     root = newRoot;
 } 
 
-Node* Tree::getRoot() {
+Node* PrefixExpressionTree::getRoot() {
     return root;
-}
-
-std::stringstream& Tree::getErrorStream()
-{
-    return errorStream;
-}
-
-void Tree::setErrorStream(const std::stringstream& stream)
-{
-    errorStream.str(stream.str());
 }

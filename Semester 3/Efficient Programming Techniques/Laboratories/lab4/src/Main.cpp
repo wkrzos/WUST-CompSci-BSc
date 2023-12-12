@@ -1,8 +1,11 @@
-#include "UIInterface.h"
+#include "ExpressionTreeInterface.h"
+#include <iostream>
 
-int main()
-{
-	UIInterface::startUI();
+int main() {
 
-	return 0;
+    std::cout << "[DEBUG] Welcome to the Expression Tree Interface!" << std::endl;
+
+    ExpressionTreeInterface::run();
+
+    return 0;
 }

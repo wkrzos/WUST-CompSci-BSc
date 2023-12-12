@@ -1,5 +1,5 @@
 #include <string>
 
-std::string* argumentStringToArray(std::string str, int* size);
+std::string* splitStringIntoArray(const std::string& inputString, int* arraySize);
 
-std::string join(std::string* strings, int size);
+std::string joinArrayIntoString(const std::string* stringArray, int arraySize);

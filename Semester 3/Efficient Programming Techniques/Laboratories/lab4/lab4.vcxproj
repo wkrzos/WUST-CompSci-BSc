@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\stringUtils.cpp" />
@@ -147,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Parser.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\stringUtils.h" />
     <ClInclude Include="src\Tree.h" />

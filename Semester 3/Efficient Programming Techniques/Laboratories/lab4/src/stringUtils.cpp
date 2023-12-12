@@ -1,6 +1,6 @@
 #include <string>
 
-std::string *splitStringByWhitespace(std::string str, int *size)
+std::string *argumentStringToArray(std::string str, int *size)
 {
   std::string *result = new std::string[str.length()];
 

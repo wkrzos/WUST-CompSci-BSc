@@ -76,7 +76,7 @@ int Tree::comp(std::string args)
 {
     int size = 0;
 
-    std::string* argsArray = splitStringByWhitespace(args, &size);
+    std::string* argsArray = argumentStringToArray(args, &size);
 
     if (size != argsMap.size())
     {

@@ -1,11 +1,13 @@
 #include "UIInterface.h"
 #include "Tree.h"
+#include "Parser.h"
 #include "stringUtils.h"
 #include <iostream>
 
 void UIInterface::startUI()
 {
   Tree startingTree;
+  Parser parser;
 
   while (true)
   {
@@ -32,7 +34,7 @@ void UIInterface::startUI()
       else
       {
         std::string formula = join(args + 1, size - 1);
-        startingTree.parseFormula(formula);
+        parser.parseFormula(startingTree, formula);
         std::cout << startingTree.getErrorAndClear() << std::endl;
       }
     }
@@ -69,7 +71,7 @@ void UIInterface::startUI()
       std::string formula = join(args + 1, size - 1);
 
       Tree tree;
-      tree.parseFormula(formula);
+      parser.parseFormula(tree, formula);
 
       std::cout << tree.getErrorAndClear() << std::endl;
 

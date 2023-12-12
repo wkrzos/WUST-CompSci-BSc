@@ -1,5 +1,5 @@
 class UIInterface
 {
 public:
-  static void startUI();
+	static void startUI();
 };

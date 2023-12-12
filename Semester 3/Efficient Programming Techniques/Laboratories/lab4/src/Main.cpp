@@ -1,7 +1,8 @@
 #include "UIInterface.h"
-#include <iostream>
 
 int main()
 {
-  UIInterface::startUI();
+	UIInterface::startUI();
+
+	return 0;
 }

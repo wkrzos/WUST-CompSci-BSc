@@ -21,34 +21,34 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\stringUtils.cpp">
+    <ClCompile Include="src\PrefixExpressionTree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\UIInterface.cpp">
+    <ClCompile Include="src\ExpressionTreeInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\stringUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Tree.h">
+    <ClInclude Include="src\PrefixExpressionTree.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Node.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\UIInterface.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\stringUtils.h">
+    <ClInclude Include="src\ExpressionTreeInterface.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Parser.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stringUtils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,54 +1,51 @@
 #include <string>
 
-std::string *argumentStringToArray(std::string str, int *size)
+// Splits a string into an array of words. Returns the array and updates the size.
+std::string* splitStringIntoArray(const std::string& inputString, int* arraySize)
 {
-  std::string *result = new std::string[str.length()];
+    std::string* wordArray = new std::string[inputString.length()]; // Allocate maximum possible size
+    int wordCount = 0;
+    std::string currentWord;
 
-  int resultIndex = 0;
-
-  std::string currentString = "";
-
-  for (int i = 0; i < str.length(); i++)
-  {
-    if (str[i] == ' ')
+    for (char ch : inputString)
     {
-      if (currentString.length() > 0)
-      {
-        result[resultIndex] = currentString;
-        resultIndex++;
-        currentString = "";
-      }
+        if (ch == ' ')
+        {
+            if (!currentWord.empty())
+            {
+                wordArray[wordCount++] = currentWord;
+                currentWord.clear();
+            }
+        }
+        else
+        {
+            currentWord += ch;
+        }
     }
-    else
+
+    if (!currentWord.empty())
     {
-      currentString += str[i];
+        wordArray[wordCount++] = currentWord;
     }
-  }
 
-  if (currentString.length() > 0)
-  {
-    result[resultIndex] = currentString;
-    resultIndex++;
-  }
-
-  *size = resultIndex;
-
-  return result;
+    *arraySize = wordCount;
+    return wordArray;
 }
 
-std::string join(std::string *strings, int size)
+// Joins an array of strings into a single string with spaces.
+std::string joinArrayIntoString(const std::string* stringArray, int arraySize)
 {
-  std::string result = "";
+    std::string resultString;
 
-  for (int i = 0; i < size; i++)
-  {
-    result += strings[i] + " ";
-  }
+    for (int i = 0; i < arraySize; ++i)
+    {
+        resultString += stringArray[i];
 
-  if (size > 0)
-  {
-    result = result.substr(0, result.length() - 1);
-  }
+        if (i < arraySize - 1)
+        {
+            resultString += " ";
+        }
+    }
 
-  return result;
+    return resultString;
 }

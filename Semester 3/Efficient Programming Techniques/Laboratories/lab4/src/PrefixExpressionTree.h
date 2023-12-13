@@ -1,5 +1,5 @@
-#ifndef TREE_H
-#define TREE_H
+#ifndef PREFIXEXPRESSIONTREE_H
+#define PREFIXEXPRESSIONTREE_H
 
 #include "Node.h"
 #include <map>
@@ -9,34 +9,31 @@
 
 const std::string LIST_OF_NUMBERS = "0123456789";
 
-class Tree
+class PrefixExpressionTree
 {
 public:
-	Tree();
-	~Tree();
-	Tree(const Tree& other);
-	Tree& operator=(const Tree& newValue);
-	Tree operator+(const Tree& newValue) const;
+	PrefixExpressionTree();
+	PrefixExpressionTree(const PrefixExpressionTree& other);
+	~PrefixExpressionTree();
 
-	void setRoot(Node* newRoot); // New method to set the root
-	Node* getRoot() /*const*/; // New method to access the root
+	PrefixExpressionTree& operator=(const PrefixExpressionTree& newValue);
+	PrefixExpressionTree operator+(const PrefixExpressionTree& newValue) const;
+
+
 
 	std::string toString() const;
 	int comp(std::string args);
 	std::string getArgumentsList() const;
-	std::string getErrorAndClear();
 	void printNodes() const;
 
+	void clearArguments();
 	void setArgumentValue(std::string arg, int value);
 
-	std::stringstream& getErrorStream();
-	void setErrorStream(const std::stringstream& stream);
-
-	void clearArguments();
+	void setRoot(Node* newRoot); // New method to set the root
+	Node* getRoot() /*const*/; // New method to access the root
 
 private:
 	Node* root;
-	std::stringstream errorStream;
 	int comp(Node* currentNode);
 	std::map<std::string, int> argsMap;
 	std::vector<std::string> argsVector;

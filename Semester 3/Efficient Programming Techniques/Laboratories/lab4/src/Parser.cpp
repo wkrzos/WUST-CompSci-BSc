@@ -2,32 +2,33 @@
 #include <sstream>
 #include <iostream>
 
-void Parser::parseFormula(Tree& tree, std::string formula)
+void Parser::parseFormula(PrefixExpressionTree& peTree, std::string formula)
 {
-    if (tree.getRoot() != nullptr)
-        delete tree.getRoot();
+    if (peTree.getRoot() != nullptr) {
+        delete peTree.getRoot();
+    }      
 
     Node* root = new Node();
-    tree.setRoot(root);
+    peTree.setRoot(root);
 
     bool wasError = false;
-    tree.clearArguments(); // Assume this method resets argsMap and argsVector
+    peTree.clearArguments(); // Assume this method resets argsMap and argsVector
 
-    int start = parseNodes(root, formula, 0, &wasError, tree);
+    int start = parseNodes(root, formula, 0, &wasError, peTree);
 
     if (formula.length() > start)
     {
-        tree.getErrorStream() << "Error: Too many arguments" << std::endl;
+        std::cout << "Error: Too many arguments" << std::endl;
         wasError = true;
     }
 
     if (wasError)
     {
-        tree.getErrorStream() << "Corrected formula: " << tree.toString() << std::endl;
+        std::cout << "Corrected formula: " << peTree.toString() << std::endl;
     }
 }
 
-int Parser::parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, Tree& tree)
+int Parser::parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree& tree)
 {
     std::string value = "";
 
@@ -57,7 +58,7 @@ int Parser::parseNodes(Node* currentNode, std::string formula, int start, bool* 
         {
             if (formula.length() <= start)
             {
-                tree.getErrorStream() << "Error: Not enough arguments for operator: " << value << ", substituting 1" << std::endl;
+                std::cout << "Error: Not enough arguments for operator: " << value << ", substituting 1" << std::endl;
                 currentNode->getNode(i)->setNumberOfNodes(0);
                 currentNode->getNode(i)->setNodeType(VALUE);
                 currentNode->getNode(i)->setValue("1");
@@ -74,7 +75,7 @@ int Parser::parseNodes(Node* currentNode, std::string formula, int start, bool* 
         {
             if (currentNode->getNode(0)->getNodeType() != ARGUMENT || currentNode->getNode(1)->getNodeType() != OPERATOR)
             {
-                tree.getErrorStream() << "Error: Invalid arguments for #, required: ARGUMENT and OPERATOR, substituting 1" << std::endl;
+                std::cout << "Error: Invalid arguments for #, required: ARGUMENT and OPERATOR, substituting 1" << std::endl;
 
                 currentNode->setNumberOfNodes(0);
                 currentNode->setNodeType(VALUE);
@@ -96,7 +97,7 @@ int Parser::parseNodes(Node* currentNode, std::string formula, int start, bool* 
     }
     else
     {
-        tree.getErrorStream() << "Error: Unknown operator: " << value << std::endl;
+        std::cout << "Error: Unknown operator: " << value << std::endl;
     }
 
     return start;

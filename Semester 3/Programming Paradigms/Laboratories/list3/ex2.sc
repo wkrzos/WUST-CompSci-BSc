@@ -1,5 +1,3 @@
-
-
 val composites = (n: Int) => {
   def map[A, B](f: A => B, list: List[A]): List[B] =
     list match {

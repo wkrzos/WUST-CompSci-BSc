@@ -1,5 +1,6 @@
 #include "PrefixExpressionTree.h"
 #include "stringUtils.h"
+#include "stringUtils.h"
 #include <iostream>
 #include <sstream>
 #include <valarray>

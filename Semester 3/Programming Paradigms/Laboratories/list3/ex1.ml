@@ -1,3 +1,16 @@
+(* Foundation of the code 
+
+let rec map2 f xs ys =
+  match (xs, ys) with
+    | [], [] -> []
+    |  _, [] -> []
+    | [],  _ -> []
+    | x::xs, y::ys -> (f x y) :: (map2 f xs ys)
+;; 
+
+*)
+
+(*Solution 1*)
 let (><) list1 list2 f =
   let rec map2 xs ys =
     match (xs, ys) with

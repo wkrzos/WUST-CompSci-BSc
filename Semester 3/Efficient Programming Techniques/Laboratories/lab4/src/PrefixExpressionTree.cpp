@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <valarray>
+#include <numeric>
 
 int PrefixExpressionTree::stringToNumber(std::string str)
 {
@@ -122,18 +123,21 @@ int PrefixExpressionTree::comp(std::string args)
 
 std::string PrefixExpressionTree::getArgumentsList() const
 {
-    std::string result = "";
-
-    for (int i = 0; i < argsVector.size(); i++)
+    if (argsVector.empty())
     {
-        result += argsVector[i] + " ";
+        return "";
     }
 
-    if (result.length() > 0)
+    std::string result;
+    result.reserve(std::accumulate(argsVector.begin(), argsVector.end(), 0,
+        [](size_t sum, const std::string& str) { return sum + str.length() + 1; }));
+
+    for (const auto& arg : argsVector)
     {
-        result = result.substr(0, result.length() - 1);
+        result += arg + " ";
     }
 
+    result.pop_back(); // Remove the last space
     return result;
 }
 

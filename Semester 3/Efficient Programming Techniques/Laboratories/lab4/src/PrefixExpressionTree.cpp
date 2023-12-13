@@ -4,16 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <valarray>
-
-int PrefixExpressionTree::stringToNumber(std::string str)
-{
-    int i = 0;
-
-    std::istringstream(str) >> i;
-
-    return i;
-}
-
+#include <numeric>
 
 PrefixExpressionTree::PrefixExpressionTree() : root(NULL), argsMap(), argsVector()
 {
@@ -21,10 +12,7 @@ PrefixExpressionTree::PrefixExpressionTree() : root(NULL), argsMap(), argsVector
 
 PrefixExpressionTree::~PrefixExpressionTree()
 {
-    if (root != NULL)
-    {
-        delete root;
-    }
+    delete root;
 }
 
 PrefixExpressionTree::PrefixExpressionTree(const PrefixExpressionTree& other) : root(NULL)
@@ -36,6 +24,48 @@ PrefixExpressionTree::PrefixExpressionTree(const PrefixExpressionTree& other) : 
 
     argsMap = other.argsMap;
     argsVector = other.argsVector;
+}
+
+PrefixExpressionTree PrefixExpressionTree::operator+(const PrefixExpressionTree& newValue) const
+{
+    PrefixExpressionTree result = *this;
+
+    if (result.root == NULL)
+    {
+        result.root = new Node(*newValue.root);
+    }
+
+    Node* currentNode = result.root;
+    Node* parent = NULL;
+
+    while (currentNode->getNumberOfNodes() > 0)
+    {
+        parent = currentNode;
+        currentNode = currentNode->getNode(currentNode->getNumberOfNodes() - 1);
+    }
+
+    Node* newNode = new Node(*newValue.root);
+
+    if (currentNode->getNodeType() == ARGUMENT)
+    {
+        result.removeArgument(currentNode->getValue());
+    }
+
+    if (parent != NULL)
+    {
+        parent->setNode(parent->getNumberOfNodes() - 1, *newNode);
+    }
+    else
+    {
+        result.root = newNode;
+    }
+
+    for (int i = 0; i < newValue.argsVector.size(); i++)
+    {
+        result.setArgumentValue(newValue.argsVector[i], -1);
+    }
+
+    return result;
 }
 
 PrefixExpressionTree& PrefixExpressionTree::operator=(const PrefixExpressionTree& newValue)
@@ -63,15 +93,7 @@ PrefixExpressionTree& PrefixExpressionTree::operator=(const PrefixExpressionTree
     return *this;
 }
 
-std::string PrefixExpressionTree::toString() const
-{
-    if (root == NULL)
-    {
-        return "";
-    }
 
-    return root->toString();
-}
 
 int PrefixExpressionTree::comp(std::string args)
 {
@@ -120,62 +142,24 @@ int PrefixExpressionTree::comp(std::string args)
     return result;
 }
 
+//done
 std::string PrefixExpressionTree::getArgumentsList() const
 {
-    std::string result = "";
-
-    for (int i = 0; i < argsVector.size(); i++)
+    if (argsVector.empty())
     {
-        result += argsVector[i] + " ";
+        return "";
     }
 
-    if (result.length() > 0)
+    std::string result;
+    result.reserve(std::accumulate(argsVector.begin(), argsVector.end(), 0,
+        [](size_t sum, const std::string& str) { return sum + str.length() + 1; }));
+
+    for (const auto& arg : argsVector)
     {
-        result = result.substr(0, result.length() - 1);
+        result += arg + " ";
     }
 
-    return result;
-}
-
-PrefixExpressionTree PrefixExpressionTree::operator+(const PrefixExpressionTree& newValue) const
-{
-    PrefixExpressionTree result = *this;
-
-    if (result.root == NULL)
-    {
-        result.root = new Node(*newValue.root);
-    }
-
-    Node* currentNode = result.root;
-    Node* parent = NULL;
-
-    while (currentNode->getNumberOfNodes() > 0)
-    {
-        parent = currentNode;
-        currentNode = currentNode->getNode(currentNode->getNumberOfNodes() - 1);
-    }
-
-    Node* newNode = new Node(*newValue.root);
-
-    if (currentNode->getNodeType() == ARGUMENT)
-    {
-        result.removeArgument(currentNode->getValue());
-    }
-
-    if (parent != NULL)
-    {
-        parent->setNode(parent->getNumberOfNodes() - 1, *newNode);
-    }
-    else
-    {
-        result.root = newNode;
-    }
-
-    for (int i = 0; i < newValue.argsVector.size(); i++)
-    {
-        result.setArgumentValue(newValue.argsVector[i], -1);
-    }
-
+    result.pop_back(); // Remove the last space
     return result;
 }
 
@@ -299,6 +283,20 @@ void PrefixExpressionTree::setArgumentValueByIndex(int index, int value)
     }
 
     argsMap[argsVector[index]] = value;
+}
+
+std::string PrefixExpressionTree::toString() const
+{
+    return root->toString();
+}
+
+int PrefixExpressionTree::stringToNumber(std::string str)
+{
+    int i = 0;
+
+    std::istringstream(str) >> i;
+
+    return i;
 }
 
 void PrefixExpressionTree::setRoot(Node* newRoot) {

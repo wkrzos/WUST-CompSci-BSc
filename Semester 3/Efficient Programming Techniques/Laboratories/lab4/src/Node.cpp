@@ -25,16 +25,42 @@ Node::~Node()
   }
 }
 
+Node& Node::operator=(const Node& newValue)
+{
+    if (this == &newValue)
+    {
+        return *this;
+    }
+
+    if (nodes != NULL)
+    {
+        delete[] nodes;
+    }
+
+    this->type = newValue.type;
+    this->value = newValue.value;
+    this->numberOfNodes = newValue.numberOfNodes;
+
+    this->nodes = new Node[numberOfNodes];
+
+    for (int i = 0; i < numberOfNodes; i++)
+    {
+        this->nodes[i] = newValue.nodes[i];
+    }
+
+    return *this;
+}
+
 std::string Node::toString() const
 {
-  std::string result = value;
+    std::string result = value;
 
-  for (int i = 0; i < numberOfNodes; i++)
-  {
-    result += " " + nodes[i].toString();
-  }
+    for (int i = 0; i < numberOfNodes; i++)
+    {
+        result += " " + nodes[i].toString();
+    }
 
-  return result;
+    return result;
 }
 
 Node *Node::getNodes() const
@@ -60,32 +86,6 @@ int Node::getNumberOfNodes() const
 NodeType Node::getNodeType() const
 {
   return type;
-}
-
-Node &Node::operator=(const Node &newValue)
-{
-  if (this == &newValue)
-  {
-    return *this;
-  }
-
-  if (nodes != NULL)
-  {
-    delete[] nodes;
-  }
-
-  this->type = newValue.type;
-  this->value = newValue.value;
-  this->numberOfNodes = newValue.numberOfNodes;
-
-  this->nodes = new Node[numberOfNodes];
-
-  for (int i = 0; i < numberOfNodes; i++)
-  {
-    this->nodes[i] = newValue.nodes[i];
-  }
-
-  return *this;
 }
 
 void Node::setNumberOfNodes(int numberOfNodes)

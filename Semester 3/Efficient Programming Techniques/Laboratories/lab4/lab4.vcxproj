@@ -143,7 +143,6 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\PrefixExpressionTree.cpp" />
-    <ClCompile Include="src\ExpressionTreeInterface.cpp" />
     <ClCompile Include="src\stringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>

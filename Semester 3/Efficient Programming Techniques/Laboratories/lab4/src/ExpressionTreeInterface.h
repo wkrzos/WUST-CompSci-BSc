@@ -117,7 +117,7 @@ template <typename T>
 void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size)
 {
     std::string formula = joinArrayIntoString(args + 1, size - 1);
-    T result = tree.comp(formula);
+    int result = tree.comp(formula);
 
     std::cout << "The result is: " << result << std::endl;
 }
@@ -138,7 +138,7 @@ void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree
         std::string formula = joinArrayIntoString(args + 1, size - 1);
         parser.parseFormula(newTree, formula);
 
-        tree.getErrorAndClear();
+        tree.clearVariables();
         tree = tree + newTree;
     }
 } 

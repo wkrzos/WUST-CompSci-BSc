@@ -15,13 +15,13 @@ println(distance((5, 5)))
 
 // Part 1
 
-type Person = (String, String, Int, String, Int)
-type Partnership = (Person, Person)
+type PersonTuple = (String, String, Int, String, Int)
+type PartnershipTuple = (PersonTuple, PersonTuple)
 
-val person1: Person = ("Maciej", "Kradziej", 32, "Male", 42)
-val person2: Person = ("Rysiu", "Pysiu", 35, "Male", 39)
+val person1: PersonTuple = ("Maciej", "Kradziej", 32, "Male", 42)
+val person2: PersonTuple = ("Rysiu", "Pysiu", 35, "Male", 39)
 
-def biggerShoeSize(partnership: Partnership): Person = {
+def biggerShoeSize(partnership: PartnershipTuple): PersonTuple = {
   val (_, _, _, _, shoeSize1) = partnership._1
   val (_, _, _, _, shoeSize2) = partnership._2
   if (shoeSize1 > shoeSize2) partnership._1 else partnership._2
@@ -31,18 +31,18 @@ println(biggerShoeSize((person1, person2)))
 
 // Part 2
 
-case class Person2(name: String, surname: String, age: Int, sex: String, shoeSize: Int)
-case class Partnership2(person1: Person2, person2: Person2)
+case class PersonClassType(name: String, surname: String, age: Int, sex: String, shoeSize: Int)
+case class PartnershipClassType(partner1: PersonClassType, partner2: PersonClassType)
 
-val person3 = Person2("John", "Doe", 25, "Male", 44)
-val person4 = Person2("Jane", "Doe", 28, "Female", 38)
+val person3 = PersonClassType("John", "Doe", 25, "Male", 44)
+val person4 = PersonClassType("Jane", "Doe", 28, "Female", 38)
 
-def biggerShoeSize(partnership: Partnership2): Person2 = {
-  if (partnership.person1.shoeSize > partnership.person2.shoeSize) partnership.person1
-  else partnership.person2
+def biggerShoeSize(partnership: PartnershipClassType): PersonClassType = {
+  if (partnership.partner1.shoeSize > partnership.partner2.shoeSize) partnership.partner1
+  else partnership.partner2
 }
 
-val partnership34 = Partnership2(person3, person4)
+val partnership34 = PartnershipClassType(person3, person4)
 println(biggerShoeSize(partnership34))
 
 // Exercise 3

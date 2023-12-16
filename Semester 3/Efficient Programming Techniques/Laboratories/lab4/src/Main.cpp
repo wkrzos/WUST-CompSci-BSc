@@ -5,7 +5,7 @@ int main() {
 
     std::cout << "[DEBUG] Welcome to the Expression Tree Interface!" << std::endl;
 
-    ExpressionTreeInterface::run();
+    ExpressionTreeInterface<std::string>::run();
 
     return 0;
 }

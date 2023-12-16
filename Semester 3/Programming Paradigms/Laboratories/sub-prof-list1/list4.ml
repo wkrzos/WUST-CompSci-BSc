@@ -10,15 +10,15 @@ distance(5., 5.);;
 
 
 (* Exercise 2 *)
-(* Part1 *)
+(* Part1: Record type *)
 
-type person = string * string * int * string * int;; (*"name * surname * age * sex * shoeSize"*)
-type partnership = person * person;;
+type personTuple = string * string * int * string * int;; (*"name * surname * age * sex * shoeSize"*)
+type partnershipTuple = personTuple * personTuple;;
 
-let person1: person = ("Maciej", "Kradziej", 32, "Male", 42);;
-let person2: person = ("Rysiu", "Pysiu", 35, "Male", 39);;
+let person1: personTuple = ("Maciej", "Kradziej", 32, "Male", 42);;
+let person2: personTuple = ("Rysiu", "Pysiu", 35, "Male", 39);;
 
-let biggerShoeSize((person1, person2): partnership) =
+let biggerShoeSize((person1, person2): partnershipTuple) =
   let (_, _, _, _, shoeSize1) = person1 in
   let (_, _, _, _, shoeSize2) = person2 in
   if shoeSize1 > shoeSize2 then
@@ -29,9 +29,9 @@ let biggerShoeSize((person1, person2): partnership) =
 
 biggerShoeSize(person1, person2);;
 
-(*Part 2*)
+(*Part: class 2*)
 
-type person2 = {
+type personRecordType = {
   name: string;
   surname: string;
   age: int;
@@ -39,22 +39,22 @@ type person2 = {
   shoeSize: int;
 }
 
-type partnership2 = {
-  person1: person2;
-  person2: person2;
+type partnershipRecordType = {
+  partner1: personRecordType;
+  partner2: personRecordType;
 }
 
 let person3 = {name = "John"; surname = "Doe"; age = 25; sex = "Male"; shoeSize = 44};;
 let person4 = {name = "Jane"; surname = "Doe"; age = 28; sex = "Female"; shoeSize = 38};;
 
-let biggerShoeSize(par2 : partnership2) =
-  if par2.person1.shoeSize > par2.person2.shoeSize then
-    par2.person1
+let biggerShoeSize(par2 : partnershipRecordType) =
+  if par2.partner1.shoeSize > par2.partner2.shoeSize then
+    par2.partner1
   else
-    par2.person2
+    par2.partner2
 ;;
 
-let partnership34 = {person1 = person3; person2 = person4};;
+let partnership34 = {partner1 = person3; partner2 = person4};;
 
 biggerShoeSize(partnership34);;
 

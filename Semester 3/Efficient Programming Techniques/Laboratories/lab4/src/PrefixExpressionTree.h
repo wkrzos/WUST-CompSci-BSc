@@ -113,6 +113,22 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
         result.setArgumentValue(newValue.argsVector[i], -1);
     }
 
+    // Merge argsMap and argsVector
+    for (const auto& arg : newValue.argsMap)
+    {
+        // How to handle conflicts here?
+        result.argsMap[arg.first] = arg.second;
+    }
+
+    // Update argsVector
+    for (const auto& arg : newValue.argsVector)
+    {
+        if (std::find(result.argsVector.begin(), result.argsVector.end(), arg) == result.argsVector.end())
+        {
+            result.argsVector.push_back(arg);
+        }
+    }
+
     return result;
 }
 

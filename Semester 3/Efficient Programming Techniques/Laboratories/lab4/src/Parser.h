@@ -10,16 +10,16 @@ template<typename T>
 class PrefixExpressionParser
 {
 public:
-    void parseFormula(PrefixExpressionTree& tree, std::string formula);
+    void parseFormula(PrefixExpressionTree<T>& peTree, std::string formula);
 
 private:
-    int parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree& tree);
+    int parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree<T>& tree);
     bool isValidArgument(std::string value);
     static const std::map<std::string, int> funMap;
 };
 
 template<typename T>
-void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree& peTree, std::string formula)
+void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& peTree, std::string formula)
 {
     if (peTree.getRoot() != nullptr) {
         delete peTree.getRoot();
@@ -46,7 +46,7 @@ void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree& peTree, std::
 }
 
 template<typename T>
-int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree& tree)
+int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree<T>& tree)
 {
     std::string value = "";
 

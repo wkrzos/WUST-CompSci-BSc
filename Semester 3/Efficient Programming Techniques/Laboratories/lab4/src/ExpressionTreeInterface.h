@@ -15,16 +15,13 @@ public:
     static void run();
 
 private:
-    static void executeCommand(std::string& command, PrefixExpressionTree& currentTree, PrefixExpressionParser<T>& parser, std::string* arguments, int& argumentCount);
-    static void handleEnterCommand(PrefixExpressionTree& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
-    static void handleVarsCommand(const PrefixExpressionTree& tree);
-    static void handlePrintCommand(const PrefixExpressionTree& tree);
-    static void handleCompCommand(PrefixExpressionTree& tree, std::string* args, int size);
-    static void handleJoinCommand(PrefixExpressionTree& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
+    static void executeCommand(std::string& command, PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, std::string* arguments, int& argumentCount);
+    static void handleEnterCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
+    static void handleVarsCommand(const PrefixExpressionTree<T>& tree);
+    static void handlePrintCommand(const PrefixExpressionTree<T>& tree);
+    static void handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size);
+    static void handleJoinCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
 };
-
-#endif // EXPRESSIONTREEINTERFACE_H
-
 
 template <typename T>
 void ExpressionTreeInterface<T>::run()
@@ -32,8 +29,8 @@ void ExpressionTreeInterface<T>::run()
 
     int numOfArgs = 0;
 
-    PrefixExpressionTree currentTree;
-    Parser currentParser;
+    PrefixExpressionTree<T> currentTree;
+    PrefixExpressionParser<T> currentParser;
 
     while (true)
     {
@@ -65,7 +62,7 @@ void ExpressionTreeInterface<T>::run()
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::executeCommand(std::string& command, PrefixExpressionTree& currentTree, PrefixExpressionParser<T>& parser, std::string* arguments, int& argumentCount) {
+void ExpressionTreeInterface<T>::executeCommand(std::string& command, PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, std::string* arguments, int& argumentCount) {
     if (command == "enter")
     {
         handleEnterCommand(currentTree, parser, arguments, argumentCount);
@@ -89,7 +86,7 @@ void ExpressionTreeInterface<T>::executeCommand(std::string& command, PrefixExpr
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::handleEnterCommand(PrefixExpressionTree& tree, PrefixExpressionParser<T>& parser, std::string* args, int size)
+void ExpressionTreeInterface<T>::handleEnterCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size)
 {
     if (size < 2)
     {
@@ -105,19 +102,19 @@ void ExpressionTreeInterface<T>::handleEnterCommand(PrefixExpressionTree& tree, 
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::handleVarsCommand(const PrefixExpressionTree& tree)
+void ExpressionTreeInterface<T>::handleVarsCommand(const PrefixExpressionTree<T>& tree)
 {
     std::cout << tree.getArgumentsList() << std::endl;
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::handlePrintCommand(const PrefixExpressionTree& tree)
+void ExpressionTreeInterface<T>::handlePrintCommand(const PrefixExpressionTree<T>& tree)
 {
     std::cout << tree.toString() << std::endl;
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree& tree, std::string* args, int size)
+void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size)
 {
     std::string formula = joinArrayIntoString(args + 1, size - 1);
     int result = tree.comp(formula);
@@ -126,7 +123,7 @@ void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree& tree, s
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree& tree, PrefixExpressionParser<T>& parser, std::string* args, int size)
+void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size)
 {
     if (size < 2)
     {
@@ -136,10 +133,12 @@ void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree& tree, P
     }
     else
     {
-        PrefixExpressionTree newTree;
+        PrefixExpressionTree<T> newTree;
 
         std::string formula = joinArrayIntoString(args + 1, size - 1);
         parser.parseFormula(newTree, formula);
         tree = tree + newTree;
     }
-}
+} 
+
+#endif // EXPRESSIONTREEINTERFACE_H

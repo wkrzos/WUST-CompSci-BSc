@@ -21,6 +21,7 @@ private:
     static void handlePrintCommand(const PrefixExpressionTree<T>& tree);
     static void handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size);
     static void handleJoinCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
+    static void handleWrongCommand(std::string& command);
 };
 
 template <typename T>
@@ -82,6 +83,10 @@ void ExpressionTreeInterface<T>::executeCommand(std::string& command, PrefixExpr
     else if (command == "join")
     {
         handleJoinCommand(currentTree, parser, arguments, argumentCount);
+    } 
+    else
+    {
+        handleWrongCommand(command);
     }
 }
 
@@ -117,7 +122,7 @@ template <typename T>
 void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size)
 {
     std::string formula = joinArrayIntoString(args + 1, size - 1);
-    T result = tree.comp(formula);
+    int result = tree.comp(formula); //TODO: change to T
 
     std::cout << "The result is: " << result << std::endl;
 }
@@ -138,9 +143,13 @@ void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree
         std::string formula = joinArrayIntoString(args + 1, size - 1);
         parser.parseFormula(newTree, formula);
 
-        tree.getErrorAndClear();
         tree = tree + newTree;
     }
 } 
+
+template <typename T>
+void ExpressionTreeInterface<T>::handleWrongCommand(std::string& command) {
+    std::cout << "No command " << command << " available." << std::endl;
+}
 
 #endif // EXPRESSIONTREEINTERFACE_H

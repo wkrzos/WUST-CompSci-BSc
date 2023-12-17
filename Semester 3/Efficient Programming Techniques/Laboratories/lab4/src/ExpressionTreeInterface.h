@@ -122,7 +122,7 @@ template <typename T>
 void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size)
 {
     std::string formula = joinArrayIntoString(args + 1, size - 1);
-    int result = tree.comp(formula); //TODO: change to T
+    T result = tree.comp(formula); //TODO: change to T
 
     std::cout << "The result is: " << result << std::endl;
 }

@@ -29,7 +29,7 @@ void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& peTree, st
     peTree.setRoot(root);
 
     bool wasError = false;
-    peTree.clearArguments(); // Assume this method resets argsMap and argsVector
+    peTree.clearVariables(); // Assume this method resets argsMap and argsVector
 
     int start = parseNodes(root, formula, 0, &wasError, peTree);
 

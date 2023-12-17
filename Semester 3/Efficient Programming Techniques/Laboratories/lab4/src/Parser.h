@@ -88,18 +88,6 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
                 start = parseNodes(currentNode->getNode(i), formula, start, wasError, tree);
             }
         }
-
-        if (value == "#")
-        {
-            if (currentNode->getNode(0)->getNodeType() != ARGUMENT || currentNode->getNode(1)->getNodeType() != OPERATOR)
-            {
-                std::cout << "Error: Invalid arguments for #, required: ARGUMENT and OPERATOR, substituting 1" << std::endl;
-
-                currentNode->setNumberOfNodes(0);
-                currentNode->setNodeType(VALUE);
-                currentNode->setValue("1");
-            }
-        }
     }
     else if (value.find_first_not_of(LIST_OF_NUMBERS) == std::string::npos)
     {
@@ -155,7 +143,6 @@ std::map<std::string, int> createFunctionMap()
     m["-"] = 2;
     m["*"] = 2;
     m["/"] = 2;
-    m["#"] = 2;
 
     return m;
 }

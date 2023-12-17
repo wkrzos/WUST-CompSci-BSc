@@ -146,7 +146,7 @@
   <ItemGroup>
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Node.h" />
-    <ClInclude Include="src\Parser.h" />
+    <ClInclude Include="src\PrefixExpressionParser.h" />
     <ClInclude Include="src\PrefixExpressionTree.h" />
     <ClInclude Include="src\ExpressionTreeInterface.h" />
     <ClInclude Include="src\stringUtils.h" />

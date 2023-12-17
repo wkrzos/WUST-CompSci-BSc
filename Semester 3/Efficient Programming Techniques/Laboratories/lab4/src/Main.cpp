@@ -21,7 +21,7 @@ int main() {
         ExpressionTreeInterface<std::string>::run();
         break;
     default:
-        std::cerr << INVALID_CHOICE_MESSAGE << std::endl;
+        std::cerr << ERROR_CHOICE_MESSAGE << std::endl;
         return 1;
     }
 

@@ -89,15 +89,15 @@ void ExpressionTreeInterface<T>::executeCommand(PrefixExpressionTree<T>& current
 template <typename T>
 void ExpressionTreeInterface<T>::handleEnterCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size)
 {
-    if (size < 2)
-    {
-        std::cout << MESSAGE_WRONG_ENTER_COMMAND << std::endl;
-        return;
-    }
-    else
+    if (size >= 2)
     {
         std::string formula = joinArrayIntoString(args + 1, size - 1);
         parser.parseFormula(tree, formula);
+    }
+    else
+    {
+        std::cout << MESSAGE_WRONG_ENTER_COMMAND << std::endl;
+        return;
     }
 }
 
@@ -110,29 +110,24 @@ void ExpressionTreeInterface<T>::handleVarsCommand(const PrefixExpressionTree<T>
 template <typename T>
 void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size)
 {
-    if (size < 2)
-    {
-        std::cout << MESSAGE_WRONG_COMP_COMMAND << std::endl;
-        return;
-    }
-    else
+    if (size >= 2)
     {
         std::string formula = joinArrayIntoString(args + 1, size - 1);
         T result = tree.comp(formula); // TODO: change to T
 
         std::cout << MESSAGE_RESULT << result << std::endl;
     }
+    else
+    {
+        std::cout << MESSAGE_WRONG_COMP_COMMAND << std::endl;
+        return;
+    }
 }
 
 template <typename T>
 void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size)
 {
-    if (size < 2)
-    {
-        std::cout << MESSAGE_WRONG_JOIN_COMMAND << std::endl;
-        return;
-    }
-    else
+    if (size >= 2)
     {
         PrefixExpressionTree<T> newTree;
 
@@ -140,6 +135,11 @@ void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree
         parser.parseFormula(newTree, formula);
 
         tree = tree + newTree;
+    }
+    else
+    {
+        std::cout << MESSAGE_WRONG_JOIN_COMMAND << std::endl;
+        return;
     }
 }
 

@@ -144,6 +144,7 @@
     <ClCompile Include="src\stringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\Parser.h" />
     <ClInclude Include="src\PrefixExpressionTree.h" />

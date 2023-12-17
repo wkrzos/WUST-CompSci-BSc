@@ -1,28 +1,26 @@
 #include "Node.h"
-#include <iostream>
-#include <sstream>
 #include <string>
 
 Node::Node() : numberOfNodes(0), nodes(new Node[0]), type(NO_TYPE)
 {
 }
 
-Node::Node(const Node &otherNode) : type(otherNode.type), key(otherNode.key), numberOfNodes(otherNode.numberOfNodes)
+Node::Node(const Node& otherNode) : type(otherNode.type), key(otherNode.key), numberOfNodes(otherNode.numberOfNodes)
 {
-  this->nodes = new Node[numberOfNodes];
+    this->nodes = new Node[numberOfNodes];
 
-  for (int i = 0; i < numberOfNodes; i++)
-  {
-    this->nodes[i] = otherNode.nodes[i];
-  }
+    for (int i = 0; i < numberOfNodes; i++)
+    {
+        this->nodes[i] = otherNode.nodes[i];
+    }
 }
 
 Node::~Node()
 {
-  if (nodes != NULL)
-  {
-    delete[] nodes;
-  }
+    if (nodes != NULL)
+    {
+        delete[] nodes;
+    }
 }
 
 Node& Node::operator=(const Node& newValue)
@@ -63,53 +61,53 @@ std::string Node::toString() const
     return result;
 }
 
-Node *Node::getNodes() const
+Node* Node::getNodes() const
 {
-  return nodes;
+    return nodes;
 }
 
-Node *Node::getNode(int index) const
+Node* Node::getNode(int index) const
 {
-  return &nodes[index];
+    return &nodes[index];
 }
 
 std::string Node::getValue() const
 {
-  return key;
+    return key;
 }
 
 int Node::getNumberOfNodes() const
 {
-  return numberOfNodes;
+    return numberOfNodes;
 }
 
 TYPE Node::getNodeType() const
 {
-  return type;
+    return type;
 }
 
 void Node::setNumberOfNodes(int numberOfNodes)
 {
-  this->numberOfNodes = numberOfNodes;
-  this->nodes = new Node[numberOfNodes];
+    this->numberOfNodes = numberOfNodes;
+    this->nodes = new Node[numberOfNodes];
 }
 
 void Node::setNodeType(TYPE type)
 {
-  this->type = type;
+    this->type = type;
 }
 
 void Node::setValue(std::string value)
 {
-  this->key = value;
+    this->key = value;
 }
 
-void Node::setNode(int index, Node &node)
+void Node::setNode(int index, Node& node)
 {
-  if (index >= numberOfNodes)
-  {
-    return;
-  }
+    if (index >= numberOfNodes)
+    {
+        return;
+    }
 
-  this->nodes[index] = node;
+    this->nodes[index] = node;
 }

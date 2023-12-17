@@ -94,7 +94,7 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
 
     Node* newNode = new Node(*newValue.root);
 
-    if (currentNode->getNodeType() == ARGUMENT)
+    if (currentNode->getNodeType() == VARIABLE)
     {
         result.removeArgument(currentNode->getValue());
     }
@@ -244,7 +244,7 @@ void PrefixExpressionTree<T>::printNodes() const
 template <typename T>
 int PrefixExpressionTree<T>::comp(Node* currentNode)
 {
-    if (currentNode->getNodeType() == VALUE)
+    if (currentNode->getNodeType() == CONSTANT)
     {
         int i = 0;
 
@@ -252,7 +252,7 @@ int PrefixExpressionTree<T>::comp(Node* currentNode)
 
         return i;
     }
-    else if (currentNode->getNodeType() == OPERATOR)
+    else if (currentNode->getNodeType() == OPERATION)
     {
 
         std::string opr = currentNode->getValue();
@@ -289,7 +289,7 @@ int PrefixExpressionTree<T>::comp(Node* currentNode)
             return static_cast<int>(std::cos(comp(currentNode->getNode(0))));
         }
     }
-    else if (currentNode->getNodeType() == ARGUMENT)
+    else if (currentNode->getNodeType() == VARIABLE)
     {
         std::map<std::string, int>::const_iterator argsIterator = argsMap.find(currentNode->getValue());
 

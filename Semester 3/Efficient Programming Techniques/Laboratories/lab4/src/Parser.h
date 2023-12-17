@@ -70,7 +70,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
     if (numberOfArgsIterator != funMap.end())
     {
         currentNode->setNumberOfNodes(numberOfArgsIterator->second);
-        currentNode->setNodeType(OPERATOR);
+        currentNode->setNodeType(OPERATION);
 
         for (int i = 0; i < currentNode->getNumberOfNodes(); i++)
         {
@@ -78,7 +78,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
             {
                 std::cout << "Error: Not enough arguments for operator: " << value << ", substituting 1" << std::endl;
                 currentNode->getNode(i)->setNumberOfNodes(0);
-                currentNode->getNode(i)->setNodeType(VALUE);
+                currentNode->getNode(i)->setNodeType(CONSTANT);
                 currentNode->getNode(i)->setValue("1");
 
                 *wasError = true;
@@ -92,12 +92,12 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
     else if (value.find_first_not_of(LIST_OF_NUMBERS) == std::string::npos)
     {
         currentNode->setNumberOfNodes(0);
-        currentNode->setNodeType(VALUE);
+        currentNode->setNodeType(CONSTANT);
     }
     else if (isValidArgument(value))
     {
         currentNode->setNumberOfNodes(0);
-        currentNode->setNodeType(ARGUMENT);
+        currentNode->setNodeType(VARIABLE);
 
         tree.setArgumentValue(value, -1);
     }

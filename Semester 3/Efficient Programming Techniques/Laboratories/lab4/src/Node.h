@@ -3,37 +3,41 @@
 #include <string>
 #include <vector>
 
-enum NodeType
-{
-	UNINITIALIZED,
-	OPERATOR,
-	VALUE,
-	ARGUMENT
+enum TYPE
+{	
+	CONSTANT,
+	VARIABLE,
+	OPERATION,
+	NO_TYPE
 };
 
 class Node
 {
+private:
+	int numberOfNodes;
+	TYPE type;
+	std::string key;
+	Node* nodes;
+
 public:
 	Node();
 	Node(const Node& otherNode);
 	~Node();
+
+	Node& operator=(const Node& newValue);
+
 	std::string toString() const;
+
 	Node* getNodes() const;
 	Node* getNode(int index) const;
 	std::string getValue() const;
 	int getNumberOfNodes() const;
-	NodeType getNodeType() const;
-	Node& operator=(const Node& newValue);
-	void setNumberOfNodes(int numberOfNodes);
-	void setNodeType(NodeType type);
-	void setValue(std::string value);
-	void setNode(int index, Node& node);
+	TYPE getNodeType() const;
 
-private:
-	NodeType type;
-	std::string value;
-	Node* nodes;
-	int numberOfNodes;
+	void setNode(int index, Node& node);
+	void setValue(std::string value);
+	void setNumberOfNodes(int numberOfNodes);
+	void setNodeType(TYPE type);
 };
 
 #endif

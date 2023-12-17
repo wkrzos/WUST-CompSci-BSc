@@ -3,11 +3,11 @@
 #include <sstream>
 #include <string>
 
-Node::Node() : numberOfNodes(0), nodes(new Node[0]), type(UNINITIALIZED)
+Node::Node() : numberOfNodes(0), nodes(new Node[0]), type(NO_TYPE)
 {
 }
 
-Node::Node(const Node &otherNode) : type(otherNode.type), value(otherNode.value), numberOfNodes(otherNode.numberOfNodes)
+Node::Node(const Node &otherNode) : type(otherNode.type), key(otherNode.key), numberOfNodes(otherNode.numberOfNodes)
 {
   this->nodes = new Node[numberOfNodes];
 
@@ -38,7 +38,7 @@ Node& Node::operator=(const Node& newValue)
     }
 
     this->type = newValue.type;
-    this->value = newValue.value;
+    this->key = newValue.key;
     this->numberOfNodes = newValue.numberOfNodes;
 
     this->nodes = new Node[numberOfNodes];
@@ -53,7 +53,7 @@ Node& Node::operator=(const Node& newValue)
 
 std::string Node::toString() const
 {
-    std::string result = value;
+    std::string result = key;
 
     for (int i = 0; i < numberOfNodes; i++)
     {
@@ -75,7 +75,7 @@ Node *Node::getNode(int index) const
 
 std::string Node::getValue() const
 {
-  return value;
+  return key;
 }
 
 int Node::getNumberOfNodes() const
@@ -83,7 +83,7 @@ int Node::getNumberOfNodes() const
   return numberOfNodes;
 }
 
-NodeType Node::getNodeType() const
+TYPE Node::getNodeType() const
 {
   return type;
 }
@@ -94,14 +94,14 @@ void Node::setNumberOfNodes(int numberOfNodes)
   this->nodes = new Node[numberOfNodes];
 }
 
-void Node::setNodeType(NodeType type)
+void Node::setNodeType(TYPE type)
 {
   this->type = type;
 }
 
 void Node::setValue(std::string value)
 {
-  this->value = value;
+  this->key = value;
 }
 
 void Node::setNode(int index, Node &node)

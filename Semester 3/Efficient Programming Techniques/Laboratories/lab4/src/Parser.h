@@ -18,7 +18,7 @@ private:
     bool isValidArgument(std::string value);
     static std::string getDefaultValue();
     static const std::map<std::string, int> funMap;
-    std::map<std::string, int> createFunctionMap();
+    static std::map<std::string, int> createFunctionMap();
 };
 
 template<typename T>
@@ -102,7 +102,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
         currentNode->setNumberOfNodes(0);
         currentNode->setNodeType(VARIABLE);
 
-        tree.setArgumentValue(value, -1);
+        tree.setArgumentValue(value, tree.getDefaultNoop());
     }
     else
     {

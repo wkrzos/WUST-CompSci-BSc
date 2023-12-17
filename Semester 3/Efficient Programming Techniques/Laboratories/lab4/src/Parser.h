@@ -5,6 +5,7 @@
 #include "Parser.h"
 #include <sstream>
 #include <iostream>
+#include "Constants.h" // Include Constants.h for error messages
 
 template<typename T>
 class PrefixExpressionParser
@@ -38,13 +39,13 @@ void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& peTree, st
 
     if (formula.length() > start)
     {
-        std::cout << "Wrong number of arguments" << std::endl;
+        std::cout << ERROR_WRONG_NUM_ARGS << std::endl;
         wasError = true;
     }
 
     if (wasError)
     {
-        std::cout << "Your formula has been corrected to: " << peTree.toString() << std::endl;
+        std::cout << FORMULA_CORRECTED << std::endl;
     }
 }
 
@@ -79,7 +80,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
         {
             if (formula.length() <= start)
             {
-                std::cout << "Error: Not enough arguments for operator: " << value << ", substituting 1" << std::endl;
+                std::cout << ERROR_NOT_ENOUGH_ARGS << std::endl;
                 currentNode->getNode(i)->setNumberOfNodes(0);
                 currentNode->getNode(i)->setNodeType(CONSTANT);
                 currentNode->getNode(i)->setValue("1");
@@ -92,7 +93,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
             }
         }
     }
-    else if (value.find_first_not_of(LIST_OF_NUMBERS) == std::string::npos)
+    else if (value.find_first_not_of("0123456789") == std::string::npos)
     {
         currentNode->setNumberOfNodes(0);
         currentNode->setNodeType(CONSTANT);
@@ -106,7 +107,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
     }
     else
     {
-        std::cout << "Error: Unknown operator: " << value << std::endl;
+        std::cout << ERROR_UNKNOWN_OPERATION << std::endl;
     }
 
     return start;
@@ -129,7 +130,7 @@ bool PrefixExpressionParser<T>::isValidArgument(std::string value)
         }
         else if (!isdigit(value[i]))
         {
-            std::cout << "Invalid character ignored: " << value[i] << std::endl;
+            std::cout << ERROR_INVALID_CHARACTER << std::endl;
         }
     }
 
@@ -139,16 +140,16 @@ bool PrefixExpressionParser<T>::isValidArgument(std::string value)
 template <typename T>
 std::map<std::string, int> PrefixExpressionParser<T>::createFunctionMap()
 {
-  std::map<std::string, int> m;
+    std::map<std::string, int> m;
 
-  m["sin"] = 1;
-  m["cos"] = 1;
-  m["+"] = 2;
-  m["-"] = 2;
-  m["*"] = 2;
-  m["/"] = 2;
+    m["sin"] = 1;
+    m["cos"] = 1;
+    m["+"] = 2;
+    m["-"] = 2;
+    m["*"] = 2;
+    m["/"] = 2;
 
-  return m;
+    return m;
 }
 
 template <>
@@ -176,7 +177,7 @@ bool PrefixExpressionParser<T>::isValidValue(std::string value)
 template <>
 bool PrefixExpressionParser<int>::isValidValue(std::string value)
 {
-    return value.find_first_not_of(LIST_OF_NUMBERS) == std::string::npos;
+    return value.find_first_not_of("0123456789") == std::string::npos;
 }
 
 template <>

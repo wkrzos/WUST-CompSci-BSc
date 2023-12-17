@@ -6,55 +6,50 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "PrefixExpressionTree.h"
-#include "stringUtils.h"
 #include "stringUtils.h"
 #include <iostream>
 #include <sstream>
 #include <valarray>
 #include <numeric>
-
-const std::string LIST_OF_NUMBERS = "0123456789";
+#include "Constants.h" // Include Constants.h for error messages and type descriptions
 
 template <typename T>
 class PrefixExpressionTree
 {
 public:
-	PrefixExpressionTree();
-	PrefixExpressionTree(const PrefixExpressionTree& other);
-	~PrefixExpressionTree();
+    PrefixExpressionTree();
+    PrefixExpressionTree(const PrefixExpressionTree& other);
+    ~PrefixExpressionTree();
 
     PrefixExpressionTree<T>& operator=(const PrefixExpressionTree<T>& newValue);
     PrefixExpressionTree<T> operator+(const PrefixExpressionTree<T>& newValue) const;
 
-
-
-	std::string toString() const;
+    std::string toString() const;
     T comp(std::string args);
-	std::string getArgumentsList() const;
-	void printNodes() const;
+    std::string getArgumentsList() const;
+    void printNodes() const;
 
     std::string getKnownType();
     static T getDefaultNoop();
 
-	void clearArguments();
+    void clearArguments();
 
-	void setRoot(Node* newRoot); // New method to set the root
-	Node* getRoot() /*const*/; // New method to access the root
+    void setRoot(Node* newRoot); // New method to set the root
+    Node* getRoot(); // New method to access the root
     void setArgumentValue(std::string arg, T value);
 
 private:
-	Node* root;
+    Node* root;
     bool isValidValue(std::string value);
     static T stringToValue(std::string str);
     T comp(Node* currentNode);
-	std::map<std::string, T> argsMap;
-	std::vector<std::string> argsVector;
-	void removeArgument(std::string arg);
+    std::map<std::string, T> argsMap;
+    std::vector<std::string> argsVector;
+    void removeArgument(std::string arg);
 
     void setArgumentValueByIndex(int index, T value);
-    
-	static int stringToNumber(std::string str);
+
+    static int stringToNumber(std::string str);
 };
 
 template <typename T>
@@ -204,7 +199,6 @@ PrefixExpressionTree<T>& PrefixExpressionTree<T>::operator=(const PrefixExpressi
     return *this;
 }
 
-
 template <typename T>
 T PrefixExpressionTree<T>::comp(std::string args)
 {
@@ -214,7 +208,7 @@ T PrefixExpressionTree<T>::comp(std::string args)
 
     if (size != argsMap.size())
     {
-        std::cout << "Error: Wrong number of arguments" << std::endl;
+        std::cout << ERROR_WRONG_NUM_ARGS << std::endl;
 
         delete[] argsArray;
 
@@ -229,7 +223,7 @@ T PrefixExpressionTree<T>::comp(std::string args)
         }
         else
         {
-            std::cout << "Error: Invalid argument." << std::endl;
+            std::cout << ERROR_INVALID_ARG << std::endl;
 
             delete[] argsArray;
 
@@ -239,7 +233,7 @@ T PrefixExpressionTree<T>::comp(std::string args)
 
     if (root == NULL)
     {
-        std::cout << "Error: No formula." << std::endl;
+        std::cout << ERROR_NO_FORMULA << std::endl;
 
         delete[] argsArray;
 
@@ -253,7 +247,6 @@ T PrefixExpressionTree<T>::comp(std::string args)
     return result;
 }
 
-//done
 template <typename T>
 std::string PrefixExpressionTree<T>::getArgumentsList() const
 {
@@ -308,20 +301,17 @@ T PrefixExpressionTree<T>::comp(Node* currentNode)
         {
             return comp(currentNode->getNode(0)) * comp(currentNode->getNode(1));
         }
-
         else if (currentNode->getValue() == "/")
         {
-
             T secondNodeValue = comp(currentNode->getNode(1));
 
             if (secondNodeValue == 0)
             {
-                throw std::invalid_argument("Division by zero");
+                throw std::invalid_argument(ERROR_DIVISION_BY_ZERO);
             }
 
             return comp(currentNode->getNode(0)) / secondNodeValue;
         }
-
         else if (currentNode->getValue() == "sin")
         {
             return static_cast<int>(std::sin(comp(currentNode->getNode(0))));
@@ -337,7 +327,7 @@ T PrefixExpressionTree<T>::comp(Node* currentNode)
 
         if (argsIterator == argsMap.end())
         {
-            std::cout << "Error: Unknown argument." << std::endl;
+            std::cout << ERROR_UNKNOWN_ARG << std::endl;
             return getDefaultNoop();
         }
 
@@ -363,19 +353,15 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
         else if (currentNode->getValue() == "-")
         {
             std::string firstNodeValue = comp(currentNode->getNode(0));
-
             int pos = firstNodeValue.rfind(comp(currentNode->getNode(1)));
-
             if (pos != std::string::npos)
             {
                 firstNodeValue.erase(pos, comp(currentNode->getNode(0)).length());
             }
-
             return firstNodeValue;
         }
         else if (currentNode->getValue() == "*")
         {
-
             std::string secondValue = comp(currentNode->getNode(1));
             std::string firstValue = comp(currentNode->getNode(0));
 
@@ -385,7 +371,6 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
             }
 
             std::string newString = "";
-
             std::string stringToCopy = secondValue.substr(1);
 
             for (int i = 0; i < firstValue.length(); i++)
@@ -430,7 +415,7 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
 
         if (argsIterator == argsMap.end())
         {
-            std::cout << "Error: Unknown argument." << std::endl;
+            std::cout << ERROR_UNKNOWN_ARG << std::endl;
             return getDefaultNoop();
         }
 
@@ -497,12 +482,14 @@ int PrefixExpressionTree<T>::stringToNumber(std::string str)
 }
 
 template <typename T>
-void PrefixExpressionTree<T>::setRoot(Node* newRoot) {
+void PrefixExpressionTree<T>::setRoot(Node* newRoot)
+{
     root = newRoot;
 }
 
 template <typename T>
-Node* PrefixExpressionTree<T>::getRoot() {
+Node* PrefixExpressionTree<T>::getRoot()
+{
     return root;
 }
 
@@ -539,7 +526,7 @@ bool PrefixExpressionTree<T>::isValidValue(std::string value)
 template <>
 bool PrefixExpressionTree<int>::isValidValue(std::string value)
 {
-    return value.find_first_not_of(LIST_OF_NUMBERS) == std::string::npos;
+    return value.find_first_not_of("0123456789") == std::string::npos;
 }
 
 template <>

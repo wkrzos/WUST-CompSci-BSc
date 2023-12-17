@@ -16,11 +16,12 @@ public:
 
 private:
     static void executeCommand(std::string& command, PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, std::string* arguments, int& argumentCount);
+
     static void handleEnterCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
     static void handleVarsCommand(const PrefixExpressionTree<T>& tree);
-    static void handlePrintCommand(const PrefixExpressionTree<T>& tree);
     static void handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size);
     static void handleJoinCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
+    static void handlePrintCommand(const PrefixExpressionTree<T>& tree);
     static void handleWrongCommand(std::string& command);
 };
 
@@ -72,10 +73,6 @@ void ExpressionTreeInterface<T>::executeCommand(std::string& command, PrefixExpr
     {
         handleVarsCommand(currentTree);
     }
-    else if (command == "print")
-    {
-        handlePrintCommand(currentTree);
-    }
     else if (command == "comp")
     {
         handleCompCommand(currentTree, arguments, argumentCount);
@@ -84,6 +81,10 @@ void ExpressionTreeInterface<T>::executeCommand(std::string& command, PrefixExpr
     {
         handleJoinCommand(currentTree, parser, arguments, argumentCount);
     } 
+    else if (command == "print")
+    {
+        handlePrintCommand(currentTree);
+    }
     else
     {
         handleWrongCommand(command);
@@ -113,12 +114,6 @@ void ExpressionTreeInterface<T>::handleVarsCommand(const PrefixExpressionTree<T>
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::handlePrintCommand(const PrefixExpressionTree<T>& tree)
-{
-    std::cout << tree.toString() << std::endl;
-}
-
-template <typename T>
 void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size)
 {
     std::string formula = joinArrayIntoString(args + 1, size - 1);
@@ -145,7 +140,13 @@ void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree
 
         tree = tree + newTree;
     }
-} 
+}
+
+template <typename T>
+void ExpressionTreeInterface<T>::handlePrintCommand(const PrefixExpressionTree<T>& tree)
+{
+    std::cout << tree.toString() << std::endl;
+}
 
 template <typename T>
 void ExpressionTreeInterface<T>::handleWrongCommand(std::string& command) {

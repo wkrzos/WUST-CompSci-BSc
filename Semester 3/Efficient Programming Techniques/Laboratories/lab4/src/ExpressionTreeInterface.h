@@ -3,8 +3,6 @@
 
 #include "PrefixExpressionTree.h"
 #include "Parser.h"
-#include "ExpressionTreeInterface.h"
-#include "Parser.h"
 #include "stringUtils.h"
 #include <iostream>
 
@@ -62,7 +60,8 @@ void ExpressionTreeInterface<T>::run()
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::executeCommand(std::string& command, PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, std::string* arguments, int& argumentCount) {
+void ExpressionTreeInterface<T>::executeCommand(std::string& command, PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, std::string* arguments, int& argumentCount)
+{
     if (command == "enter")
     {
         handleEnterCommand(currentTree, parser, arguments, argumentCount);
@@ -91,7 +90,6 @@ void ExpressionTreeInterface<T>::handleEnterCommand(PrefixExpressionTree<T>& tre
     if (size < 2)
     {
         std::cout << "Wrong command. Please enter a valid command." << std::endl;
-
         return;
     }
     else
@@ -128,7 +126,6 @@ void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree
     if (size < 2)
     {
         std::cout << "Wrong command. Please enter a valid command." << std::endl;
-
         return;
     }
     else
@@ -140,6 +137,6 @@ void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree
 
         tree = tree + newTree;
     }
-} 
+}
 
 #endif // EXPRESSIONTREEINTERFACE_H

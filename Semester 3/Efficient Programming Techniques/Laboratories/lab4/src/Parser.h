@@ -2,11 +2,11 @@
 #define PARSER_H
 
 #include "PrefixExpressionTree.h"
-#include "Node.h"
+#include "Parser.h"
 #include <sstream>
 #include <iostream>
 
-template <typename T>
+template<typename T>
 class PrefixExpressionParser
 {
 public:
@@ -18,11 +18,10 @@ private:
     static const std::map<std::string, int> funMap;
 };
 
-template <typename T>
+template<typename T>
 void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& peTree, std::string formula)
 {
-    if (peTree.getRoot() != nullptr)
-    {
+    if (peTree.getRoot() != nullptr) {
         delete peTree.getRoot();
     }
 
@@ -46,7 +45,7 @@ void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& peTree, st
     }
 }
 
-template <typename T>
+template<typename T>
 int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree<T>& tree)
 {
     std::string value = "";
@@ -112,7 +111,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
         currentNode->setNumberOfNodes(0);
         currentNode->setNodeType(ARGUMENT);
 
-        tree.setArgumentValue(value, T());
+        tree.setArgumentValue(value, -1);
     }
     else
     {
@@ -122,7 +121,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
     return start;
 }
 
-template <typename T>
+template<typename T>
 bool PrefixExpressionParser<T>::isValidArgument(std::string value)
 {
     if (value.empty())
@@ -161,7 +160,7 @@ std::map<std::string, int> createFunctionMap()
     return m;
 }
 
-template <typename T>
+template<typename T>
 const std::map<std::string, int> PrefixExpressionParser<T>::funMap = createFunctionMap();
 
 #endif

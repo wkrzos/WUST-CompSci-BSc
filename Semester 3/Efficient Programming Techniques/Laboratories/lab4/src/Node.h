@@ -1,46 +1,41 @@
-#ifndef NODE_H
-#define NODE_H
-
-#include <iostream>
+#ifndef NODE
+#define NODE
 #include <string>
+#include <vector>
 #include <variant>
+#include <string>
 
 enum NodeType
 {
-    UNINITIALIZED,
-    OPERATOR,
-    VALUE,
-    ARGUMENT
+	UNINITIALIZED,
+	OPERATOR,
+	VALUE,
+	ARGUMENT
 };
 
 class Node
 {
-private:
-    NodeType type;
-    std::variant<int, double, std::string> value;
-    Node* nodes;
-    int numberOfNodes;
-
 public:
-    Node();
-    Node(const Node& otherNode);
-    ~Node();
-    std::string toString() const;
+	Node();
+	Node(const Node& otherNode);
+	~Node();
+	std::string toString() const;
+	Node* getNodes() const;
+	Node* getNode(int index) const;
+	std::string getValue() const;
+	int getNumberOfNodes() const;
+	NodeType getNodeType() const;
+	Node& operator=(const Node& newValue);
+	void setNumberOfNodes(int numberOfNodes);
+	void setNodeType(NodeType type);
+	void setValue(std::string value);
+	void setNode(int index, Node& node);
 
-    Node* getNodes() const;
-    Node* getNode(int index) const;
-
-    auto getValue() const -> decltype(value);
-
-    int getNumberOfNodes() const;
-    NodeType getNodeType() const;
-
-    Node& operator=(const Node& newValue);
-
-    void setNumberOfNodes(int numberOfNodes);
-    void setNodeType(NodeType type);
-    void setValue(std::variant<int, double, std::string> val);
-    void setNode(int index, Node& node);
+private:
+	NodeType type;
+	std::variant<int, double, std::string> value;
+	Node* nodes;
+	int numberOfNodes;
 };
 
 #endif

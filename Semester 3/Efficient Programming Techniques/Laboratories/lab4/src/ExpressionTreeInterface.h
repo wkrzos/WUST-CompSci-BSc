@@ -138,6 +138,7 @@ void ExpressionTreeInterface<T>::handleJoinCommand(PrefixExpressionTree<T>& tree
         std::string formula = joinArrayIntoString(args + 1, size - 1);
         parser.parseFormula(newTree, formula);
 
+        tree.clearVariables();
         tree = tree + newTree;
     }
 } 

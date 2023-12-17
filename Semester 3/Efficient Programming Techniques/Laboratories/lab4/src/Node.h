@@ -2,8 +2,6 @@
 #define NODE
 #include <string>
 #include <vector>
-#include <variant>
-#include <string>
 
 enum NodeType
 {
@@ -33,7 +31,7 @@ public:
 
 private:
 	NodeType type;
-	std::variant<int, double, std::string> value;
+	std::string value;
 	Node* nodes;
 	int numberOfNodes;
 };

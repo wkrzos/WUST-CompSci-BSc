@@ -51,10 +51,16 @@ Node& Node::operator=(const Node& newValue)
     return *this;
 }
 
-std::string toString() const {
-    return std::visit([](auto&& arg) -> std::string {
-        return std::to_string(arg);
-        }, value);
+std::string Node::toString() const
+{
+    std::string result = value;
+
+    for (int i = 0; i < numberOfNodes; i++)
+    {
+        result += " " + nodes[i].toString();
+    }
+
+    return result;
 }
 
 Node *Node::getNodes() const
@@ -67,8 +73,9 @@ Node *Node::getNode(int index) const
   return &nodes[index];
 }
 
-auto Node::getValue() const -> decltype(value) {
-    return value;
+std::string Node::getValue() const
+{
+  return value;
 }
 
 int Node::getNumberOfNodes() const
@@ -92,9 +99,9 @@ void Node::setNodeType(NodeType type)
   this->type = type;
 }
 
-template<typename T>
-void setValue(T val) {
-    value = val;
+void Node::setValue(std::string value)
+{
+  this->value = value;
 }
 
 void Node::setNode(int index, Node &node)

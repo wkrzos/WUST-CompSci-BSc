@@ -14,7 +14,7 @@ public:
 private:
     int parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree<T>& tree);
     static const std::map<std::string, int> funMap;
-    static std::string getDefaultValue();
+    static std::string getDefaultKey();
     static std::map<std::string, int> createFunctionMap();
 
     bool isCorrectConstant(std::string value);
@@ -200,13 +200,7 @@ bool PrefixExpressionParser<std::string>::isCorrectConstant(std::string value)
 }
 
 template <typename T>
-std::string PrefixExpressionParser<T>::getDefaultValue()
-{
-    return "1";
-}
-
-template <>
-std::string PrefixExpressionParser<std::string>::getDefaultValue()
+std::string PrefixExpressionParser<T>::getDefaultKey()
 {
     return "1";
 }

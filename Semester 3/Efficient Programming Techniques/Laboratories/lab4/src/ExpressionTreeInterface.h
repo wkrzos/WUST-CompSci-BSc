@@ -5,7 +5,7 @@
 #include "PrefixExpressionParser.h"
 #include "stringUtils.h"
 #include "Constants.h" // Include Constants.h for messages
-#include <iostream>
+#include <string>
 
 template <typename T>
 class ExpressionTreeInterface
@@ -22,12 +22,16 @@ private:
     static void handleJoinCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
     static void handlePrintCommand(const PrefixExpressionTree<T>& tree);
     static void handleWrongCommand(const std::string& command);
+
+    static std::string* splitStringIntoArray(const std::string& inputString, int* arraySize);
+    static std::string joinArrayIntoString(const std::string* stringArray, int arraySize);
 };
 
 template <typename T>
 void ExpressionTreeInterface<T>::run()
 {
     int numOfArgs = 0;
+
     PrefixExpressionTree<T> currentTree;
     PrefixExpressionParser<T> currentParser;
 
@@ -113,6 +117,7 @@ void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree<T>& tree
     if (size >= 2)
     {
         std::string formula = joinArrayIntoString(args + 1, size - 1);
+
         T result = tree.comp(formula); // TODO: change to T
 
         std::cout << MESSAGE_RESULT << result << std::endl;
@@ -152,6 +157,58 @@ void ExpressionTreeInterface<T>::handlePrintCommand(const PrefixExpressionTree<T
 template <typename T>
 void ExpressionTreeInterface<T>::handleWrongCommand(const std::string& command) {
     std::cout << MESSAGE_WRONG_COMMAND << command << std::endl;
+}
+
+// Splits a string into an array of words. Returns the array and updates the size
+template <typename T>
+std::string* ExpressionTreeInterface<T>::splitStringIntoArray(const std::string& inputString, int* arraySize)
+{
+    std::string* wordArray = new std::string[inputString.length()]; // Allocate maximum possible size
+    int wordCount = 0;
+    std::string currentWord;
+
+    for (char ch : inputString)
+    {
+        if (ch == ' ')
+        {
+            if (!currentWord.empty())
+            {
+                wordArray[wordCount++] = currentWord;
+                currentWord.clear();
+            }
+        }
+        else
+        {
+            currentWord += ch;
+        }
+    }
+
+    if (!currentWord.empty())
+    {
+        wordArray[wordCount++] = currentWord;
+    }
+
+    *arraySize = wordCount;
+    return wordArray;
+}
+
+// Joins an array of strings into a single string with spaces.
+template <typename T>
+std::string ExpressionTreeInterface<T>::joinArrayIntoString(const std::string* stringArray, int arraySize)
+{
+    std::string resultString;
+
+    for (int i = 0; i < arraySize; ++i)
+    {
+        resultString += stringArray[i];
+
+        if (i < arraySize - 1)
+        {
+            resultString += " ";
+        }
+    }
+
+    return resultString;
 }
 
 #endif // EXPRESSION_TREE_INTERFACE_H

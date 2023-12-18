@@ -23,7 +23,7 @@ Node* Node::getNode(int index) const
     return &nodes[index];
 }
 
-std::string Node::getValue() const
+std::string Node::getKey() const
 {
     return key;
 }
@@ -49,7 +49,7 @@ void Node::setNodeType(TYPE type)
     this->type = type;
 }
 
-void Node::setValue(std::string value)
+void Node::setKey(std::string value)
 {
     this->key = value;
 }

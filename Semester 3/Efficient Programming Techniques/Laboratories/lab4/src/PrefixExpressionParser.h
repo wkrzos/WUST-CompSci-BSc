@@ -69,7 +69,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
 
     std::map<std::string, int>::const_iterator numberOfArgsIterator = funMap.find(value);
 
-    currentNode->setValue(value);
+    currentNode->setKey(value);
 
     if (numberOfArgsIterator != funMap.end())
     {
@@ -83,7 +83,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
                 std::cout << ERROR_NOT_ENOUGH_ARGS << std::endl;
                 currentNode->getNode(i)->setNumberOfNodes(0);
                 currentNode->getNode(i)->setNodeType(CONSTANT);
-                currentNode->getNode(i)->setValue("1");
+                currentNode->getNode(i)->setKey("1");
 
                 *wasError = true;
             }

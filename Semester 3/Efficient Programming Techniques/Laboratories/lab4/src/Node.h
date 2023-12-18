@@ -53,13 +53,13 @@ public:
     std::string toString() const;
     Node* getNodes() const;
     Node* getNode(int index) const;
-    std::string getValue() const;
+    std::string getKey() const;
     int getNumberOfNodes() const;
     TYPE getNodeType() const;
 
     // Mutator Methods
     void setNode(int index, Node& node);
-    void setValue(std::string value);
+    void setKey(std::string value);
     void setNumberOfNodes(int numberOfNodes);
     void setNodeType(TYPE type);
 };

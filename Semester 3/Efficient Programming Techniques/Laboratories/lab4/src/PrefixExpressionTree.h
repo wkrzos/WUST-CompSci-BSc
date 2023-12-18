@@ -48,6 +48,7 @@ private:
     void removeArgument(std::string arg);
 
     void setArgumentValueByIndex(int index, T value);
+    std::string* splitStringIntoArray(const std::string& inputString, int* arraySize);
 
     static int stringToNumber(std::string str);
 };
@@ -137,7 +138,7 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
 
     if (currentNode->getNodeType() == CONSTANT)
     {
-        result.removeArgument(currentNode->getValue());
+        result.removeArgument(currentNode->getKey());
     }
 
     if (parent != NULL)
@@ -285,23 +286,23 @@ T PrefixExpressionTree<T>::comp(Node* currentNode)
 {
     if (currentNode->getNodeType() == CONSTANT)
     {
-        return stringToValue(currentNode->getValue());
+        return stringToValue(currentNode->getKey());
     }
     else if (currentNode->getNodeType() == OPERATION)
     {
-        if (currentNode->getValue() == "+")
+        if (currentNode->getKey() == "+")
         {
             return comp(currentNode->getNode(0)) + comp(currentNode->getNode(1));
         }
-        else if (currentNode->getValue() == "-")
+        else if (currentNode->getKey() == "-")
         {
             return comp(currentNode->getNode(0)) - comp(currentNode->getNode(1));
         }
-        else if (currentNode->getValue() == "*")
+        else if (currentNode->getKey() == "*")
         {
             return comp(currentNode->getNode(0)) * comp(currentNode->getNode(1));
         }
-        else if (currentNode->getValue() == "/")
+        else if (currentNode->getKey() == "/")
         {
             T secondNodeValue = comp(currentNode->getNode(1));
 
@@ -312,18 +313,18 @@ T PrefixExpressionTree<T>::comp(Node* currentNode)
 
             return comp(currentNode->getNode(0)) / secondNodeValue;
         }
-        else if (currentNode->getValue() == "sin")
+        else if (currentNode->getKey() == "sin")
         {
             return static_cast<int>(std::sin(comp(currentNode->getNode(0))));
         }
-        else if (currentNode->getValue() == "cos")
+        else if (currentNode->getKey() == "cos")
         {
             return static_cast<int>(std::cos(comp(currentNode->getNode(0))));
         }
     }
     else if (currentNode->getNodeType() == VARIABLE)
     {
-        typename std::map<std::string, T>::const_iterator argsIterator = argsMap.find(currentNode->getValue());
+        typename std::map<std::string, T>::const_iterator argsIterator = argsMap.find(currentNode->getKey());
 
         if (argsIterator == argsMap.end())
         {
@@ -342,15 +343,15 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
 {
     if (currentNode->getNodeType() == CONSTANT)
     {
-        return stringToValue(currentNode->getValue());
+        return stringToValue(currentNode->getKey());
     }
     else if (currentNode->getNodeType() == OPERATION)
     {
-        if (currentNode->getValue() == "+")
+        if (currentNode->getKey() == "+")
         {
             return comp(currentNode->getNode(0)) + comp(currentNode->getNode(1));
         }
-        else if (currentNode->getValue() == "-")
+        else if (currentNode->getKey() == "-")
         {
             std::string firstNodeValue = comp(currentNode->getNode(0));
             int pos = firstNodeValue.rfind(comp(currentNode->getNode(1)));
@@ -360,7 +361,7 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
             }
             return firstNodeValue;
         }
-        else if (currentNode->getValue() == "*")
+        else if (currentNode->getKey() == "*")
         {
             std::string secondValue = comp(currentNode->getNode(1));
             std::string firstValue = comp(currentNode->getNode(0));
@@ -384,7 +385,7 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
 
             return newString;
         }
-        else if (currentNode->getValue() == "/")
+        else if (currentNode->getKey() == "/")
         {
             std::string secondValue = comp(currentNode->getNode(1));
             std::string firstValue = comp(currentNode->getNode(0));
@@ -411,7 +412,7 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
     }
     else if (currentNode->getNodeType() == VARIABLE)
     {
-        std::map<std::string, std::string>::const_iterator argsIterator = argsMap.find(currentNode->getValue());
+        std::map<std::string, std::string>::const_iterator argsIterator = argsMap.find(currentNode->getKey());
 
         if (argsIterator == argsMap.end())
         {
@@ -561,6 +562,39 @@ void PrefixExpressionTree<T>::setArgumentValueByIndex(int index, T value)
     }
 
     argsMap[argsVector[index]] = value;
+}
+
+// Splits a string into an array of words. Returns the array and updates the size.
+template <typename T>
+std::string* PrefixExpressionTree<T>::splitStringIntoArray(const std::string& inputString, int* arraySize)
+{
+    std::string* wordArray = new std::string[inputString.length()]; // Allocate maximum possible size
+    int wordCount = 0;
+    std::string currentWord;
+
+    for (char ch : inputString)
+    {
+        if (ch == ' ')
+        {
+            if (!currentWord.empty())
+            {
+                wordArray[wordCount++] = currentWord;
+                currentWord.clear();
+            }
+        }
+        else
+        {
+            currentWord += ch;
+        }
+    }
+
+    if (!currentWord.empty())
+    {
+        wordArray[wordCount++] = currentWord;
+    }
+
+    *arraySize = wordCount;
+    return wordArray;
 }
 
 #endif

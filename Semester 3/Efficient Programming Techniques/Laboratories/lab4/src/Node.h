@@ -1,5 +1,5 @@
-#ifndef NODE
-#define NODE
+#ifndef NODE_H
+#define NODE_H
 
 #include <string>
 

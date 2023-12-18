@@ -16,16 +16,16 @@ class PrefixExpressionTree
 public:
     
     PrefixExpressionTree();
-    PrefixExpressionTree(const PrefixExpressionTree& other);
+    PrefixExpressionTree(const PrefixExpressionTree& otherTree);
     ~PrefixExpressionTree();
 
-    PrefixExpressionTree<T>& operator=(const PrefixExpressionTree<T>& newValue);
-    PrefixExpressionTree<T> operator+(const PrefixExpressionTree<T>& newValue) const;
+    PrefixExpressionTree<T>& operator=(const PrefixExpressionTree<T>& otherTree);
+    PrefixExpressionTree<T> operator+(const PrefixExpressionTree<T>& otherTree) const;
 
     std::string toString() const;
     void printNodes() const;
 
-    T evaluateWithVariables(std::string args);
+    T evaluateWithVariables(std::string variables);
 
     // Getter Methods
     std::string getVariables() const;
@@ -33,7 +33,7 @@ public:
     // Argument Handling
     void clearVariables();
     static T getDefaultNodeKey();
-    void setVariable(std::string arg, T value);
+    void setVariable(std::string variable, T key);
 
     void setRoot(Node* newRoot); // New method to set the root
     Node* getRoot(); // New method to access the root
@@ -45,12 +45,12 @@ private:
     std::vector<std::string> v_variables;
 
     // Helper Methods
-    bool isCorrectConstant(std::string value);
-    static T stringToConstant(std::string str);
+    bool isCorrectConstant(std::string string);
+    static T stringToConstant(std::string string);
     T evaluateWithVariables(Node* currentNode);
-    void deleteVariable(std::string arg);
-    void setVariableWithIndex(int index, T value);
-    static int stringToNumber(std::string str);
+    void deleteVariable(std::string variable);
+    void setVariableWithIndex(int index, T Key);
+    static int stringToNumber(std::string string);
     std::string* splitStringIntoArray(const std::string& inputString, int* arraySize);
 };
 
@@ -80,16 +80,22 @@ PrefixExpressionTree<T>::PrefixExpressionTree(const PrefixExpressionTree& other)
 template <typename T>
 T PrefixExpressionTree<T>::stringToConstant(std::string str)
 {
-    T i = 0;
+    T value = T(); // Initialize to default value of T
 
-    std::istringstream(str) >> i;
-    return i;
+    // Convert string to value of type T
+    std::istringstream(str) >> value;
+    return value;
 }
 
 template <>
 std::string PrefixExpressionTree<std::string>::stringToConstant(std::string str)
 {
-    return str.substr(1, str.length() - 2);
+    // Remove the first and last characters (assuming they are quotes)
+    if (str.length() > 2)
+    {
+        return str.substr(1, str.length() - 2);
+    }
+    return ""; // Return an empty string if input is too short
 }
 
 template <>
@@ -504,24 +510,20 @@ bool PrefixExpressionTree<int>::isCorrectConstant(std::string value)
 template <>
 bool PrefixExpressionTree<double>::isCorrectConstant(std::string value)
 {
-    double ld = 0;
-    return ((std::istringstream(value) >> ld >> std::ws).eof());
+    double tempDouble;
+    std::istringstream stream(value);
+    // Check if the string can be fully converted to a double
+    return (stream >> tempDouble >> std::ws).eof();
 }
 
 template <>
 bool PrefixExpressionTree<std::string>::isCorrectConstant(std::string value)
 {
-    if (value.length() < 3)
-    {
-        return false;
-    }
+    // Ensure the string is at least 3 characters long, "*", must be
+    if (value.length() < 3) {return false;}
 
-    if (value.at(0) != '"' || value.at(value.length() - 1) != '"')
-    {
-        return false;
-    }
-
-    return true;
+    // Check if the string starts and ends with double quotes
+    return (value.front() == '"' && value.back() == '"');
 }
 
 template <typename T>

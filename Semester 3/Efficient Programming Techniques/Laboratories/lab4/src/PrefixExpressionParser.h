@@ -14,7 +14,6 @@ public:
 private:
     int parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree<T>& tree);
     static const std::map<std::string, int> funMap;
-    static std::string getDefaultKey();
     static std::map<std::string, int> createFunctionMap();
 
     bool isCorrectConstant(std::string value);
@@ -22,26 +21,33 @@ private:
 };
 
 template<typename T>
-void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& peTree, std::string formula)
+void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& outputTree, std::string formula)
 {
-    if (peTree.getRoot() != nullptr) {
-        delete peTree.getRoot();
+    // Clear the existing tree if necessary
+    if (outputTree.getRoot() != nullptr) {
+        delete outputTree.getRoot();
+        outputTree.setRoot(nullptr);
     }
 
+    // Create a new root node
     Node* root = new Node();
-    peTree.setRoot(root);
+    outputTree.setRoot(root);
 
+    // Reset the state for a new parsing session
     bool wasError = false;
-    peTree.clearVariables(); // Assume this method resets variables and v_variables
+    outputTree.clearVariables(); // Resets variables and v_variables
 
-    int start = parseNodes(root, formula, 0, &wasError, peTree);
+    // Parse the nodes starting from the root
+    int start = parseNodes(root, formula, 0, &wasError, outputTree);
 
+    // Check for leftover unprocessed formula
     if (formula.length() > start)
     {
         std::cout << ERROR_WRONG_NUM_ARGS << std::endl;
         wasError = true;
     }
 
+    // Provide feedback if there was an error during parsing
     if (wasError)
     {
         std::cout << FORMULA_CORRECTED << std::endl;
@@ -51,158 +57,123 @@ void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& peTree, st
 template<typename T>
 int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree<T>& tree)
 {
-    std::string value = "";
-
-    while (formula.length() > start && formula[start] == ' ')
-    {
-        start++;
+    start = formula.find_first_not_of(' ', start);
+    if (start == std::string::npos) {
+        return formula.length();
     }
 
-    while (formula.length() > start && formula[start] != ' ')
-    {
-        value += formula[start];
-        start++;
-    }
+    // Find the end of the current token
+    int end = formula.find(' ', start);
+    std::string value = formula.substr(start, end - start);
 
-    value.erase(value.find_last_not_of(' ') + 1);
-
-    std::map<std::string, int>::const_iterator numberOfArgsIterator = funMap.find(value);
-
+    // Update the current node with the value
     currentNode->setKey(value);
 
+    auto numberOfArgsIterator = funMap.find(value);
     if (numberOfArgsIterator != funMap.end())
     {
+        // Handle operation node
         currentNode->setNodesCounter(numberOfArgsIterator->second);
         currentNode->setNodeType(OPERATION);
 
         for (int i = 0; i < currentNode->getNodesCounter(); i++)
         {
-            if (formula.length() <= start)
+            if (end == std::string::npos)
             {
                 std::cout << ERROR_NOT_ENOUGH_ARGS << std::endl;
                 currentNode->getNode(i)->setNodesCounter(0);
                 currentNode->getNode(i)->setNodeType(CONSTANT);
                 currentNode->getNode(i)->setKey("1");
-
                 *wasError = true;
+                break;
             }
             else
             {
-                start = parseNodes(currentNode->getNode(i), formula, start, wasError, tree);
+                start = parseNodes(currentNode->getNode(i), formula, end, wasError, tree);
+                end = formula.find(' ', start);
             }
         }
     }
     else if (isCorrectConstant(value))
     {
-        currentNode->setNodesCounter(0);
         currentNode->setNodeType(CONSTANT);
+        currentNode->setNodesCounter(0);
+
     }
     else if (isValidVariable(value))
-    {
-        currentNode->setNodesCounter(0);
+    {       
         currentNode->setNodeType(VARIABLE);
-
-        tree.setVariable(value, tree.getDefaultNodeKey());
+        currentNode->setNodesCounter(0);
     }
     else
     {
         std::cout << ERROR_UNKNOWN_OPERATION << std::endl;
+        *wasError = true;
     }
 
-    return start;
+    return end == std::string::npos ? formula.length() : end;
 }
 
 template <typename T>
 bool PrefixExpressionParser<T>::isValidVariable(std::string value)
 {
-    if (value.empty())
-    {
-        return false;
-    }
+  
+    bool isValid = false;
 
-    bool hasLetter = false;
+    if (value.empty()) { return isValid; }
 
-    for (size_t i = 0; i < value.length(); ++i)
+    // Check each character in the string
+    for (char ch : value)
     {
-        if (isalpha(value[i]))
+        if (isalpha(ch))
         {
-            hasLetter = true;
+            isValid = true;
         }
-        else if (!isdigit(value[i]))
+        else if (!isdigit(ch))
         {
             std::cout << ERROR_INVALID_CHARACTER << std::endl;
+            return false; // Exit early if an invalid character is found
         }
     }
 
-    return hasLetter;
+    // Return true only if at least one letter is present
+    return isValid;
 }
 
 template <typename T>
 std::map<std::string, int> PrefixExpressionParser<T>::createFunctionMap()
 {
-    return {
-        {"+", 2},
-        {"-", 2},
-        {"*", 2},
-        {"/", 2},
-        {"Sin", 1},
-        {"Cos", 1},
-    };
-}
-
-template <>
-std::map<std::string, int> PrefixExpressionParser<std::string>::createFunctionMap()
-{
-    return {
-        {"+", 2},
-        {"-", 2},
-        {"*", 2},
-        {"/", 2}
-    };
+    return {{"+", 2}, {"-", 2}, {"*", 2}, {"/", 2}, {"Sin", 1}, {"Cos", 1}};
 }
 
 template<typename T>
 const std::map<std::string, int> PrefixExpressionParser<T>::funMap = createFunctionMap();
 
-template <typename T>
-bool PrefixExpressionParser<T>::isCorrectConstant(std::string value)
-{
-    return true;
-}
-
 template <>
 bool PrefixExpressionParser<int>::isCorrectConstant(std::string value)
 {
-    return value.find_first_not_of("0123456789") == std::string::npos;
+    return value.find_first_not_of("1234567890") == std::string::npos;
 }
 
 template <>
 bool PrefixExpressionParser<double>::isCorrectConstant(std::string value)
 {
-    double ld = 0;
-    return ((std::istringstream(value) >> ld >> std::ws).eof());
+    double tempDouble;
+    std::istringstream stream(value);
+    // Check if the string can be fully converted to a double
+    return (stream >> tempDouble >> std::ws).eof();
 }
 
 template <>
 bool PrefixExpressionParser<std::string>::isCorrectConstant(std::string value)
 {
-    if (value.length() < 3)
-    {
-        return false;
-    }
+    // The only option is "x", so must be at least 3 char long
+    if (value.length() < 3) { return false; }
 
-    if (value.at(0) != '"' || value.at(value.length() - 1) != '"')
-    {
-        return false;
-    }
+    // Check if the string starts and ends with double quotes
+    return (value.front() == '"' && value.back() == '"');
 
     return true;
-}
-
-template <typename T>
-std::string PrefixExpressionParser<T>::getDefaultKey()
-{
-    return "1";
 }
 
 #endif

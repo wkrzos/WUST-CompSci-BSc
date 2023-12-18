@@ -1,54 +1,6 @@
 #include "Node.h"
 #include <string>
 
-Node::Node() : numberOfNodes(0), nodes(new Node[0]), type(NO_TYPE)
-{
-}
-
-Node::Node(const Node& otherNode) : type(otherNode.type), key(otherNode.key), numberOfNodes(otherNode.numberOfNodes)
-{
-    this->nodes = new Node[numberOfNodes];
-
-    for (int i = 0; i < numberOfNodes; i++)
-    {
-        this->nodes[i] = otherNode.nodes[i];
-    }
-}
-
-Node::~Node()
-{
-    if (nodes != NULL)
-    {
-        delete[] nodes;
-    }
-}
-
-Node& Node::operator=(const Node& newValue)
-{
-    if (this == &newValue)
-    {
-        return *this;
-    }
-
-    if (nodes != NULL)
-    {
-        delete[] nodes;
-    }
-
-    this->type = newValue.type;
-    this->key = newValue.key;
-    this->numberOfNodes = newValue.numberOfNodes;
-
-    this->nodes = new Node[numberOfNodes];
-
-    for (int i = 0; i < numberOfNodes; i++)
-    {
-        this->nodes[i] = newValue.nodes[i];
-    }
-
-    return *this;
-}
-
 std::string Node::toString() const
 {
     std::string result = key;

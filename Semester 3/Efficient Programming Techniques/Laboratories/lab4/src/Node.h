@@ -20,13 +20,34 @@ private:
     Node* nodes;
 
 public:
-    // Constructors and Destructor
-    Node();
-    Node(const Node& otherNode);
-    ~Node();
+    // Constructors
+    Node() : type(NO_TYPE) {}
+    Node(TYPE t, std::string k) : type(t), key(std::move(k)) {}
 
-    // Assignment Operator
-    Node& operator=(const Node& newValue);
+    // Copy Constructor
+    Node(const Node& otherNode) = default;
+
+    // Move Constructor
+    Node(Node&& otherNode) noexcept
+        : type(otherNode.type), key(std::move(otherNode.key)), nodes(std::move(otherNode.nodes)) {}
+
+    // Destructor (no manual memory management needed)
+    ~Node() = default;
+
+    // Copy Assignment Operator
+    Node& operator=(const Node& newValue) = default;
+
+    // Move Assignment Operator
+    Node& operator=(Node&& newValue) noexcept
+    {
+        if (this != &newValue)
+        {
+            type = newValue.type;
+            key = std::move(newValue.key);
+            nodes = std::move(newValue.nodes);
+        }
+        return *this;
+    }
 
     // Accessor Methods
     std::string toString() const;

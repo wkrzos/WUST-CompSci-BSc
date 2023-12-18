@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5e7084f-a133-4af2-b1ef-ab4c31e6c7cb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/list3/livemodification.sc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/list3/ex2.sc" beforeDir="false" afterPath="$PROJECT_DIR$/list3/ex2.sc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/list3/livemodification.ml" beforeDir="false" afterPath="$PROJECT_DIR$/list3/livemodification.ml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/list7/list7.ml" beforeDir="false" afterPath="$PROJECT_DIR$/list7/list7.ml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/list7/list7.sc" beforeDir="false" afterPath="$PROJECT_DIR$/list7/list7.sc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,15 +35,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "jdk.selected.JAVA_MODULE": "20",
-    "last_opened_file_path": "D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Tutorials"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;tep-list-4-ref&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;20&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Tutorials&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Programming Projects\WUST-CompSci-BSc\Semester 3\Programming Paradigms\Laboratories\list2" />

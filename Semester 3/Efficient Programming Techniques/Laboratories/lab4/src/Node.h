@@ -57,15 +57,15 @@ public:
     std::string getKey() const;
     TYPE getNodeType() const;
 
-    Node* getNodes() const;
     Node* getNode(int index) const;
+    Node* getNodes() const;
 
     // Mutator Methods
+    void setNode(int index, Node& node);
+
     void setNodesCounter(int numberOfNodes);
     void setKey(std::string value);
     void setNodeType(TYPE type);
-
-    void setNode(int index, Node& node);
 };
 
 #endif

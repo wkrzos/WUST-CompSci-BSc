@@ -1,4 +1,4 @@
-#ifndef EXPRESSION_TREE_INTERFACE_H
+﻿#ifndef EXPRESSION_TREE_INTERFACE_H
 #define EXPRESSION_TREE_INTERFACE_H
 
 #include "PrefixExpressionTree.h"
@@ -203,3 +203,5 @@ std::string ExpressionTreeInterface<T>::joinArrayIntoString(const std::string* s
 }
 
 #endif // EXPRESSION_TREE_INTERFACE_H
+
+//Jak mam drzewo doubli to każde mnożenie zwraca zero

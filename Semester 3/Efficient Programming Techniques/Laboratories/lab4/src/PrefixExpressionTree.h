@@ -3,6 +3,7 @@
 
 #include "Node.h"
 #include <map>
+#include <cmath>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -316,16 +317,73 @@ T PrefixExpressionTree<T>::evaluateWithVariables(Node* currentNode)
         }
         else if (currentNode->getKey() == "sin")
         {
-            return (std::sin(evaluateWithVariables(currentNode->getNode(0))));
+            return sin(evaluateWithVariables(currentNode->getNode(0)));
         }
         else if (currentNode->getKey() == "cos")
         {
-            return (std::cos(evaluateWithVariables(currentNode->getNode(0))));
+            return cos(evaluateWithVariables(currentNode->getNode(0)));
         }
     }
     else if (currentNode->getNodeType() == VARIABLE)
     {
         typename std::map<std::string, T>::const_iterator argsIterator = variables.find(currentNode->getKey());
+
+        if (argsIterator == variables.end())
+        {
+            std::cout << ERROR_UNKNOWN_ARG << std::endl;
+            return getDefaultNodeKey();
+        }
+
+        return argsIterator->second;
+    }
+
+    return getDefaultNodeKey();
+}
+
+template <>
+double PrefixExpressionTree<double>::evaluateWithVariables(Node* currentNode)
+{
+    if (currentNode->getNodeType() == CONSTANT)
+    {
+        return stringToConstant(currentNode->getKey());
+    }
+    else if (currentNode->getNodeType() == OPERATION)
+    {
+        if (currentNode->getKey() == "+")
+        {
+            return evaluateWithVariables(currentNode->getNode(0)) + evaluateWithVariables(currentNode->getNode(1));
+        }
+        else if (currentNode->getKey() == "-")
+        {
+            return evaluateWithVariables(currentNode->getNode(0)) - evaluateWithVariables(currentNode->getNode(1));
+        }
+        else if (currentNode->getKey() == "*")
+        {
+            return 0;
+        }
+        else if (currentNode->getKey() == "/")
+        {
+            double secondNodeValue = evaluateWithVariables(currentNode->getNode(1));
+
+            if (secondNodeValue == 0)
+            {
+                throw std::invalid_argument(ERROR_DIVISION_BY_ZERO);
+            }
+
+            return evaluateWithVariables(currentNode->getNode(0)) / secondNodeValue;
+        }
+        else if (currentNode->getKey() == "sin")
+        {
+            return sin(evaluateWithVariables(currentNode->getNode(0)));
+        }
+        else if (currentNode->getKey() == "cos")
+        {
+            return cos(evaluateWithVariables(currentNode->getNode(0)));
+        }
+    }
+    else if (currentNode->getNodeType() == VARIABLE)
+    {
+        typename std::map<std::string, double>::const_iterator argsIterator = variables.find(currentNode->getKey());
 
         if (argsIterator == variables.end())
         {

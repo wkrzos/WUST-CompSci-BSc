@@ -20,7 +20,7 @@ def modifiedPascalF(n: Int): List[Int] = {
       // Generate the previous row using recursion.
       val previousRow = generateRow(row - 1)
       // Determine the operation (addition or subtraction) based on the row's parity.
-      val operation: (Int, Int) => Int = if (row % 2 == 0) (x, y) => x + y else (x, y) => x - y
+      val operation: (Int, Int) => Int = if (row % 2 == 0) _ + _ else _ - _
       // Construct the current row by prepending 1 and performing element-wise operations.
       1 :: elementWiseOperation(previousRow, previousRow.tail, operation)
   }

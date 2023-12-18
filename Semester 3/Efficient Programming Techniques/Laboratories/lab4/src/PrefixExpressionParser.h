@@ -3,8 +3,6 @@
 
 #include "PrefixExpressionTree.h"
 #include "PrefixExpressionParser.h"
-#include <sstream>
-#include <iostream>
 #include "Constants.h" // Include Constants.h for error messages
 
 template<typename T>
@@ -73,15 +71,15 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
 
     if (numberOfArgsIterator != funMap.end())
     {
-        currentNode->setNumberOfNodes(numberOfArgsIterator->second);
+        currentNode->setNodesCounter(numberOfArgsIterator->second);
         currentNode->setNodeType(OPERATION);
 
-        for (int i = 0; i < currentNode->getNumberOfNodes(); i++)
+        for (int i = 0; i < currentNode->getNodesCounter(); i++)
         {
             if (formula.length() <= start)
             {
                 std::cout << ERROR_NOT_ENOUGH_ARGS << std::endl;
-                currentNode->getNode(i)->setNumberOfNodes(0);
+                currentNode->getNode(i)->setNodesCounter(0);
                 currentNode->getNode(i)->setNodeType(CONSTANT);
                 currentNode->getNode(i)->setKey("1");
 
@@ -95,12 +93,12 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
     }
     else if (value.find_first_not_of("0123456789") == std::string::npos)
     {
-        currentNode->setNumberOfNodes(0);
+        currentNode->setNodesCounter(0);
         currentNode->setNodeType(CONSTANT);
     }
     else if (isValidArgument(value))
     {
-        currentNode->setNumberOfNodes(0);
+        currentNode->setNodesCounter(0);
         currentNode->setNodeType(VARIABLE);
 
         tree.setArgumentValue(value, tree.getDefaultNoop());

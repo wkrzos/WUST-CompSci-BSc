@@ -3,13 +3,10 @@
 
 #include "Node.h"
 #include <map>
-#include <sstream>
 #include <string>
 #include <vector>
-#include "stringUtils.h"
 #include <iostream>
 #include <sstream>
-#include <valarray>
 #include <numeric>
 #include "Constants.h" // Include Constants.h for error messages and type descriptions
 
@@ -128,10 +125,10 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
     Node* currentNode = result.root;
     Node* parent = NULL;
 
-    while (currentNode->getNumberOfNodes() > 0)
+    while (currentNode->getNodesCounter() > 0)
     {
         parent = currentNode;
-        currentNode = currentNode->getNode(currentNode->getNumberOfNodes() - 1);
+        currentNode = currentNode->getNode(currentNode->getNodesCounter() - 1);
     }
 
     Node* newNode = new Node(*newValue.root);
@@ -143,7 +140,7 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
 
     if (parent != NULL)
     {
-        parent->setNode(parent->getNumberOfNodes() - 1, *newNode);
+        parent->setNode(parent->getNodesCounter() - 1, *newNode);
     }
     else
     {
@@ -274,7 +271,7 @@ void PrefixExpressionTree<T>::printNodes() const
 {
     if (root != NULL)
     {
-        for (int i = 0; i < root->getNumberOfNodes(); i++)
+        for (int i = 0; i < root->getNodesCounter(); i++)
         {
             std::cout << root->getNode(i)->toString() << std::endl;
         }

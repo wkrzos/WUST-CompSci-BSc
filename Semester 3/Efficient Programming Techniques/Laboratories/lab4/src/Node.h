@@ -14,7 +14,7 @@ enum TYPE
 class Node
 {
 private:
-    int numberOfNodes;
+    int nodesCounter;
     TYPE type;
     std::string key;
     Node* nodes;
@@ -49,19 +49,23 @@ public:
         return *this;
     }
 
-    // Accessor Methods
+    // Util
     std::string toString() const;
-    Node* getNodes() const;
-    Node* getNode(int index) const;
+
+    // Accessor Methods
+    int getNodesCounter() const;
     std::string getKey() const;
-    int getNumberOfNodes() const;
     TYPE getNodeType() const;
 
+    Node* getNodes() const;
+    Node* getNode(int index) const;
+
     // Mutator Methods
-    void setNode(int index, Node& node);
+    void setNodesCounter(int numberOfNodes);
     void setKey(std::string value);
-    void setNumberOfNodes(int numberOfNodes);
     void setNodeType(TYPE type);
+
+    void setNode(int index, Node& node);
 };
 
 #endif

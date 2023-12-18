@@ -5,7 +5,7 @@ std::string Node::toString() const
 {
     std::string result = key;
 
-    for (int i = 0; i < numberOfNodes; i++)
+    for (int i = 0; i < nodesCounter; i++)
     {
         result += " " + nodes[i].toString();
     }
@@ -13,9 +13,9 @@ std::string Node::toString() const
     return result;
 }
 
-Node* Node::getNodes() const
+std::string Node::getKey() const
 {
-    return nodes;
+    return key;
 }
 
 Node* Node::getNode(int index) const
@@ -23,14 +23,14 @@ Node* Node::getNode(int index) const
     return &nodes[index];
 }
 
-std::string Node::getKey() const
+Node* Node::getNodes() const
 {
-    return key;
+    return nodes;
 }
 
-int Node::getNumberOfNodes() const
+int Node::getNodesCounter() const
 {
-    return numberOfNodes;
+    return nodesCounter;
 }
 
 TYPE Node::getNodeType() const
@@ -38,9 +38,9 @@ TYPE Node::getNodeType() const
     return type;
 }
 
-void Node::setNumberOfNodes(int numberOfNodes)
+void Node::setNodesCounter(int numberOfNodes)
 {
-    this->numberOfNodes = numberOfNodes;
+    this->nodesCounter = numberOfNodes;
     this->nodes = new Node[numberOfNodes];
 }
 
@@ -56,7 +56,7 @@ void Node::setKey(std::string value)
 
 void Node::setNode(int index, Node& node)
 {
-    if (index >= numberOfNodes)
+    if (index >= nodesCounter)
     {
         return;
     }

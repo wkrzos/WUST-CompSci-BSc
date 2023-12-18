@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Node.cpp" />
-    <ClCompile Include="src\stringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Constants.h" />
@@ -149,7 +148,6 @@
     <ClInclude Include="src\PrefixExpressionParser.h" />
     <ClInclude Include="src\PrefixExpressionTree.h" />
     <ClInclude Include="src\ExpressionTreeInterface.h" />
-    <ClInclude Include="src\stringUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

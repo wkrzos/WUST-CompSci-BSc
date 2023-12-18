@@ -13,11 +13,12 @@ public:
 
 private:
     int parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree<T>& tree);
-    bool isCorrectConstant(std::string value);
-    bool isValidArgument(std::string value);
-    static std::string getDefaultValue();
     static const std::map<std::string, int> funMap;
+    static std::string getDefaultValue();
     static std::map<std::string, int> createFunctionMap();
+
+    bool isCorrectConstant(std::string value);
+    bool isValidVariable(std::string value);
 };
 
 template<typename T>
@@ -96,7 +97,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
         currentNode->setNodesCounter(0);
         currentNode->setNodeType(CONSTANT);
     }
-    else if (isValidArgument(value))
+    else if (isValidVariable(value))
     {
         currentNode->setNodesCounter(0);
         currentNode->setNodeType(VARIABLE);
@@ -112,7 +113,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
 }
 
 template <typename T>
-bool PrefixExpressionParser<T>::isValidArgument(std::string value)
+bool PrefixExpressionParser<T>::isValidVariable(std::string value)
 {
     if (value.empty())
     {
@@ -120,6 +121,7 @@ bool PrefixExpressionParser<T>::isValidArgument(std::string value)
     }
 
     bool hasLetter = false;
+
     for (size_t i = 0; i < value.length(); ++i)
     {
         if (isalpha(value[i]))

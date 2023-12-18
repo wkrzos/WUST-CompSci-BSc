@@ -13,7 +13,7 @@ public:
     static void run();
 
 private:
-    static void executeCommand(PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, const std::string& command, std::string* arguments, int argumentCount);
+    static void executeCommand(PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, const std::string& command, std::string* variables, int argumentCount);
 
     static void handleEnterCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size);
     static void handleVarsCommand(const PrefixExpressionTree<T>& tree);
@@ -39,11 +39,11 @@ void ExpressionTreeInterface<T>::run()
         std::string userStringInput;
         std::getline(std::cin, userStringInput);
 
-        std::string* arguments = splitStringIntoArray(userStringInput, &numOfArgs);
+        std::string* variables = splitStringIntoArray(userStringInput, &numOfArgs);
 
         if (numOfArgs > 0)
         {
-            std::string command = arguments[0];
+            std::string command = variables[0];
 
             if (command == "exit")
             {
@@ -51,7 +51,7 @@ void ExpressionTreeInterface<T>::run()
             }
             else
             {
-                executeCommand(currentTree, currentParser, command, arguments, numOfArgs);
+                executeCommand(currentTree, currentParser, command, variables, numOfArgs);
             }
         }
         else
@@ -62,10 +62,10 @@ void ExpressionTreeInterface<T>::run()
 }
 
 template <typename T>
-void ExpressionTreeInterface<T>::executeCommand(PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, const std::string& command, std::string* arguments, int argumentCount) {
+void ExpressionTreeInterface<T>::executeCommand(PrefixExpressionTree<T>& currentTree, PrefixExpressionParser<T>& parser, const std::string& command, std::string* variables, int argumentCount) {
     if (command == "enter")
     {
-        handleEnterCommand(currentTree, parser, arguments, argumentCount);
+        handleEnterCommand(currentTree, parser, variables, argumentCount);
     }
     else if (command == "vars")
     {
@@ -73,11 +73,11 @@ void ExpressionTreeInterface<T>::executeCommand(PrefixExpressionTree<T>& current
     }
     else if (command == "comp")
     {
-        handleCompCommand(currentTree, arguments, argumentCount);
+        handleCompCommand(currentTree, variables, argumentCount);
     }
     else if (command == "join")
     {
-        handleJoinCommand(currentTree, parser, arguments, argumentCount);
+        handleJoinCommand(currentTree, parser, variables, argumentCount);
     }
     else if (command == "print")
     {
@@ -92,40 +92,32 @@ void ExpressionTreeInterface<T>::executeCommand(PrefixExpressionTree<T>& current
 template <typename T>
 void ExpressionTreeInterface<T>::handleEnterCommand(PrefixExpressionTree<T>& tree, PrefixExpressionParser<T>& parser, std::string* args, int size)
 {
-    if (size >= 2)
-    {
-        std::string formula = joinArrayIntoString(args + 1, size - 1);
-        parser.parseFormula(tree, formula);
-    }
-    else
+    if (size < 2)
     {
         std::cout << MESSAGE_WRONG_ENTER_COMMAND << std::endl;
         return;
+    }
+    else
+    {
+        std::string formula = joinArrayIntoString(args + 1, size - 1);
+        parser.parseFormula(tree, formula);
     }
 }
 
 template <typename T>
 void ExpressionTreeInterface<T>::handleVarsCommand(const PrefixExpressionTree<T>& tree)
 {
-    std::cout << MESSAGE_RESULT_VARS << tree.getArgumentsList() << std::endl;
+    std::cout << MESSAGE_RESULT_VARS << tree.getVariables() << std::endl;
 }
 
 template <typename T>
 void ExpressionTreeInterface<T>::handleCompCommand(PrefixExpressionTree<T>& tree, std::string* args, int size)
 {
-    if (size >= 2)
-    {
-        std::string formula = joinArrayIntoString(args + 1, size - 1);
+    std::string formula = joinArrayIntoString(args + 1, size - 1);
 
-        T result = tree.comp(formula); // TODO: change to T
+    T result = tree.evaluateWithVariables(formula); // TODO: change to T
 
-        std::cout << MESSAGE_RESULT << result << std::endl;
-    }
-    else
-    {
-        std::cout << MESSAGE_WRONG_COMP_COMMAND << std::endl;
-        return;
-    }
+    std::cout << MESSAGE_RESULT << result << std::endl;
 }
 
 template <typename T>

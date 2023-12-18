@@ -13,7 +13,7 @@ public:
 
 private:
     int parseNodes(Node* currentNode, std::string formula, int start, bool* wasError, PrefixExpressionTree<T>& tree);
-    bool isValidValue(std::string value);
+    bool isCorrectConstant(std::string value);
     bool isValidArgument(std::string value);
     static std::string getDefaultValue();
     static const std::map<std::string, int> funMap;
@@ -31,7 +31,7 @@ void PrefixExpressionParser<T>::parseFormula(PrefixExpressionTree<T>& peTree, st
     peTree.setRoot(root);
 
     bool wasError = false;
-    peTree.clearArguments(); // Assume this method resets argsMap and argsVector
+    peTree.clearVariables(); // Assume this method resets variables and v_variables
 
     int start = parseNodes(root, formula, 0, &wasError, peTree);
 
@@ -101,7 +101,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
         currentNode->setNodesCounter(0);
         currentNode->setNodeType(VARIABLE);
 
-        tree.setArgumentValue(value, tree.getDefaultNoop());
+        tree.setVariable(value, tree.getDefaultNodeKey());
     }
     else
     {
@@ -138,55 +138,51 @@ bool PrefixExpressionParser<T>::isValidArgument(std::string value)
 template <typename T>
 std::map<std::string, int> PrefixExpressionParser<T>::createFunctionMap()
 {
-    std::map<std::string, int> m;
-
-    m["sin"] = 1;
-    m["cos"] = 1;
-    m["+"] = 2;
-    m["-"] = 2;
-    m["*"] = 2;
-    m["/"] = 2;
-
-    return m;
+    return {
+        {"+", 2},
+        {"-", 2},
+        {"*", 2},
+        {"/", 2},
+        {"Sin", 1},
+        {"Cos", 1},
+    };
 }
 
 template <>
 std::map<std::string, int> PrefixExpressionParser<std::string>::createFunctionMap()
 {
-    std::map<std::string, int> m;
-
-    m["+"] = 2;
-    m["-"] = 2;
-    m["*"] = 2;
-    m["/"] = 2;
-
-    return m;
+    return {
+        {"+", 2},
+        {"-", 2},
+        {"*", 2},
+        {"/", 2}
+    };
 }
 
 template<typename T>
 const std::map<std::string, int> PrefixExpressionParser<T>::funMap = createFunctionMap();
 
 template <typename T>
-bool PrefixExpressionParser<T>::isValidValue(std::string value)
+bool PrefixExpressionParser<T>::isCorrectConstant(std::string value)
 {
     return true;
 }
 
 template <>
-bool PrefixExpressionParser<int>::isValidValue(std::string value)
+bool PrefixExpressionParser<int>::isCorrectConstant(std::string value)
 {
     return value.find_first_not_of("0123456789") == std::string::npos;
 }
 
 template <>
-bool PrefixExpressionParser<double>::isValidValue(std::string value)
+bool PrefixExpressionParser<double>::isCorrectConstant(std::string value)
 {
     double ld = 0;
     return ((std::istringstream(value) >> ld >> std::ws).eof());
 }
 
 template <>
-bool PrefixExpressionParser<std::string>::isValidValue(std::string value)
+bool PrefixExpressionParser<std::string>::isCorrectConstant(std::string value)
 {
     if (value.length() < 3)
     {

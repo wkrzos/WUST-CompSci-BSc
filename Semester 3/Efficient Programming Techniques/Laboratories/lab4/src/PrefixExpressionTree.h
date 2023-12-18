@@ -14,6 +14,7 @@ template <typename T>
 class PrefixExpressionTree
 {
 public:
+    
     PrefixExpressionTree();
     PrefixExpressionTree(const PrefixExpressionTree& other);
     ~PrefixExpressionTree();
@@ -22,36 +23,39 @@ public:
     PrefixExpressionTree<T> operator+(const PrefixExpressionTree<T>& newValue) const;
 
     std::string toString() const;
-    T comp(std::string args);
-    std::string getArgumentsList() const;
     void printNodes() const;
 
-    std::string getKnownType();
-    static T getDefaultNoop();
+    T evaluateWithVariables(std::string args);
 
-    void clearArguments();
+    // Getter Methods
+    std::string getVariables() const;
+
+    // Argument Handling
+    void clearVariables();
+    static T getDefaultNodeKey();
+    void setVariable(std::string arg, T value);
 
     void setRoot(Node* newRoot); // New method to set the root
     Node* getRoot(); // New method to access the root
-    void setArgumentValue(std::string arg, T value);
 
 private:
     Node* root;
-    bool isValidValue(std::string value);
-    static T stringToValue(std::string str);
-    T comp(Node* currentNode);
-    std::map<std::string, T> argsMap;
-    std::vector<std::string> argsVector;
-    void removeArgument(std::string arg);
 
-    void setArgumentValueByIndex(int index, T value);
-    std::string* splitStringIntoArray(const std::string& inputString, int* arraySize);
+    std::map<std::string, T> variables;
+    std::vector<std::string> v_variables;
 
+    // Helper Methods
+    bool isCorrectConstant(std::string value);
+    static T stringToConstant(std::string str);
+    T evaluateWithVariables(Node* currentNode);
+    void deleteVariable(std::string arg);
+    void setVariableWithIndex(int index, T value);
     static int stringToNumber(std::string str);
+    std::string* splitStringIntoArray(const std::string& inputString, int* arraySize);
 };
 
 template <typename T>
-PrefixExpressionTree<T>::PrefixExpressionTree() : root(NULL), argsMap(), argsVector()
+PrefixExpressionTree<T>::PrefixExpressionTree() : root(NULL), variables(), v_variables()
 {
 }
 
@@ -69,36 +73,12 @@ PrefixExpressionTree<T>::PrefixExpressionTree(const PrefixExpressionTree& other)
         root = new Node(*other.root);
     }
 
-    argsMap = other.argsMap;
-    argsVector = other.argsVector;
+    variables = other.variables;
+    v_variables = other.v_variables;
 }
 
 template <typename T>
-T PrefixExpressionTree<T>::getDefaultNoop()
-{
-    return T();
-}
-
-template <>
-int PrefixExpressionTree<int>::getDefaultNoop()
-{
-    return -401;
-}
-
-template <>
-double PrefixExpressionTree<double>::getDefaultNoop()
-{
-    return -401;
-}
-
-template <>
-std::string PrefixExpressionTree<std::string>::getDefaultNoop()
-{
-    return "-401";
-}
-
-template <typename T>
-T PrefixExpressionTree<T>::stringToValue(std::string str)
+T PrefixExpressionTree<T>::stringToConstant(std::string str)
 {
     T i = 0;
 
@@ -107,9 +87,27 @@ T PrefixExpressionTree<T>::stringToValue(std::string str)
 }
 
 template <>
-std::string PrefixExpressionTree<std::string>::stringToValue(std::string str)
+std::string PrefixExpressionTree<std::string>::stringToConstant(std::string str)
 {
     return str.substr(1, str.length() - 2);
+}
+
+template <>
+int PrefixExpressionTree<int>::getDefaultNodeKey()
+{
+    return -401;
+}
+
+template <>
+double PrefixExpressionTree<double>::getDefaultNodeKey()
+{
+    return -401;
+}
+
+template <>
+std::string PrefixExpressionTree<std::string>::getDefaultNodeKey()
+{
+    return "-401";
 }
 
 template <typename T>
@@ -135,7 +133,7 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
 
     if (currentNode->getNodeType() == CONSTANT)
     {
-        result.removeArgument(currentNode->getKey());
+        result.deleteVariable(currentNode->getKey());
     }
 
     if (parent != NULL)
@@ -147,24 +145,24 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
         result.root = newNode;
     }
 
-    for (int i = 0; i < newValue.argsVector.size(); i++)
+    for (int i = 0; i < newValue.v_variables.size(); i++)
     {
-        result.setArgumentValue(newValue.argsVector[i], getDefaultNoop());
+        result.setVariable(newValue.v_variables[i], getDefaultNodeKey());
     }
 
-    // Merge argsMap and argsVector
-    for (const auto& arg : newValue.argsMap)
+    // Merge variables and v_variables
+    for (const auto& arg : newValue.variables)
     {
         // How to handle conflicts here?
-        result.argsMap[arg.first] = arg.second;
+        result.variables[arg.first] = arg.second;
     }
 
-    // Update argsVector
-    for (const auto& arg : newValue.argsVector)
+    // Update v_variables
+    for (const auto& arg : newValue.v_variables)
     {
-        if (std::find(result.argsVector.begin(), result.argsVector.end(), arg) == result.argsVector.end())
+        if (std::find(result.v_variables.begin(), result.v_variables.end(), arg) == result.v_variables.end())
         {
-            result.argsVector.push_back(arg);
+            result.v_variables.push_back(arg);
         }
     }
 
@@ -189,35 +187,35 @@ PrefixExpressionTree<T>& PrefixExpressionTree<T>::operator=(const PrefixExpressi
         root = new Node(*newValue.root);
     }
 
-    for (int i = 0; i < newValue.argsVector.size(); i++)
+    for (int i = 0; i < newValue.v_variables.size(); i++)
     {
-        setArgumentValue(newValue.argsVector[i], getDefaultNoop());
+        setVariable(newValue.v_variables[i], getDefaultNodeKey());
     }
 
     return *this;
 }
 
 template <typename T>
-T PrefixExpressionTree<T>::comp(std::string args)
+T PrefixExpressionTree<T>::evaluateWithVariables(std::string args)
 {
     int size = 0;
 
     std::string* argsArray = splitStringIntoArray(args, &size);
 
-    if (size != argsMap.size())
+    if (size != variables.size())
     {
         std::cout << ERROR_WRONG_NUM_ARGS << std::endl;
 
         delete[] argsArray;
 
-        return getDefaultNoop();
+        return getDefaultNodeKey();
     }
 
     for (int i = 0; i < size; i++)
     {
-        if (isValidValue(argsArray[i]))
+        if (isCorrectConstant(argsArray[i]))
         {
-            setArgumentValueByIndex(i, stringToValue(argsArray[i]));
+            setVariableWithIndex(i, stringToConstant(argsArray[i]));
         }
         else
         {
@@ -225,7 +223,7 @@ T PrefixExpressionTree<T>::comp(std::string args)
 
             delete[] argsArray;
 
-            return getDefaultNoop();
+            return getDefaultNodeKey();
         }
     }
 
@@ -235,10 +233,10 @@ T PrefixExpressionTree<T>::comp(std::string args)
 
         delete[] argsArray;
 
-        return getDefaultNoop();
+        return getDefaultNodeKey();
     }
 
-    T result = comp(root);
+    T result = evaluateWithVariables(root);
 
     delete[] argsArray;
 
@@ -246,18 +244,18 @@ T PrefixExpressionTree<T>::comp(std::string args)
 }
 
 template <typename T>
-std::string PrefixExpressionTree<T>::getArgumentsList() const
+std::string PrefixExpressionTree<T>::getVariables() const
 {
-    if (argsVector.empty())
+    if (v_variables.empty())
     {
         return "";
     }
 
     std::string result;
-    result.reserve(std::accumulate(argsVector.begin(), argsVector.end(), 0,
+    result.reserve(std::accumulate(v_variables.begin(), v_variables.end(), 0,
         [](size_t sum, const std::string& str) { return sum + str.length() + 1; }));
 
-    for (const auto& arg : argsVector)
+    for (const auto& arg : v_variables)
     {
         result += arg + " ";
     }
@@ -279,89 +277,89 @@ void PrefixExpressionTree<T>::printNodes() const
 }
 
 template <typename T>
-T PrefixExpressionTree<T>::comp(Node* currentNode)
+T PrefixExpressionTree<T>::evaluateWithVariables(Node* currentNode)
 {
     if (currentNode->getNodeType() == CONSTANT)
     {
-        return stringToValue(currentNode->getKey());
+        return stringToConstant(currentNode->getKey());
     }
     else if (currentNode->getNodeType() == OPERATION)
     {
         if (currentNode->getKey() == "+")
         {
-            return comp(currentNode->getNode(0)) + comp(currentNode->getNode(1));
+            return evaluateWithVariables(currentNode->getNode(0)) + evaluateWithVariables(currentNode->getNode(1));
         }
         else if (currentNode->getKey() == "-")
         {
-            return comp(currentNode->getNode(0)) - comp(currentNode->getNode(1));
+            return evaluateWithVariables(currentNode->getNode(0)) - evaluateWithVariables(currentNode->getNode(1));
         }
         else if (currentNode->getKey() == "*")
         {
-            return comp(currentNode->getNode(0)) * comp(currentNode->getNode(1));
+            return evaluateWithVariables(currentNode->getNode(0)) * evaluateWithVariables(currentNode->getNode(1));
         }
         else if (currentNode->getKey() == "/")
         {
-            T secondNodeValue = comp(currentNode->getNode(1));
+            T secondNodeValue = evaluateWithVariables(currentNode->getNode(1));
 
             if (secondNodeValue == 0)
             {
                 throw std::invalid_argument(ERROR_DIVISION_BY_ZERO);
             }
 
-            return comp(currentNode->getNode(0)) / secondNodeValue;
+            return evaluateWithVariables(currentNode->getNode(0)) / secondNodeValue;
         }
         else if (currentNode->getKey() == "sin")
         {
-            return static_cast<int>(std::sin(comp(currentNode->getNode(0))));
+            return (std::sin(evaluateWithVariables(currentNode->getNode(0))));
         }
         else if (currentNode->getKey() == "cos")
         {
-            return static_cast<int>(std::cos(comp(currentNode->getNode(0))));
+            return (std::cos(evaluateWithVariables(currentNode->getNode(0))));
         }
     }
     else if (currentNode->getNodeType() == VARIABLE)
     {
-        typename std::map<std::string, T>::const_iterator argsIterator = argsMap.find(currentNode->getKey());
+        typename std::map<std::string, T>::const_iterator argsIterator = variables.find(currentNode->getKey());
 
-        if (argsIterator == argsMap.end())
+        if (argsIterator == variables.end())
         {
             std::cout << ERROR_UNKNOWN_ARG << std::endl;
-            return getDefaultNoop();
+            return getDefaultNodeKey();
         }
 
         return argsIterator->second;
     }
 
-    return getDefaultNoop();
+    return getDefaultNodeKey();
 }
 
 template <>
-std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
+std::string PrefixExpressionTree<std::string>::evaluateWithVariables(Node* currentNode)
 {
     if (currentNode->getNodeType() == CONSTANT)
     {
-        return stringToValue(currentNode->getKey());
+        return stringToConstant(currentNode->getKey());
     }
     else if (currentNode->getNodeType() == OPERATION)
     {
         if (currentNode->getKey() == "+")
         {
-            return comp(currentNode->getNode(0)) + comp(currentNode->getNode(1));
+            return evaluateWithVariables(currentNode->getNode(0)) + evaluateWithVariables(currentNode->getNode(1));
         }
         else if (currentNode->getKey() == "-")
         {
-            std::string firstNodeValue = comp(currentNode->getNode(0));
-            int pos = firstNodeValue.rfind(comp(currentNode->getNode(1)));
+            std::string firstNodeValue = evaluateWithVariables(currentNode->getNode(0));
+            int pos = firstNodeValue.rfind(evaluateWithVariables(currentNode->getNode(1)));
             if (pos != std::string::npos)
             {
-                firstNodeValue.erase(pos, comp(currentNode->getNode(0)).length());
+                firstNodeValue.erase(pos, evaluateWithVariables(currentNode->getNode(0)).length());
             }
             return firstNodeValue;
         }
         else if (currentNode->getKey() == "*")
         {
-            std::string secondValue = comp(currentNode->getNode(1));
-            std::string firstValue = comp(currentNode->getNode(0));
+            std::string secondValue = evaluateWithVariables(currentNode->getNode(1));
+            std::string firstValue = evaluateWithVariables(currentNode->getNode(0));
 
             if (secondValue.length() < 1)
             {
@@ -384,8 +382,8 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
         }
         else if (currentNode->getKey() == "/")
         {
-            std::string secondValue = comp(currentNode->getNode(1));
-            std::string firstValue = comp(currentNode->getNode(0));
+            std::string secondValue = evaluateWithVariables(currentNode->getNode(1));
+            std::string firstValue = evaluateWithVariables(currentNode->getNode(0));
 
             if (secondValue.length() < 1)
             {
@@ -409,58 +407,58 @@ std::string PrefixExpressionTree<std::string>::comp(Node* currentNode)
     }
     else if (currentNode->getNodeType() == VARIABLE)
     {
-        std::map<std::string, std::string>::const_iterator argsIterator = argsMap.find(currentNode->getKey());
+        std::map<std::string, std::string>::const_iterator argsIterator = variables.find(currentNode->getKey());
 
-        if (argsIterator == argsMap.end())
+        if (argsIterator == variables.end())
         {
             std::cout << ERROR_UNKNOWN_ARG << std::endl;
-            return getDefaultNoop();
+            return getDefaultNodeKey();
         }
 
         return argsIterator->second;
     }
 
-    return getDefaultNoop();
+    return getDefaultNodeKey();
 }
 
 template <typename T>
-void PrefixExpressionTree<T>::clearArguments()
+void PrefixExpressionTree<T>::clearVariables()
 {
-    argsMap.clear();
-    argsVector.clear();
+    variables.clear();
+    v_variables.clear();
 }
 
 template <typename T>
-void PrefixExpressionTree<T>::removeArgument(std::string arg)
+void PrefixExpressionTree<T>::deleteVariable(std::string arg)
 {
-    typename std::map<std::string, T>::const_iterator argsIterator = argsMap.find(arg);
+    typename std::map<std::string, T>::const_iterator argsIterator = variables.find(arg);
 
-    if (argsIterator != argsMap.end())
+    if (argsIterator != variables.end())
     {
-        argsMap.erase(arg);
+        variables.erase(arg);
     }
 
-    for (int i = 0; i < argsVector.size(); i++)
+    for (int i = 0; i < v_variables.size(); i++)
     {
-        if (argsVector[i] == arg)
+        if (v_variables[i] == arg)
         {
-            argsVector.erase(argsVector.begin() + i);
+            v_variables.erase(v_variables.begin() + i);
             break;
         }
     }
 }
 
 template <typename T>
-void PrefixExpressionTree<T>::setArgumentValue(std::string arg, T value)
+void PrefixExpressionTree<T>::setVariable(std::string arg, T value)
 {
-    typename std::map<std::string, T>::const_iterator argsIterator = argsMap.find(arg);
+    typename std::map<std::string, T>::const_iterator argsIterator = variables.find(arg);
 
-    if (argsIterator == argsMap.end())
+    if (argsIterator == variables.end())
     {
-        argsVector.push_back(arg);
+        v_variables.push_back(arg);
     }
 
-    argsMap[arg] = value;
+    variables[arg] = value;
 }
 
 template <typename T>
@@ -492,50 +490,26 @@ Node* PrefixExpressionTree<T>::getRoot()
 }
 
 template <typename T>
-std::string PrefixExpressionTree<T>::getKnownType()
-{
-    return "UNSPECIFIED";
-}
-
-template <>
-std::string PrefixExpressionTree<int>::getKnownType()
-{
-    return "INT";
-}
-
-template <>
-std::string PrefixExpressionTree<double>::getKnownType()
-{
-    return "DOUBLE";
-}
-
-template <>
-std::string PrefixExpressionTree<std::string>::getKnownType()
-{
-    return "STRING";
-}
-
-template <typename T>
-bool PrefixExpressionTree<T>::isValidValue(std::string value)
+bool PrefixExpressionTree<T>::isCorrectConstant(std::string value)
 {
     return true;
 }
 
 template <>
-bool PrefixExpressionTree<int>::isValidValue(std::string value)
+bool PrefixExpressionTree<int>::isCorrectConstant(std::string value)
 {
     return value.find_first_not_of("0123456789") == std::string::npos;
 }
 
 template <>
-bool PrefixExpressionTree<double>::isValidValue(std::string value)
+bool PrefixExpressionTree<double>::isCorrectConstant(std::string value)
 {
     double ld = 0;
     return ((std::istringstream(value) >> ld >> std::ws).eof());
 }
 
 template <>
-bool PrefixExpressionTree<std::string>::isValidValue(std::string value)
+bool PrefixExpressionTree<std::string>::isCorrectConstant(std::string value)
 {
     if (value.length() < 3)
     {
@@ -551,14 +525,14 @@ bool PrefixExpressionTree<std::string>::isValidValue(std::string value)
 }
 
 template <typename T>
-void PrefixExpressionTree<T>::setArgumentValueByIndex(int index, T value)
+void PrefixExpressionTree<T>::setVariableWithIndex(int index, T value)
 {
-    if (index >= argsVector.size())
+    if (index >= v_variables.size())
     {
         return;
     }
 
-    argsMap[argsVector[index]] = value;
+    variables[v_variables[index]] = value;
 }
 
 // Splits a string into an array of words. Returns the array and updates the size.

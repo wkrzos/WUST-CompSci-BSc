@@ -92,7 +92,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
             }
         }
     }
-    else if (value.find_first_not_of("0123456789") == std::string::npos)
+    else if (isCorrectConstant(value))
     {
         currentNode->setNodesCounter(0);
         currentNode->setNodeType(CONSTANT);

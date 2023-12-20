@@ -21,9 +21,6 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\stringUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\PrefixExpressionTree.h">
@@ -35,11 +32,14 @@
     <ClInclude Include="src\ExpressionTreeInterface.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Parser.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\stringUtils.h">
+    <ClInclude Include="src\Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\PrefixExpressionParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\livemod.txt" />
   </ItemGroup>
 </Project>

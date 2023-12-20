@@ -13,8 +13,8 @@ let modifiedPascalF n =
     | _ ->
       let previousRow = generateRow (row - 1) in
       let operation =
-        if row mod 2 = 0 then (fun x y -> x + y)  (* Addition for even rows *)
-        else (fun x y -> x - y)  (* Subtraction for odd rows *)
+        if row mod 2 = 0 then (+)  (* Addition for even rows *)
+        else (-)  (* Subtraction for odd rows *)
       in
       (* Construct the current row by prepending 1 and performing element-wise operations. *)
       1 :: elementWiseOperation previousRow (List.tl previousRow) operation

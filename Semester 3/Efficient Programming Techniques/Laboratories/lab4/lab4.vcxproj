@@ -29,7 +29,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -141,14 +141,16 @@
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Node.cpp" />
-    <ClCompile Include="src\stringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Node.h" />
-    <ClInclude Include="src\Parser.h" />
+    <ClInclude Include="src\PrefixExpressionParser.h" />
     <ClInclude Include="src\PrefixExpressionTree.h" />
     <ClInclude Include="src\ExpressionTreeInterface.h" />
-    <ClInclude Include="src\stringUtils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\livemod.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

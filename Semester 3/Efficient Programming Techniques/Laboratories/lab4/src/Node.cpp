@@ -1,61 +1,11 @@
 #include "Node.h"
-#include <iostream>
-#include <sstream>
 #include <string>
-
-Node::Node() : numberOfNodes(0), nodes(new Node[0]), type(UNINITIALIZED)
-{
-}
-
-Node::Node(const Node &otherNode) : type(otherNode.type), value(otherNode.value), numberOfNodes(otherNode.numberOfNodes)
-{
-  this->nodes = new Node[numberOfNodes];
-
-  for (int i = 0; i < numberOfNodes; i++)
-  {
-    this->nodes[i] = otherNode.nodes[i];
-  }
-}
-
-Node::~Node()
-{
-  if (nodes != NULL)
-  {
-    delete[] nodes;
-  }
-}
-
-Node& Node::operator=(const Node& newValue)
-{
-    if (this == &newValue)
-    {
-        return *this;
-    }
-
-    if (nodes != NULL)
-    {
-        delete[] nodes;
-    }
-
-    this->type = newValue.type;
-    this->value = newValue.value;
-    this->numberOfNodes = newValue.numberOfNodes;
-
-    this->nodes = new Node[numberOfNodes];
-
-    for (int i = 0; i < numberOfNodes; i++)
-    {
-        this->nodes[i] = newValue.nodes[i];
-    }
-
-    return *this;
-}
 
 std::string Node::toString() const
 {
-    std::string result = value;
+    std::string result = key;
 
-    for (int i = 0; i < numberOfNodes; i++)
+    for (int i = 0; i < nodesCounter; i++)
     {
         result += " " + nodes[i].toString();
     }
@@ -63,53 +13,53 @@ std::string Node::toString() const
     return result;
 }
 
-Node *Node::getNodes() const
+std::string Node::getKey() const
 {
-  return nodes;
+    return key;
 }
 
-Node *Node::getNode(int index) const
+Node* Node::getNode(int index) const
 {
-  return &nodes[index];
+    return &nodes[index];
 }
 
-std::string Node::getValue() const
+Node* Node::getNodes() const
 {
-  return value;
+    return nodes;
 }
 
-int Node::getNumberOfNodes() const
+int Node::getNodesCounter() const
 {
-  return numberOfNodes;
+    return nodesCounter;
 }
 
-NodeType Node::getNodeType() const
+TYPE Node::getNodeType() const
 {
-  return type;
+    return type;
 }
 
-void Node::setNumberOfNodes(int numberOfNodes)
+void Node::setNodesCounter(int numberOfNodes)
 {
-  this->numberOfNodes = numberOfNodes;
-  this->nodes = new Node[numberOfNodes];
+    this->nodesCounter = numberOfNodes;
+    this->nodes = new Node[numberOfNodes];
 }
 
-void Node::setNodeType(NodeType type)
+void Node::setNodeType(TYPE type)
 {
-  this->type = type;
+    this->type = type;
 }
 
-void Node::setValue(std::string value)
+void Node::setKey(std::string value)
 {
-  this->value = value;
+    this->key = value;
 }
 
-void Node::setNode(int index, Node &node)
+void Node::setNode(int index, Node& node)
 {
-  if (index >= numberOfNodes)
-  {
-    return;
-  }
+    if (index >= nodesCounter)
+    {
+        return;
+    }
 
-  this->nodes[index] = node;
+    this->nodes[index] = node;
 }

@@ -31,7 +31,6 @@ module RAMMachine (M : MEMORY) = struct
   let initialize size program =
     (* Initialize the memory and load the program *)
     let mem = M.init size in
-    (* Additional initialization code if required *)
     mem, program
 
   let execute_command mem cmd =
@@ -49,10 +48,8 @@ module RAMMachine (M : MEMORY) = struct
         let value2 = match M.get mem src2 with Some v -> v | None -> 0 in
         M.set mem dest (value1 - value2);
         mem
-    (* ... handle other instructions ... *)
 
   let run mem program =
-    (* Logic to run the RAM machine with the given program *)
     List.fold_left execute_command mem program
 
   let dump_memory mem =
@@ -72,7 +69,7 @@ let program = [
 ];;
 
 (* Initialize the RAM machine with memory size and the program *)
-let memory_size = 10;;   (* Example memory size *)
+let memory_size = 10;;
 let memory, loaded_program = MyRAMMachine.initialize memory_size program;;
 
 (* Run the program *)

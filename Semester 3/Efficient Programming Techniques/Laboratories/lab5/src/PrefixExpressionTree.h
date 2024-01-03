@@ -20,9 +20,9 @@ public:
     PrefixExpressionTree(const PrefixExpressionTree& otherTree);
     ~PrefixExpressionTree();
 
-    PrefixExpressionTree<T>& operator=(const PrefixExpressionTree<T>& otherTree);
-    PrefixExpressionTree<T>& operator=(PrefixExpressionTree<T>&& other);
-    PrefixExpressionTree<T> operator+(const PrefixExpressionTree<T>& otherTree) const;
+    PrefixExpressionTree<T> operator=(const PrefixExpressionTree<T>& otherTree);
+    PrefixExpressionTree<T> operator=(PrefixExpressionTree<T>&& other);
+    PrefixExpressionTree<T> operator+(const PrefixExpressionTree<T>& otherTree);
 
     std::string toString() const;
     void printNodes() const;
@@ -118,18 +118,18 @@ std::string PrefixExpressionTree<std::string>::getDefaultNodeKey()
     return "-401";
 }
 
-template <typename T>
-PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressionTree<T>& newValue) const
+template<typename T>
+PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressionTree<T>& otherTree)
 {
-    PrefixExpressionTree result = *this;
+    PrefixExpressionTree<T> result = *this;
 
-    if (result.root == NULL)
+    if (result.root == nullptr)
     {
-        result.root = new Node(*newValue.root);
+        result.root = new Node(*otherTree.root);
     }
 
     Node* currentNode = result.root;
-    Node* parent = NULL;
+    Node* parent = nullptr;
 
     while (currentNode->getNodesCounter() > 0)
     {
@@ -137,14 +137,14 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
         currentNode = currentNode->getNode(currentNode->getNodesCounter() - 1);
     }
 
-    Node* newNode = new Node(*newValue.root);
+    Node* newNode = new Node(*otherTree.root);
 
     if (currentNode->getNodeType() == CONSTANT)
     {
         result.deleteVariable(currentNode->getKey());
     }
 
-    if (parent != NULL)
+    if (parent != nullptr)
     {
         parent->setNode(parent->getNodesCounter() - 1, *newNode);
     }
@@ -153,20 +153,17 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
         result.root = newNode;
     }
 
-    for (int i = 0; i < newValue.v_variables.size(); i++)
+    for (const auto& arg : otherTree.v_variables)
     {
-        result.setVariable(newValue.v_variables[i], getDefaultNodeKey());
+        result.setVariable(arg, getDefaultNodeKey());
     }
 
-    // Merge variables and v_variables
-    for (const auto& arg : newValue.variables)
+    for (const auto& arg : otherTree.variables)
     {
-        // How to handle conflicts here?
         result.variables[arg.first] = arg.second;
     }
 
-    // Update v_variables
-    for (const auto& arg : newValue.v_variables)
+    for (const auto& arg : otherTree.v_variables)
     {
         if (std::find(result.v_variables.begin(), result.v_variables.end(), arg) == result.v_variables.end())
         {
@@ -177,34 +174,8 @@ PrefixExpressionTree<T> PrefixExpressionTree<T>::operator+(const PrefixExpressio
     return result;
 }
 
-template <typename T>
-PrefixExpressionTree<T>& PrefixExpressionTree<T>::operator=(const PrefixExpressionTree<T>& newValue)
-{
-    if (this == &newValue)
-    {
-        return *this;
-    }
-
-    if (root != NULL)
-    {
-        delete root;
-    }
-
-    if (newValue.root != NULL)
-    {
-        root = new Node(*newValue.root);
-    }
-
-    for (int i = 0; i < newValue.v_variables.size(); i++)
-    {
-        setVariable(newValue.v_variables[i], getDefaultNodeKey());
-    }
-
-    return *this;
-}
-
-template <typename T>
-PrefixExpressionTree<T>& PrefixExpressionTree<T>::operator=(PrefixExpressionTree<T>&& other)
+template<typename T>
+PrefixExpressionTree<T> PrefixExpressionTree<T>::operator=(PrefixExpressionTree<T>&& other)
 {
     if (this == &other)
     {
@@ -212,10 +183,10 @@ PrefixExpressionTree<T>& PrefixExpressionTree<T>::operator=(PrefixExpressionTree
     }
 
     // Clear the current tree
-    if (root != NULL)
+    if (root != nullptr)
     {
         delete root;
-        root = NULL;
+        root = nullptr;
     }
 
     // Move the root and variables from 'other' to this
@@ -224,13 +195,29 @@ PrefixExpressionTree<T>& PrefixExpressionTree<T>::operator=(PrefixExpressionTree
     v_variables = std::move(other.v_variables);
 
     // Set 'other' to a valid state (empty tree)
-    other.root = NULL;
+    other.root = nullptr;
     other.variables.clear();
     other.v_variables.clear();
 
     return *this;
 }
 
+template <typename T>
+PrefixExpressionTree<T> PrefixExpressionTree<T>::operator=(const PrefixExpressionTree<T>& newValue)
+{
+    if (this == &newValue)
+    {
+        return *this;
+    }
+
+    // Use move semantics to avoid unnecessary copying
+    PrefixExpressionTree<T> tmp(newValue);
+    std::swap(root, tmp.root);
+    std::swap(variables, tmp.variables);
+    std::swap(v_variables, tmp.v_variables);
+
+    return *this;
+}
 
 template <typename T>
 T PrefixExpressionTree<T>::evaluateWithVariables(std::string args)

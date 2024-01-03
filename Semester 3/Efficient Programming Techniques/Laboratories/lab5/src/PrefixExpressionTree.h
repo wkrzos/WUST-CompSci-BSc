@@ -21,6 +21,7 @@ public:
     ~PrefixExpressionTree();
 
     PrefixExpressionTree<T>& operator=(const PrefixExpressionTree<T>& otherTree);
+    PrefixExpressionTree<T>& operator=(PrefixExpressionTree<T>&& other);
     PrefixExpressionTree<T> operator+(const PrefixExpressionTree<T>& otherTree) const;
 
     std::string toString() const;
@@ -201,6 +202,35 @@ PrefixExpressionTree<T>& PrefixExpressionTree<T>::operator=(const PrefixExpressi
 
     return *this;
 }
+
+template <typename T>
+PrefixExpressionTree<T>& PrefixExpressionTree<T>::operator=(PrefixExpressionTree<T>&& other)
+{
+    if (this == &other)
+    {
+        return *this;
+    }
+
+    // Clear the current tree
+    if (root != NULL)
+    {
+        delete root;
+        root = NULL;
+    }
+
+    // Move the root and variables from 'other' to this
+    root = other.root;
+    variables = std::move(other.variables);
+    v_variables = std::move(other.v_variables);
+
+    // Set 'other' to a valid state (empty tree)
+    other.root = NULL;
+    other.variables.clear();
+    other.v_variables.clear();
+
+    return *this;
+}
+
 
 template <typename T>
 T PrefixExpressionTree<T>::evaluateWithVariables(std::string args)

@@ -1,6 +1,22 @@
+class RefCounter
+{
+private:
+    int count;
+
+public:
+    RefCounter() : count(0) {} // Initialize count to 0
+    int add() { return (++count); }
+    int dec() { return (--count); }
+    int get() { return count; }
+};
+
 template <typename T>
 class MySmartPointer
 {
+private:
+    RefCounter* pc_counter;
+    T* pc_pointer;
+
 public:
     MySmartPointer(T* pointer)
     {
@@ -46,21 +62,4 @@ public:
         }
         return *this;
     }
-
-private:
-    RefCounter* pc_counter;
-    T* pc_pointer;
-};
-
-
-class RefCounter
-{
-public:
-    RefCounter() : count(0) {} // Initialize count to 0
-    int add() { return (++count); }
-    int dec() { return (--count); }
-    int get() { return count; }
-
-private:
-    int count;
 };

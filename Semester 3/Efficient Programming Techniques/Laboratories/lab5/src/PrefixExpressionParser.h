@@ -104,6 +104,7 @@ int PrefixExpressionParser<T>::parseNodes(Node* currentNode, std::string formula
     {       
         currentNode->setNodeType(VARIABLE);
         currentNode->setNodesCounter(0);
+        tree.setVariable(value, tree.getDefaultNodeKey());
     }
     else
     {

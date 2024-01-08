@@ -1,4 +1,4 @@
-/* EXPRESSION TREE
+﻿/* EXPRESSION TREE
 #include "ExpressionTreeInterface.h"
 #include "Constants.h"
 #include "modification/MySmartPointer.h"
@@ -36,8 +36,8 @@ int main() {
 
 class Test {
 public:
-    Test() { std::cout << "Test Created\n"; }
-    ~Test() { std::cout << "Test Destroyed\n"; }
+    Test() { std::cout << "Test Created c:\n"; }
+    ~Test() { std::cout << "Test Destroyed :c\n"; }
     void greet() { std::cout << "Hello, I'm a Test object\n"; }
 };
 

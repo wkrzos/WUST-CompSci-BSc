@@ -30,6 +30,12 @@
     <ClInclude Include="src\PrefixExpressionTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\modification\MySmartPointer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modification\RefCounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\livemod.txt" />
@@ -41,7 +47,10 @@
     <ClCompile Include="src\Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MySmartPointer.h">
+    <ClCompile Include="src\MySmartPointerOLD.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modification\MySmartPointerImprovement.h">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

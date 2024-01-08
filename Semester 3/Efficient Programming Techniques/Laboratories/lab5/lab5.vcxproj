@@ -141,6 +141,8 @@
   <ItemGroup>
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\ExpressionTreeInterface.h" />
+    <ClInclude Include="src\modification\MySmartPointer.h" />
+    <ClInclude Include="src\modification\RefCounter.h" />
     <ClInclude Include="src\Node.h" />
     <ClInclude Include="src\PrefixExpressionParser.h" />
     <ClInclude Include="src\PrefixExpressionTree.h" />
@@ -150,7 +152,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\MySmartPointer.h" />
+    <ClCompile Include="src\modification\MySmartPointerImprovement.h" />
+    <ClCompile Include="src\MySmartPointerOLD.h" />
     <ClCompile Include="src\Node.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,4 +1,4 @@
-class RefCounter
+﻿class RefCounter
 {
 private:
     int count;
@@ -11,28 +11,29 @@ public:
 };
 
 template <typename T>
-class MySmartPointer
+class MySmartPointerImprovement
 {
 private:
     RefCounter* pc_counter;
     T* pc_pointer;
 
 public:
-    MySmartPointer(T* pointer)
+    template <typename T>
+    MySmartPointerImprovement(T* pointer)
     {
         pc_pointer = pointer;
         pc_counter = new RefCounter();
         pc_counter->add();
     }
 
-    MySmartPointer(const MySmartPointer& other)
+    MySmartPointerImprovement(const MySmartPointerImprovement& other)
     {
         pc_pointer = other.pc_pointer;
         pc_counter = other.pc_counter;
         pc_counter->add();
     }
 
-    ~MySmartPointer()
+    ~MySmartPointerImprovement()
     {
         if (pc_counter->dec() == 0)
         {
@@ -44,7 +45,7 @@ public:
     T& operator*() { return (*pc_pointer); }
     T* operator->() { return (pc_pointer); }
 
-    MySmartPointer& operator=(const MySmartPointer& other)
+    MySmartPointerImprovement& operator=(const MySmartPointerImprovement& other)
     {
         if (this != &other) // Check for self-assignment
         {
@@ -62,4 +63,14 @@ public:
         }
         return *this;
     }
+
+    MySmartPointerImprovement* duplicate(MySmartPointerImprovement* other) {
+        MySmartPointerImprovement* duplicatedPointer;
+
+        duplicatedPointer = other;
+
+        return duplicatedPointer;
+    }
 };
+
+// Modyfikacja: mam zrobić metodę duplicate, tak jak kojarzę sprzed dwóch tygodni co było

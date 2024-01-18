@@ -24,6 +24,23 @@ module ArrayMemory : MEMORY = struct
 end
 ;;
 
+module ListMemory : MEMORY = struct
+  type t = (int option) list ref
+
+  let init size =
+    ref (List.init size (fun _ -> None))
+
+  let get memory address =
+    List.nth !memory address
+
+  let set memory address value =
+    memory := List.mapi (fun i v -> if i = address then Some value else v) !memory
+
+  let dump memory =
+    List.mapi (fun index value -> (index, value)) !memory
+end
+;;
+
 module RAMMachine (M : MEMORY) = struct
   type memory = M.t
   type instruction = Load of int * int | Add of int * int * int | Sub of int * int * int (* further instructions *)
@@ -58,7 +75,10 @@ end
 ;;
 
 (* Create a RAM machine instance using ArrayMemory *)
-module MyRAMMachine = RAMMachine(ArrayMemory);;
+(* Switch manually by commenting out one of the variables *)
+
+(*module MyRAMMachine = RAMMachine(ArrayMemory);;*)
+module MyRAMMachine = RAMMachine(ListMemory);;
 
 (* Define a program *)
 let program = [

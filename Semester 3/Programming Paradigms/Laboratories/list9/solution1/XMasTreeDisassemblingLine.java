@@ -21,6 +21,7 @@ public class XMasTreeDisassemblingLine {
         baubles.add(bauble);
     }
 
+    //TODO łańcuch odpowiedzialności, responsibility chain
     public void startDisassembling() {
         Iterator<Bauble> iterator = baubles.iterator();
         while (iterator.hasNext()) {

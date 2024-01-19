@@ -5,5 +5,5 @@ public enum BaubleType {
     SPHERE_BIG,
     ICECYCLE,
     MUSHROOM,
-    SPHERE_BIG_AND_SMALL
+    SPHERE_BIG_AND_SMALL //Lepiej byłoby trzymać u elfa listę
 }

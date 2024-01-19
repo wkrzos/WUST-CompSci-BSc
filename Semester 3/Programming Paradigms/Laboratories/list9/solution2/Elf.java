@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Elf {
-    private final int SIZE_OF_BOXES = 5;
+    private final int SIZE_OF_BOXES = 2;
+    private int numberOfBoxes = 2;
 
     private BaubleType type;
     private int baubleCount;
@@ -18,26 +19,29 @@ public class Elf {
     }
 
     public void addBaubles(Bauble bauble) {
-        if(baubleCount == SIZE_OF_BOXES) {
-            isBoxFull = true;
-            System.out.println("Box is full!");
+        if (numberOfBoxes == 0) {
+            System.out.println("No more boxes available!");
             return;
         }
-        if(type == BaubleType.SPHERE_BIG_AND_SMALL) {
-            if(bauble.getType() == BaubleType.SPHERE_BIG || bauble.getType() == BaubleType.SPHERE_SMALL) {
-                baubleCount++;
-                baubles.add(bauble);
-                System.out.println("Bauble added: " + bauble.toString());
-                return;
-            }
-            return;
-        }
-        if(bauble.getType() == type && !isBoxFull) {
-            baubleCount++;
-            baubles.add(bauble);
-            System.out.println("Bauble added: " + bauble.toString());
-        } else {
+
+        if (!czyPasuje(bauble)) {
             System.out.println("Wrong bauble type: " + bauble);
+            return;
+        }
+
+        baubles.add(bauble);
+        baubleCount++;
+
+        System.out.println("Bauble added: " + bauble.toString());
+
+        if (baubleCount == SIZE_OF_BOXES) {
+            baubleCount = 0;
+            numberOfBoxes--;
+            isBoxFull = false; // Reset box status
+            System.out.println("Box changed. Remaining boxes: " + numberOfBoxes);
+            if (numberOfBoxes == 0) {
+                System.out.println("No more boxes left!");
+            }
         }
     }
 
@@ -63,7 +67,7 @@ public class Elf {
         return "Elf{" +
                 "type=" + type +
                 ", baubleCount=" + baubleCount +
-                ", baubles=" + baubles +
+                ", baubles=" + "<below>" +
                 ", isBoxFull=" + isBoxFull +
                 '}';
     }
@@ -102,5 +106,13 @@ public class Elf {
 
     public void setBoxFull(boolean isBoxFull) {
         this.isBoxFull = isBoxFull;
+    }
+
+    public int getNumberOfBoxes() {
+        return numberOfBoxes;
+    }
+
+    public void setNumberOfBoxes(int numberOfBoxes) {
+        this.numberOfBoxes = numberOfBoxes;
     }
 }

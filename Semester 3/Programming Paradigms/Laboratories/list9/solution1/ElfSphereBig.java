@@ -6,33 +6,35 @@ public class ElfSphereBig extends Elf {
     }
 
     @Override
-    public void dodajBombke(Bauble bombka) {
+    public void addBauble(Bauble bombka) {
         if (bombka instanceof BaubleSphereBig) {
-            liczbaBombek++;
+            baublesCounter++;
             baubles.add(bombka);
-            wyswietlKomunikat("Bombka dodana!");
+            showMsg("Bombka dodana!");
 
             // Logika dla pełnego pudełka
-            if (liczbaBombek == SIZE_OF_BOX && numberOfBoxes > 0) {
+            if (baublesCounter == SIZE_OF_BOX && numberOfBoxes > 0) {
                 numberOfBoxes--;
-                wyswietlKomunikat("Pudelko z kulami jest pełne! Elf rzucił je za siebie i wziął nowe!");
-            } else if (liczbaBombek == SIZE_OF_BOX && numberOfBoxes == 0) {
+                baublesCounter = 0;
+                showMsg("Pudelko z kulami jest pełne! Elf rzucił je za siebie i wziął nowe!");
+            }
+            if(numberOfBoxes == 0) {
                 isElfDone = true;
-                wyswietlKomunikat("Elf nie ma już pudełek!");
+                showMsg("Elf nie ma już pudełek!");
             }
          } else {
-            wyswietlKomunikat("Jasny gwint! Bombka nie pasuje do pudełka!");
+            showMsg("Jasny gwint! Bombka nie pasuje do pudełka!");
         }
     }
 
     @Override
-    public boolean czyPasuje(Bauble bombka) {
+    public boolean doesBaubleFit(Bauble bombka) {
         return bombka instanceof BaubleSphereBig;
     }
 
     @Override
     public String toString(){
-        return("ElfSphereBig = { rodzajPudelka = " + rodzajPudelka + ", liczbaBombek = " + liczbaBombek + " }");
+        return("ElfSphereBig = { rodzajPudelka = " + boxType + ", liczbaBombek = " + baublesCounter + " }");
     }
 }
 

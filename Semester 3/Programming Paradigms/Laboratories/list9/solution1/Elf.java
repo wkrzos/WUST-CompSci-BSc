@@ -4,26 +4,26 @@ import java.util.List;
 
 public abstract class Elf {
     public final int SIZE_OF_BOX = 2;
-    public int numberOfBoxes = 0; //counted from 0, so there are 2 boxes
+    protected int numberOfBoxes = 2;
 
-    protected String rodzajPudelka;
-    protected int liczbaBombek;
+    protected String boxType;
+    protected int baublesCounter;
     protected List<Bauble> baubles;
     protected boolean isElfDone = false;
 
-    public Elf(String rodzajPudelka) {
-        this.rodzajPudelka = rodzajPudelka;
-        this.liczbaBombek = 0;
+    public Elf(String boxType) {
+        this.boxType = boxType;
+        this.baublesCounter = 0;
         this.baubles = new ArrayList<>();
     }
 
-    public abstract void dodajBombke(Bauble bombka);
+    public abstract void addBauble(Bauble bombka);
 
-    public abstract boolean czyPasuje(Bauble bombka);
+    public abstract boolean doesBaubleFit(Bauble bombka);
 
-    public boolean czyPudelkoPelne() {return isElfDone; };
+    public boolean isBoxFull() {return isElfDone; };
 
-    protected void wyswietlKomunikat(String komunikat) {
+    protected void showMsg(String komunikat) {
         System.out.println(komunikat);
     }
 
@@ -38,27 +38,27 @@ public abstract class Elf {
 
     @Override
     public String toString(){
-        return("Elf = { rodzajPudelka = " + rodzajPudelka + ", liczbaBombek = " + liczbaBombek + " }");
+        return("Elf = { rodzajPudelka = " + boxType + ", liczbaBombek = " + baublesCounter + " }");
     }
 
     public int getSIZE_OF_BOX() {
         return SIZE_OF_BOX;
     }
 
-    public String getRodzajPudelka() {
-        return rodzajPudelka;
+    public String getBoxType() {
+        return boxType;
     }
 
-    public void setRodzajPudelka(String rodzajPudelka) {
-        this.rodzajPudelka = rodzajPudelka;
+    public void setBoxType(String rodzajPudelka) {
+        this.boxType = rodzajPudelka;
     }
 
-    public int getLiczbaBombek() {
-        return liczbaBombek;
+    public int getBaublesCounter() {
+        return baublesCounter;
     }
 
-    public void setLiczbaBombek(int liczbaBombek) {
-        this.liczbaBombek = liczbaBombek;
+    public void setBaublesCounter(int liczbaBombek) {
+        this.baublesCounter = liczbaBombek;
     }
 
     public List<Bauble> getBaubles() {

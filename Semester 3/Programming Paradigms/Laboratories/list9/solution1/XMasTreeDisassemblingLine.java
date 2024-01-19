@@ -15,8 +15,6 @@ public class XMasTreeDisassemblingLine {
         elves.add(new ElfSphereBig());
         elves.add(new ElfSphereBigAndSmall());
         elves.add(new ElfSphereSmall());
-        elves.add(new ElfSphereIcecycle());
-        elves.add(new ElfSphereIcecycle());
     }
 
     public void addBauble(Bauble bauble){
@@ -30,9 +28,9 @@ public class XMasTreeDisassemblingLine {
             boolean isBaubleInBox = false;
 
             for (Elf elf : elves) {
-                if (elf.czyPasuje(bauble) && !elf.czyPudelkoPelne()) {
+                if (elf.doesBaubleFit(bauble) && !elf.isBoxFull()) {
                     System.out.println("Pasuje i jest następne pudełko!");
-                    elf.dodajBombke(bauble);
+                    elf.addBauble(bauble);
                     isBaubleInBox = true;        
                     iterator.remove(); // Safely remove the bauble
                     break;
@@ -81,6 +79,11 @@ public class XMasTreeDisassemblingLine {
         line.addBauble(new BaubleSphereSmall("red", "plain", 2));
         line.addBauble(new BaubleSphereSmall("red", "plain", 2));
         line.addBauble(new BaubleSphereSmall("red", "plain", 2));
+        line.addBauble(new BaubleSphereSmall("red", "plain", 2));
+        line.addBauble(new BaubleSphereSmall("red", "plain", 2));
+        line.addBauble(new BaubleSphereSmall("red", "plain", 2));
+        line.addBauble(new BaubleSphereSmall("red", "plain", 2));
+        line.addBauble(new BaubleSphereSmall("red", "plain", 2));
     
         System.out.print("Starting disassembling line...");
 
@@ -90,6 +93,9 @@ public class XMasTreeDisassemblingLine {
         System.out.println("Printing baubles and elves..." + System.lineSeparator());
 
         line.printElves();
+        
+        System.out.println("==================================");
+
         line.printBaubles();
     }
 }

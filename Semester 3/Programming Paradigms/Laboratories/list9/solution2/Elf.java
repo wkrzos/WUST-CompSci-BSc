@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Elf {
-    private final int SIZE_OF_BOX = 5;
+    private final int SIZE_OF_BOXES = 5;
 
     private BaubleType type;
     private int baubleCount;
@@ -18,9 +18,18 @@ public class Elf {
     }
 
     public void addBaubles(Bauble bauble) {
-        if(baubleCount == SIZE_OF_BOX) {
+        if(baubleCount == SIZE_OF_BOXES) {
             isBoxFull = true;
             System.out.println("Box is full!");
+            return;
+        }
+        if(type == BaubleType.SPHERE_BIG_AND_SMALL) {
+            if(bauble.getType() == BaubleType.SPHERE_BIG || bauble.getType() == BaubleType.SPHERE_SMALL) {
+                baubleCount++;
+                baubles.add(bauble);
+                System.out.println("Bauble added: " + bauble.toString());
+                return;
+            }
             return;
         }
         if(bauble.getType() == type && !isBoxFull) {
@@ -39,6 +48,14 @@ public class Elf {
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
+    }
+
+    public boolean czyPasuje(Bauble bauble) {
+        if(type == BaubleType.SPHERE_BIG_AND_SMALL) {
+            return bauble.getType() == BaubleType.SPHERE_BIG || bauble.getType() == BaubleType.SPHERE_SMALL;
+        } else {
+            return bauble.getType() == type;
+        }
     }
 
     @Override
@@ -67,8 +84,8 @@ public class Elf {
         this.baubleCount = baubleCount;
     }
 
-    public int getSIZE_OF_BOX() {
-        return SIZE_OF_BOX;
+    public int getSIZE_OF_BOXES() {
+        return SIZE_OF_BOXES;
     }
 
     public List<Bauble> getBaubles() {

@@ -14,6 +14,7 @@ public class XMasTreeDisassemblingLine {
         baubles = new ArrayList<>();
 
         // Initialize Elves with different bauble types
+        elves.add(new Elf(BaubleType.SPHERE_BIG_AND_SMALL, 0));
         elves.add(new Elf(BaubleType.SPHERE_SMALL, 0));
         elves.add(new Elf(BaubleType.ICECYCLE, 0));
         elves.add(new Elf(BaubleType.MUSHROOM, 0));
@@ -31,7 +32,7 @@ public class XMasTreeDisassemblingLine {
             Bauble bauble = iterator.next();
             boolean baubleHandled = false;
             for (Elf elf : elves) {
-                if (elf.getType() == bauble.getType() && !elf.isBoxFull()) {
+                if (elf.czyPasuje(bauble) && !elf.isBoxFull()) {
                     elf.addBaubles(bauble);
                     iterator.remove(); // This safely removes the bauble from the list
                     baubleHandled = true;
@@ -45,7 +46,6 @@ public class XMasTreeDisassemblingLine {
         }
     }
     
-
     public void printBaubles() {
         for (Bauble bauble : baubles) {
             System.out.println(bauble.toString());

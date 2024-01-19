@@ -1,13 +1,13 @@
 package solution1;
-public class ElfSphereSmall extends Elf {
+public class ElfSphereBigAndSmall extends Elf {
 
-    public ElfSphereSmall() {
+    public ElfSphereBigAndSmall() {
         super("Kula");
     }
 
     @Override
     public void dodajBombke(Bauble bombka) {
-        if (bombka instanceof BaubleSphereSmall) {
+        if (czyPasuje(bombka)) {
             liczbaBombek++;
             baubles.add(bombka);
             wyswietlKomunikat("Bombka dodana!");
@@ -26,12 +26,12 @@ public class ElfSphereSmall extends Elf {
 
     @Override
     public boolean czyPasuje(Bauble bombka) {
-        return bombka instanceof BaubleSphereSmall;
+        return bombka instanceof BaubleSphereSmall || bombka instanceof BaubleSphereBig;
     }
 
     @Override
     public String toString(){
-        return("ElfSphereSmall = { rodzajPudelka = " + rodzajPudelka + ", liczbaBombek = " + liczbaBombek + " }");
+        return("ElfSphereBigAndSmall = { rodzajPudelka = " + rodzajPudelka + ", liczbaBombek = " + liczbaBombek + " }");
     }
 }
 

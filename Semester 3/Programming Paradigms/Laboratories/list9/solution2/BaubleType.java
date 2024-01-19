@@ -4,5 +4,6 @@ public enum BaubleType {
     SPHERE_SMALL,
     SPHERE_BIG,
     ICECYCLE,
-    MUSHROOM
+    MUSHROOM,
+    SPHERE_BIG_AND_SMALL
 }

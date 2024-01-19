@@ -12,9 +12,12 @@ public class ElfSphereMushroom extends Elf {
             baubles.add(bombka);
             wyswietlKomunikat("Bombka dodana!");
             // Logika dla pełnego pudełka
-            if (liczbaBombek == SIZE_OF_BOX) {
-                isBoxFull = true;
-                wyswietlKomunikat("Pudelko z kulami jest pełne!");
+            if (liczbaBombek == SIZE_OF_BOX && numberOfBoxes > 0) {
+                numberOfBoxes--;
+                wyswietlKomunikat("Pudelko z kulami jest pełne! Elf rzucił je za siebie i wziął nowe!");
+            } else if (liczbaBombek == SIZE_OF_BOX && numberOfBoxes == 0) {
+                isElfDone = true;
+                wyswietlKomunikat("Elf nie ma już pudełek!");
             }
         } else {
             wyswietlKomunikat("Bombka nie pasuje do pudełka!");

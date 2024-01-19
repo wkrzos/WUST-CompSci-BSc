@@ -3,12 +3,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Elf {
-    public final int SIZE_OF_BOX = 1;
+    public final int SIZE_OF_BOX = 2;
+    public int numberOfBoxes = 0; //counted from 0, so there are 2 boxes
 
     protected String rodzajPudelka;
     protected int liczbaBombek;
     protected List<Bauble> baubles;
-    protected boolean isBoxFull;
+    protected boolean isElfDone = false;
 
     public Elf(String rodzajPudelka) {
         this.rodzajPudelka = rodzajPudelka;
@@ -20,7 +21,7 @@ public abstract class Elf {
 
     public abstract boolean czyPasuje(Bauble bombka);
 
-    public boolean czyPudelkoPelne() {return isBoxFull; };
+    public boolean czyPudelkoPelne() {return isElfDone; };
 
     protected void wyswietlKomunikat(String komunikat) {
         System.out.println(komunikat);
@@ -68,11 +69,11 @@ public abstract class Elf {
         this.baubles = baubles;
     }
 
-    public boolean isBoxFull() {
-        return isBoxFull;
+    public boolean isElfDone() {
+        return isElfDone;
     }
 
-    public void setBoxFull(boolean isBoxFull) {
-        this.isBoxFull = isBoxFull;
+    public void setElfDone(boolean isBoxFull) {
+        this.isElfDone = isBoxFull;
     }
 }

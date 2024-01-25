@@ -1,38 +1,34 @@
-#ifndef GENETICALGORITHM_H
-#define GENETICALGORITHM_H
-
+#pragma once
+#include "Evaluator.h"
 #include "Individual.h"
-#include <vector>
-#include <utility> // For std::pair
-
-class IEvaluator; // Forward declaration of IEvaluator
-
-class GeneticAlgorithm {
+class GeneticAlgorithm
+{
 public:
-    // Constructor
-    GeneticAlgorithm(int populationSize, float crossProbability, float mutationProbability, IEvaluator* evaluator);
+	GeneticAlgorithm(int populationSize, double crossProbability, double mutationProbability, CLFLnetEvaluator* evaluator);
 
-    // Public methods
-    void runOneIteration();
-    void runIterations(int numberOfIterations);
-    Individual getBestCandidat();
+	void runIteration();
+	void runIterations(unsigned long n, void(*callback)(double));
+
+
+	Individual& getBestIndividual();
+
+		
+
 
 private:
-    // Member variables
-    std::vector<Individual> population;
-    Individual bestIndividual;
-    float crossProbability;
-    float mutationProbability;
-    IEvaluator* evaluator;
+	void initPopulation(int populationSize);
+	Individual* getParentCandidate();
+	Individual* getParentCandidateRoulette(double* fitnesses);
 
-    // Private helper methods
-    void initializePopulation(int populationSize);
-    void evaluatePopulation();
-    std::vector<int> generateGenotype();
-    std::pair<Individual, Individual> selectParents();
-    Individual selectBetterIndividual();
-    std::vector<Individual> crossParents(const std::pair<Individual, Individual>& parents);
-    void applyMutation(std::vector<Individual>& individuals);
+	double* cumulativeFitness();
+
+	void evaluatePopulation();
+
+
+	Individual bestIndividual;
+	std::vector<Individual*> population;
+	double crossProbability;
+	double mutationProbability;
+	CLFLnetEvaluator* evaluator;
 };
 
-#endif // GENETICALGORITHM_H

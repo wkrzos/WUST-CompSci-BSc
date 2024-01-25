@@ -42,10 +42,10 @@
     <ClCompile Include="fitness.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Individual.cpp">
+    <ClCompile Include="GeneticAlgorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneticAlgorith.cpp">
+    <ClCompile Include="Individual.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

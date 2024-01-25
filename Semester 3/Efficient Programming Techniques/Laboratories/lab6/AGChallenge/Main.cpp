@@ -1,6 +1,7 @@
 #include "Evaluator.h"
 #include "Optimizer.h"
 #include "Timer.h"
+#include "GeneticAlgorithm.h"
 
 #include <exception>
 #include <iostream>
@@ -10,32 +11,29 @@ using namespace TimeCounters;
 
 using namespace std;
 
-#define dMAX_TIME 20 * 60
 
+#define POP_SIZE 5
+#define CROSS_PROB 0.95
+#define MUT_PROB 0.00025
+#define ITERATIONS 1000
+
+
+void printFitness(double fitness) {
+	std::cout << "fitness: " << fitness << "\n";
+}
 
 void vRunExperiment(CLFLnetEvaluator &cConfiguredEvaluator)
 {
 	try
 	{
-		CTimeCounter c_time_counter;
+		GeneticAlgorithm algorithm(POP_SIZE, CROSS_PROB, MUT_PROB, &cConfiguredEvaluator);
 
-		double d_time_passed;
+		algorithm.runIterations(ITERATIONS, printFitness);
 
-		COptimizer c_optimizer(cConfiguredEvaluator);
 
-		c_time_counter.vSetStartNow();
+		std::cout << "final fitness: \n";
+		printFitness(algorithm.getBestIndividual().getFitness());
 
-		c_optimizer.vInitialize();
-
-		c_time_counter.bGetTimePassed(&d_time_passed);
-
-		while (d_time_passed <= dMAX_TIME)
-		{
-			c_optimizer.vRunIteration();
-			c_optimizer.pvGetCurrentBest();
-
-			c_time_counter.bGetTimePassed(&d_time_passed);
-		}//while (d_time_passed <= MAX_TIME)
 	}//try
 	catch (exception &c_exception)
 	{
@@ -49,7 +47,9 @@ void  vRunLFLExperiment(CString  sNetName)
 {
 	CLFLnetEvaluator c_lfl_eval;
 	c_lfl_eval.bConfigure(sNetName);
+	
 	vRunExperiment(c_lfl_eval);
+
 	
 }//void vRunRastriginExperiment(int iNumberOfBits, int iBitsPerFloat, int iMaskSeed)
 
@@ -60,6 +60,8 @@ void main(int iArgCount, char **ppcArgValues)
 	random_device c_mask_seed_generator;
 	int i_mask_seed = (int)c_mask_seed_generator();
 
+
+	srand(time(NULL));
 
 	CString  s_test;
 	vRunLFLExperiment("104b00");

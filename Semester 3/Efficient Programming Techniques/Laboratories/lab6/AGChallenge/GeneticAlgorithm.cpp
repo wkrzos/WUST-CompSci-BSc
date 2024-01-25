@@ -74,10 +74,13 @@ void GeneticAlgorithm::evaluatePopulation()
 
 void GeneticAlgorithm::runIteration()
 {
-    std::vector<Individual*> newPopulation;
-    newPopulation.reserve(population.size());
+    int currentPopulationSize = population.size();
+    int newPopulationSize = static_cast<int>(currentPopulationSize * 1.2); // Increase by 20%
 
-    while (newPopulation.size() < population.size()) {
+    std::vector<Individual*> newPopulation;
+    newPopulation.reserve(newPopulationSize);
+
+    while (newPopulation.size() < newPopulationSize) {
         double* fitnesses = cumulativeFitness();
         Individual* individual1 = getParentCandidateRoulette(fitnesses);
         Individual* individual2 = getParentCandidateRoulette(fitnesses);
@@ -106,6 +109,7 @@ void GeneticAlgorithm::runIteration()
 
     evaluatePopulation();
 }
+
 
 void GeneticAlgorithm::runIterations(unsigned long n, void (*callback)(double))
 {

@@ -158,6 +158,7 @@
     <ClCompile Include="Tools.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Evaluator.h" />
     <ClInclude Include="fitness.h" />
     <ClInclude Include="GeneticAlgorithm.h" />

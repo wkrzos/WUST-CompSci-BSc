@@ -2,18 +2,11 @@
 #include "Optimizer.h"
 #include "Timer.h"
 #include "GeneticAlgorithm.h"
+#include "Constants.h"
 
 #include <exception>
 #include <iostream>
 #include <random>
-
-using namespace TimeCounters;
-using namespace std;
-
-const int POP_SIZE = 10;
-const double CROSS_PROB = 0.95;
-const double MUT_PROB = 0.00025;
-const int ITERATIONS = 1000;
 
 void printFitness(double fitness) {
     cout << "Fitness: " << fitness << endl;

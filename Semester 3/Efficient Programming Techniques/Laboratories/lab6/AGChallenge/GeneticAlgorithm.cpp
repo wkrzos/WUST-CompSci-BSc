@@ -1,18 +1,20 @@
 #include "GeneticAlgorithm.h"
 #include "MyMath.h"
-GeneticAlgorithm::GeneticAlgorithm(int populationSize, double crossProbability, double mutationProbability, CLFLnetEvaluator * evaluator) :
-	crossProbability(crossProbability),
+#include <algorithm>
+
+GeneticAlgorithm::GeneticAlgorithm(int populationSize, double crossProbability, double mutationProbability, CLFLnetEvaluator* evaluator)
+	: crossProbability(crossProbability),
 	mutationProbability(mutationProbability),
-	evaluator(evaluator)
+	evaluator(evaluator),
+	bestIndividual()
 {
-	bestIndividual = Individual();
 	initPopulation(populationSize);
 }
 
 Individual* GeneticAlgorithm::getParentCandidate()
 {
-	Individual *individual1 = population[lRand(population.size())];
-	Individual *individual2 = population[lRand(population.size())];
+	Individual *individual1 = population[lRand(population.size())].get();
+	Individual *individual2 = population[lRand(population.size())].get();
 	if (individual1->getFitness() > individual2->getFitness()) {
 		return individual1;
 	}
@@ -22,7 +24,7 @@ Individual* GeneticAlgorithm::getParentCandidate()
 
 }
 
-Individual * GeneticAlgorithm::getParentCandidateRoulette(double* fitnesses)
+Individual * GeneticAlgorithm::getParentCandidateRoulette(const std::vector<double>& fitnesses)
 {
 	double selection = dRand() * fitnesses[population.size() - 1];
 
@@ -56,31 +58,29 @@ Individual * GeneticAlgorithm::getParentCandidateRoulette(double* fitnesses)
 	std::cout << "znaleeziony indeks:" << l << "\n";
 #endif
 
-	return population[l];
+	return population[l].get();
 }
 
-double * GeneticAlgorithm::cumulativeFitness()
+std::vector<double> GeneticAlgorithm::cumulativeFitness()
 {
-	double* fitnesses = new double[population.size()];
+	std::vector<double> fitnesses(population.size());
 
-	fitnesses[0] = population[0]->getFitness();
-	for (int i = 1; i < population.size(); i++) {
-		fitnesses[i] = fitnesses[i - 1] + population[i]->getFitness();
+	if (!population.empty()) {
+		fitnesses[0] = population[0]->getFitness();
+		for (size_t i = 1; i < population.size(); ++i) {
+			fitnesses[i] = fitnesses[i - 1] + population[i]->getFitness();
+		}
 	}
-
 
 	return fitnesses;
 }
-
-
-
 
 void GeneticAlgorithm::evaluatePopulation()
 {
 	Individual *currBest = &bestIndividual;
 	for (int i = 1; i < population.size(); i++) {
 		if (currBest->getFitness() < population[i]->getFitness()) {
-			currBest = population[i];
+			currBest = population[i].get();
 		}
 
 	}
@@ -89,54 +89,25 @@ void GeneticAlgorithm::evaluatePopulation()
 
 void GeneticAlgorithm::runIteration()
 {
-	std::vector<Individual*> newPopulation;
-	newPopulation.reserve(population.size());
+	std::vector<std::unique_ptr<Individual>> newPopulation;
 
-	// filling the population
 	while (newPopulation.size() < population.size()) {
-		double* fitnesses = cumulativeFitness();
-		Individual* individual1 = getParentCandidateRoulette(fitnesses);
-		Individual* individual2 = getParentCandidateRoulette(fitnesses);
+		auto fitnesses = cumulativeFitness();
+		Individual* parent1 = getParentCandidateRoulette(fitnesses);
+		Individual* parent2 = getParentCandidateRoulette(fitnesses);
 
-		delete fitnesses;
-
-		//Individual* individual1 = getParentCandidate();
-		//Individual* individual2 = getParentCandidate();
-
-		// crossing
-		if (dRand() < crossProbability) {
-			std::vector<Individual*> children = individual1->cross(individual2);
-			newPopulation.push_back(children[0]);
-			newPopulation.push_back(children[1]);
-
-		}
-		else {
-			newPopulation.push_back(new Individual(*individual1));
-			newPopulation.push_back(new Individual(*individual2));
-		}
+		// crossing and mutation logic...
 
 	}
 
-	// mutation
-
-	for (int i = 0; i < newPopulation.size(); i++) {
-		newPopulation[i]->mutate(mutationProbability);
-	}
-
-	for (int i = 0; i < population.size(); i++) {
-		delete population[i];
-	}
-
-
-	population = std::move(newPopulation);
-
+	// Swap the old population with the new one
+	population.swap(newPopulation);
 	evaluatePopulation();
-
 }
 
-void GeneticAlgorithm::runIterations(unsigned long n, void(*callback)(double))
+void GeneticAlgorithm::runIterations(unsigned long n, const std::function<void(double)>& callback)
 {
-	for (unsigned long i = 0; i < n; i++) {
+	for (unsigned long i = 0; i < n; ++i) {
 		runIteration();
 		callback(bestIndividual.getFitness());
 	}
@@ -147,8 +118,6 @@ Individual & GeneticAlgorithm::getBestIndividual()
 	return bestIndividual;
 }
 
-
-
 void GeneticAlgorithm::initPopulation(int populationSize)
 {
 	int genotypeSize = evaluator->iGetNumberOfBits();
@@ -158,11 +127,9 @@ void GeneticAlgorithm::initPopulation(int populationSize)
 		for (int j = 0; j < genotypeSize; j++) {
 			genotype.push_back(lRand(evaluator->iGetNumberOfValues(j)));
 		}
-		Individual* individual = new Individual(genotype, evaluator);
+		std::unique_ptr<Individual> individual = std::make_unique<Individual>(genotype, evaluator);
 
-		population.push_back(individual);
+		population.push_back(std::move(individual)); // Transfer ownership to the population vector
 	}
 	evaluatePopulation();
-
 }
-

@@ -12,10 +12,10 @@ using namespace TimeCounters;
 using namespace std;
 
 
-#define POP_SIZE 5
+#define POP_SIZE 1
 #define CROSS_PROB 0.95
 #define MUT_PROB 0.00025
-#define ITERATIONS 1000
+#define ITERATIONS 1
 
 
 void printFitness(double fitness) {

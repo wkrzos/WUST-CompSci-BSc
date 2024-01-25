@@ -5,8 +5,8 @@
 
 const int POP_SIZE = 50;
 const double CROSS_PROB = 0.95;
-const double MUT_PROB = 0.000001;
-const int ITERATIONS = 1000;
+const double MUT_PROB = 0.00025;
+const int ITERATIONS = 50;
 
 /*
 	104b00

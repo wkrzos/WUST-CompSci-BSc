@@ -3,10 +3,25 @@
 #include "Timer.h"
 #include "GeneticAlgorithm.h"
 #include "Constants.h"
+#include "ExperimentManager.h"
 
 #include <exception>
 #include <iostream>
 #include <random>
+
+/*
+int main(int argc, char** argv) {
+    random_device maskSeedGenerator;
+    int maskSeed = static_cast<int>(maskSeedGenerator());
+
+    srand(time(NULL));
+
+    CString s_test;
+    runLFLExperiment("104b00");
+
+    return 0;
+}
+*/
 
 void printFitness(double fitness) {
     cout << "Fitness: " << fitness << endl;
@@ -29,26 +44,4 @@ void runLFLExperiment(const CString& sNetName) {
     CLFLnetEvaluator c_lfl_eval;
     c_lfl_eval.bConfigure(sNetName);
     runExperiment(c_lfl_eval);
-}
-
-int main(int argc, char** argv) {
-    random_device maskSeedGenerator;
-    int maskSeed = static_cast<int>(maskSeedGenerator());
-
-    srand(time(NULL));
-
-    CString s_test;
-    runLFLExperiment("104b01");
-
-    // Other experiments (commented out for now)
-    /*
-    runIsingSpinGlassExperiment(81, 0, maskSeed);
-    runLeadingOnesExperiment(50, maskSeed);
-    runMaxSatExperiment(25, 0, 4.27f, maskSeed);
-    runNearestNeighborNKExperiment(100, 0, 4, maskSeed);
-    runOneMaxExperiment(100, maskSeed);
-    runRastriginExperiment(200, 10, maskSeed);
-    */
-
-    return 0;
 }

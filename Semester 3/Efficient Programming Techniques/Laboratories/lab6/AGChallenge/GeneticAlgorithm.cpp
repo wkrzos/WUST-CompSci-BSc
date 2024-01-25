@@ -75,7 +75,7 @@ void GeneticAlgorithm::evaluatePopulation()
 void GeneticAlgorithm::runIteration()
 {
     int currentPopulationSize = population.size();
-    int newPopulationSize = static_cast<int>(currentPopulationSize * 1.2); // Increase by 20%
+    int newPopulationSize = static_cast<int>(currentPopulationSize * 1); // Increase by any percent by adding * n, where n is the factor
 
     std::vector<Individual*> newPopulation;
     newPopulation.reserve(newPopulationSize);

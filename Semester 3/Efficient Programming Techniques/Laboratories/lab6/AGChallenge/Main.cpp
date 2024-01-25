@@ -8,79 +8,54 @@
 #include <random>
 
 using namespace TimeCounters;
-
 using namespace std;
 
-
-#define POP_SIZE 5
-#define CROSS_PROB 0.95
-#define MUT_PROB 0.00025
-#define ITERATIONS 1000
-
+const int POP_SIZE = 10;
+const double CROSS_PROB = 0.95;
+const double MUT_PROB = 0.00025;
+const int ITERATIONS = 1000;
 
 void printFitness(double fitness) {
-	std::cout << "fitness: " << fitness << "\n";
+    cout << "Fitness: " << fitness << endl;
 }
 
-void vRunExperiment(CLFLnetEvaluator &cConfiguredEvaluator)
-{
-	try
-	{
-		GeneticAlgorithm algorithm(POP_SIZE, CROSS_PROB, MUT_PROB, &cConfiguredEvaluator);
+void runExperiment(CLFLnetEvaluator& configuredEvaluator) {
+    try {
+        GeneticAlgorithm algorithm(POP_SIZE, CROSS_PROB, MUT_PROB, &configuredEvaluator);
+        algorithm.runIterations(ITERATIONS, printFitness);
 
-		algorithm.runIterations(ITERATIONS, printFitness);
+        cout << "Final fitness: " << endl;
+        printFitness(algorithm.getBestIndividual().getFitness());
+    }
+    catch (exception& c_exception) {
+        cout << c_exception.what() << endl;
+    }
+}
 
+void runLFLExperiment(const CString& sNetName) {
+    CLFLnetEvaluator c_lfl_eval;
+    c_lfl_eval.bConfigure(sNetName);
+    runExperiment(c_lfl_eval);
+}
 
-		std::cout << "final fitness: \n";
-		printFitness(algorithm.getBestIndividual().getFitness());
+int main(int argc, char** argv) {
+    random_device maskSeedGenerator;
+    int maskSeed = static_cast<int>(maskSeedGenerator());
 
-	}//try
-	catch (exception &c_exception)
-	{
-		cout << c_exception.what() << endl;
-	}//catch (exception &c_exception)
-}//void vRunExperiment(const CEvaluator &cConfiguredEvaluator)
+    srand(time(NULL));
 
+    CString s_test;
+    runLFLExperiment("104b01");
 
+    // Other experiments (commented out for now)
+    /*
+    runIsingSpinGlassExperiment(81, 0, maskSeed);
+    runLeadingOnesExperiment(50, maskSeed);
+    runMaxSatExperiment(25, 0, 4.27f, maskSeed);
+    runNearestNeighborNKExperiment(100, 0, 4, maskSeed);
+    runOneMaxExperiment(100, maskSeed);
+    runRastriginExperiment(200, 10, maskSeed);
+    */
 
-void  vRunLFLExperiment(CString  sNetName)
-{
-	CLFLnetEvaluator c_lfl_eval;
-	c_lfl_eval.bConfigure(sNetName);
-	
-	vRunExperiment(c_lfl_eval);
-
-	
-}//void vRunRastriginExperiment(int iNumberOfBits, int iBitsPerFloat, int iMaskSeed)
-
-
-
-void main(int iArgCount, char **ppcArgValues)
-{
-	random_device c_mask_seed_generator;
-	int i_mask_seed = (int)c_mask_seed_generator();
-
-
-	srand(time(NULL));
-
-	CString  s_test;
-	vRunLFLExperiment("104b00");
-
-	/*vRunIsingSpinGlassExperiment(81, 0, i_mask_seed);
-	vRunIsingSpinGlassExperiment(81, 0, iSEED_NO_MASK);
-
-	vRunLeadingOnesExperiment(50, i_mask_seed);
-	vRunLeadingOnesExperiment(50, iSEED_NO_MASK);
-
-	vRunMaxSatExperiment(25, 0, 4.27f, i_mask_seed);
-	vRunMaxSatExperiment(25, 0, 4.27f, iSEED_NO_MASK);
-
-	vRunNearestNeighborNKExperiment(100, 0, 4, i_mask_seed);
-	vRunNearestNeighborNKExperiment(100, 0, 4, iSEED_NO_MASK);
-
-	vRunOneMaxExperiment(100, i_mask_seed);
-	vRunOneMaxExperiment(100, iSEED_NO_MASK);
-
-	vRunRastriginExperiment(200, 10, i_mask_seed);
-	vRunRastriginExperiment(200, 10, iSEED_NO_MASK);*/
-}//void main(int iArgCount, char **ppcArgValues)
+    return 0;
+}

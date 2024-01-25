@@ -1,75 +1,21 @@
 #include "GeneticAlgorithm.h"
 #include "MyMath.h"
 #include <iostream>
+#include <iomanip>
 
 GeneticAlgorithm::GeneticAlgorithm(int populationSize, double crossProbability, double mutationProbability, CLFLnetEvaluator* evaluator)
     : crossProbability(crossProbability), mutationProbability(mutationProbability), evaluator(evaluator)
 {
     bestIndividual = Individual();
-    initPopulation(populationSize);
+    generateRandomPopulation(populationSize);
 }
 
-Individual* GeneticAlgorithm::getParentCandidate()
+void GeneticAlgorithm::runIterations(unsigned long n, void (*callback)(double))
 {
-    Individual* individual1 = population[lRand(population.size())];
-    Individual* individual2 = population[lRand(population.size())];
-    return (individual1->getFitness() > individual2->getFitness()) ? individual1 : individual2;
-}
-
-Individual* GeneticAlgorithm::getParentCandidateRoulette(double* fitnesses)
-{
-    double selection = dRand() * fitnesses[population.size() - 1];
-    int l = 0;
-    int r = population.size() - 1;
-
-    while (l <= r) {
-        int m = (l + r) / 2;
-        if (fitnesses[m] == selection) {
-            l = m;
-            r = m;
-        }
-        else if (fitnesses[m] < selection) {
-            l = m + 1;
-        }
-        else {
-            r = m - 1;
-        }
+    for (unsigned long i = 0; i < n; i++) {
+        runIteration();
+        callback(bestIndividual.getFitness());
     }
-
-#ifdef DEBUG
-    std::cout << "poszukiwanie rodzica\n";
-    std::cout << "tablica: ";
-    for (int i = 0; i < population.size(); i++) {
-        std::cout << fitnesses[i] << " ";
-    }
-    std::cout << "\n" << "poszukiwana wartosc: " << selection << "\n";
-    std::cout << "znaleeziony indeks:" << l << "\n";
-#endif
-
-    return population[l];
-}
-
-double* GeneticAlgorithm::cumulativeFitness()
-{
-    double* fitnesses = new double[population.size()];
-    fitnesses[0] = population[0]->getFitness();
-
-    for (int i = 1; i < population.size(); i++) {
-        fitnesses[i] = fitnesses[i - 1] + population[i]->getFitness();
-    }
-
-    return fitnesses;
-}
-
-void GeneticAlgorithm::evaluatePopulation()
-{
-    Individual* currBest = &bestIndividual;
-    for (int i = 1; i < population.size(); i++) {
-        if (currBest->getFitness() < population[i]->getFitness()) {
-            currBest = population[i];
-        }
-    }
-    bestIndividual = *currBest;
 }
 
 void GeneticAlgorithm::runIteration()
@@ -110,21 +56,7 @@ void GeneticAlgorithm::runIteration()
     evaluatePopulation();
 }
 
-
-void GeneticAlgorithm::runIterations(unsigned long n, void (*callback)(double))
-{
-    for (unsigned long i = 0; i < n; i++) {
-        runIteration();
-        callback(bestIndividual.getFitness());
-    }
-}
-
-Individual& GeneticAlgorithm::getBestIndividual()
-{
-    return bestIndividual;
-}
-
-void GeneticAlgorithm::initPopulation(int populationSize)
+void GeneticAlgorithm::generateRandomPopulation(int populationSize)
 {
     int genotypeSize = evaluator->iGetNumberOfBits();
     for (int i = 0; i < populationSize; i++) {
@@ -139,4 +71,76 @@ void GeneticAlgorithm::initPopulation(int populationSize)
     }
 
     evaluatePopulation();
+}
+
+void GeneticAlgorithm::evaluatePopulation()
+{
+    Individual* currBest = &bestIndividual;
+    for (int i = 1; i < population.size(); i++) {
+        if (currBest->getFitness() < population[i]->getFitness()) {
+            currBest = population[i];
+        }
+    }
+    bestIndividual = *currBest;
+}
+
+Individual* GeneticAlgorithm::getParentCandidateRoulette(double* fitnesses)
+{
+    double selection = dRand() * fitnesses[population.size() - 1];
+    int l = 0;
+    int r = population.size() - 1;
+
+    while (l <= r) {
+        int m = (l + r) / 2;
+        if (fitnesses[m] == selection) {
+            l = m;
+            r = m;
+        }
+        else if (fitnesses[m] < selection) {
+            l = m + 1;
+        }
+        else {
+            r = m - 1;
+        }
+    }
+/*
+#ifdef DEBUG
+    std::cout << "===== Parent Selection Debug Info =====\n";
+    std::cout << "Population Size: " << population.size() << "\n";
+    std::cout << "Cumulative Fitness Values:\n";
+    for (int i = 0; i < population.size(); i++) {
+        std::cout << "Index " << i << ": " << std::scientific << std::setprecision(6) << fitnesses[i] << "\n";
+    }
+    std::cout << "Random Selection Value: " << std::scientific << std::setprecision(6) << selection << "\n";
+    std::cout << "Initial Range: 0 - " << (population.size() - 1) << "\n";
+    std::cout << "Final Selection Range: " << l << " - " << r << "\n";
+    std::cout << "Selected Index: " << l << "\n";
+    std::cout << "========================================\n";
+#endif
+*/
+    return population[l];
+}
+
+double* GeneticAlgorithm::cumulativeFitness()
+{
+    double* fitnesses = new double[population.size()];
+    fitnesses[0] = population[0]->getFitness();
+
+    for (int i = 1; i < population.size(); i++) {
+        fitnesses[i] = fitnesses[i - 1] + population[i]->getFitness();
+    }
+
+    return fitnesses;
+}
+
+Individual& GeneticAlgorithm::getBestIndividual()
+{
+    return bestIndividual;
+}
+
+Individual* GeneticAlgorithm::getParentCandidate()
+{
+    Individual* individual1 = population[lRand(population.size())];
+    Individual* individual2 = population[lRand(population.size())];
+    return (individual1->getFitness() > individual2->getFitness()) ? individual1 : individual2;
 }

@@ -10,15 +10,17 @@ public:
     Individual(const Individual& other);
     Individual(Individual&& other) noexcept;
 
-    double getFitness() const;
+    Individual& operator=(const Individual& other);
+    Individual& operator=(Individual&& other) noexcept;
+
     void mutate(double probability);
     std::vector<Individual*> cross(const Individual* with) const;
 
-    Individual& operator=(const Individual& other);
-    Individual& operator=(Individual&& other) noexcept;
+    double getFitness() const;
 
 private:
     std::vector<int> genotype;
     CLFLnetEvaluator* evaluator;
     double fitness;
+
 };

@@ -4,8 +4,19 @@
 #define CONSTANTS_H
 
 const int POP_SIZE = 50;
-const double CROSS_PROB = 0.90;
-const double MUT_PROB = 0.0025;
-const int ITERATIONS = 100;
+const double CROSS_PROB = 0.95;
+const double MUT_PROB = 0.000001;
+const int ITERATIONS = 1000;
+
+/*
+	104b00
+
+	2.9123e-12 <=> 50, 0.95, 0.000025, 1000
+
+	104b01
+	3.2327e-12 <=> 50, 0.95, 0.000001, 1000
+	2.6769e-12 <=> 50, 0.95, 0.000025, 1000
+*/
+
 
 #endif //CONSTANTS_H

@@ -103,21 +103,9 @@ Individual* GeneticAlgorithm::getParentCandidateRoulette(double* fitnesses)
             r = m - 1;
         }
     }
-/*
-#ifdef DEBUG
-    std::cout << "===== Parent Selection Debug Info =====\n";
-    std::cout << "Population Size: " << population.size() << "\n";
-    std::cout << "Cumulative Fitness Values:\n";
-    for (int i = 0; i < population.size(); i++) {
-        std::cout << "Index " << i << ": " << std::scientific << std::setprecision(6) << fitnesses[i] << "\n";
-    }
-    std::cout << "Random Selection Value: " << std::scientific << std::setprecision(6) << selection << "\n";
-    std::cout << "Initial Range: 0 - " << (population.size() - 1) << "\n";
-    std::cout << "Final Selection Range: " << l << " - " << r << "\n";
-    std::cout << "Selected Index: " << l << "\n";
-    std::cout << "========================================\n";
-#endif
-*/
+    
+    // Here
+
     return population[l];
 }
 
@@ -144,3 +132,17 @@ Individual* GeneticAlgorithm::getParentCandidate()
     Individual* individual2 = population[lRand(population.size())];
     return (individual1->getFitness() > individual2->getFitness()) ? individual1 : individual2;
 }
+
+/*
+    std::cout << "===== Parent Selection Debug Info =====\n";
+    std::cout << "Population Size: " << population.size() << "\n";
+    std::cout << "Cumulative Fitness Values:\n";
+    for (int i = 0; i < population.size(); i++) {
+        std::cout << "Index " << i << ": " << std::scientific << std::setprecision(6) << fitnesses[i] << "\n";
+    }
+    std::cout << "Random Selection Value: " << std::scientific << std::setprecision(6) << selection << "\n";
+    std::cout << "Initial Range: 0 - " << (population.size() - 1) << "\n";
+    std::cout << "Final Selection Range: " << l << " - " << r << "\n";
+    std::cout << "Selected Index: " << l << "\n";
+    std::cout << "========================================\n";
+*/

@@ -3,10 +3,10 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-const int POP_SIZE = 50;
+const int POP_SIZE = 2;
 const double CROSS_PROB = 0.95;
 const double MUT_PROB = 0.00025;
-const int ITERATIONS = 50;
+const int ITERATIONS = 10;
 
 /*
 	104b00

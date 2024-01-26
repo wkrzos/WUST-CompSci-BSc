@@ -13,6 +13,8 @@ int main(int argc, char** argv) {
     ExperimentManager manager("experiment_results.csv");
 
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("104b00"));
+
+    /*
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("104b01"));
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("104b02"));
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("104b03"));
@@ -23,6 +25,7 @@ int main(int argc, char** argv) {
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("104b08"));
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("104b09"));
 
+    
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("114b00"));
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("114b01"));
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("114b02"));
@@ -44,6 +47,7 @@ int main(int argc, char** argv) {
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("128b07"));
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("128b08"));
     manager.runExperiment(POP_SIZE, CROSS_PROB, MUT_PROB, ITERATIONS, _T("128b09"));
+    */
 
     return 0;
 }

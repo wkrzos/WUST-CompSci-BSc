@@ -14,6 +14,7 @@ public:
 
 private:
 	Individual bestIndividual;
+	double scaling = 1.5; // modification
 	std::vector<Individual*> population;
 	double crossProbability;
 	double mutationProbability;

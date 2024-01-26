@@ -3,6 +3,8 @@
 #include <iostream>
 #include <iomanip>
 
+// modification: add a new field, double scaling, scaling in [0, inf[, that increases the population on each iteration
+
 GeneticAlgorithm::GeneticAlgorithm(int populationSize, double crossProbability, double mutationProbability, CLFLnetEvaluator* evaluator)
     : crossProbability(crossProbability), mutationProbability(mutationProbability), evaluator(evaluator)
 {
@@ -21,7 +23,7 @@ void GeneticAlgorithm::runIterations(unsigned long n, void (*callback)(double))
 void GeneticAlgorithm::runIteration()
 {
     int currentPopulationSize = population.size();
-    int newPopulationSize = static_cast<int>(currentPopulationSize * 1); // Increase by any percent by adding * n, where n is the factor
+    int newPopulationSize = static_cast<int>(currentPopulationSize * scaling); // Modification increase by any percent by adding * scaling, where scaling is the factor
 
     std::vector<Individual*> newPopulation;
     newPopulation.reserve(newPopulationSize);
@@ -104,7 +106,17 @@ Individual* GeneticAlgorithm::getParentCandidateRoulette(double* fitnesses)
         }
     }
     
-    // Here
+    std::cout << "===== Parent Selection Debug Info =====\n";
+    std::cout << "Population Size: " << population.size() << "\n";
+    std::cout << "Cumulative Fitness Values:\n";
+    for (int i = 0; i < population.size(); i++) {
+        std::cout << "Index " << i << ": " << std::scientific << std::setprecision(6) << fitnesses[i] << "\n";
+    }
+    std::cout << "Random Selection Value: " << std::scientific << std::setprecision(6) << selection << "\n";
+    std::cout << "Initial Range: 0 - " << (population.size() - 1) << "\n";
+    std::cout << "Final Selection Range: " << l << " - " << r << "\n";
+    std::cout << "Selected Index: " << l << "\n";
+    std::cout << "========================================\n";
 
     return population[l];
 }

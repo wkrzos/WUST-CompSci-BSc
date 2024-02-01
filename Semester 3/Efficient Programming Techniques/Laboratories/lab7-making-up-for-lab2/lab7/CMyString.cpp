@@ -1,67 +1,72 @@
 #include "CMyString.h"
 #include <cstring>
 
-CMyString::CMyString() : data(nullptr) {}
-
-CMyString::CMyString(const CMyString& other) {
-    if (other.data) {
-        data = new char[strlen(other.data) + 1];
-        strcpy_s(data, strlen(other.data) + 1, other.data);
-    }
-    else {
-        data = nullptr;
-    }
+CMyString::CMyString() {
+    str = nullptr;
 }
 
-CMyString::CMyString(const char* str) {
-    if (str) {
-        data = new char[strlen(str) + 1];
-        strcpy_s(data, strlen(str) + 1, str);
+CMyString::CMyString(const CMyString& other) {
+    if (other.str != nullptr) {
+        str = new char[strlen(other.str) + 1];
+        strcpy_s(str, strlen(other.str) + 1, other.str);
     }
     else {
-        data = nullptr;
+        str = nullptr;
     }
 }
 
 CMyString::~CMyString() {
-    delete[] data;
+    // Check if str is not nullptr to avoid deleting nullptr,
+    // which is safe but unnecessary.
+    if (str != nullptr) {
+        delete[] str;
+        str = nullptr; // Optional: Prevent dangling pointer after deletion.
+    }
 }
 
-CMyString& CMyString::operator=(const CMyString& other) {
-    if (this != &other) {
-        delete[] data;
-        if (other.data) {
-            data = new char[strlen(other.data) + 1];
-            strcpy_s(data, strlen(other.data) + 1, other.data);
-        }
-        else {
-            data = nullptr;
-        }
+
+CMyString& CMyString::operator=(const char* newStr) {
+    if (str != nullptr) {
+        delete[] str;
+    }
+    if (newStr != nullptr) {
+        str = new char[strlen(newStr) + 1];
+        strcpy_s(str, strlen(newStr) + 1, newStr);
+    }
+    else {
+        str = nullptr;
     }
     return *this;
 }
 
-CMyString CMyString::operator+(const CMyString& other) const {
-    int thisLen = this->data ? strlen(this->data) : 0;
-    int otherLen = other.data ? strlen(other.data) : 0;
-    CMyString newString;
-    newString.data = new char[thisLen + otherLen + 1];
-
-    if (this->data) {
-        strcpy_s(newString.data, thisLen + 1, this->data);
+CMyString& CMyString::operator+=(const char* appendString) {
+    if (appendString != nullptr) {
+        char* temp = new char[strlen(str) + strlen(appendString) + 1];
+        strcpy_s(temp, strlen(str) + strlen(appendString) + 1, str);
+        strcat_s(temp, strlen(str) + strlen(appendString) + strlen(appendString) + 1, appendString);
+        if (str != nullptr) {
+            delete[] str;
+        }
+        str = temp;
     }
+    return *this;
+}
 
-    if (other.data) {
-        strcat_s(newString.data, thisLen + otherLen + 1, other.data);
-    }
-
-    return newString;
+CMyString CMyString::operator+(const char* appendStr) const {
+    CMyString result(*this);
+    result += appendStr;
+    return result;
 }
 
 std::string CMyString::sToStandard() const {
-    return std::string(data ? data : "");
+    if (str != nullptr) {
+        return std::string(str);
+    }
+    else {
+        return std::string();
+    }
 }
 
 CMyString::operator bool() const {
-    return data != nullptr && strlen(data) > 0;
+    return (str != nullptr && strlen(str) > 0);
 }

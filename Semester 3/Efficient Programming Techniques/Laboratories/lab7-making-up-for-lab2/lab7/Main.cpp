@@ -1,22 +1,21 @@
+﻿#include <iostream>
 #include "CMyString.h"
-#include <iostream>
 
 int main() {
-	/*
-	CMyString string1 = "Ala";
-	CMyString string2 = " ma";
-	CMyString string3 = " kota";
+    CMyString c_str;
+    c_str = "Ala ";
+    c_str += "ma ";
+    c_str += "kota ";
+    c_str = c_str + "i psa.";
 
-	std::cout << string1.sToStandard() << std::endl;
+    std::cout << "Wartosc obiektu c_str: " << c_str.sToStandard() << std::endl;
 
-	string1 = string1 + string2 + string3;
+    if (c_str) {
+        std::cout << "Obiekt c_str zawiera znaki." << std::endl;
+    }
+    else {
+        std::cout << "Obiekt c_str jest pusty." << std::endl;
+    }
 
-	std::cout << string1.sToStandard() << std::endl;
-
-	bool isString1Empty = string1;
-
-	std::cout << isString1Empty << std::endl;
-	*/
-
-	return 0;
+    return 0;
 }

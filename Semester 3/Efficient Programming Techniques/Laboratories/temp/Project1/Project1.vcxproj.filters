@@ -15,15 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CMyString.cpp">
+    <ClCompile Include="..\..\lab7-making-up-for-lab2\lab7\Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lab7-making-up-for-lab2\lab7\CMyString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyStringPointer.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CMyString.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Main.cpp">
+    <ClInclude Include="..\..\lab7-making-up-for-lab2\lab7\CMyString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

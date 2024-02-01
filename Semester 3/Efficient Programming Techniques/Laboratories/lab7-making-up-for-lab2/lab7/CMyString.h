@@ -1,25 +1,23 @@
-#ifndef CMYSTRING_H
-
-//#define _CRT_SECURE_NO_WARNINGS
+﻿#ifndef CMYSTRING_H
 #define CMYSTRING_H
 
 #include <string>
 
 class CMyString {
-public:
-    CMyString();
-    CMyString(const CMyString& other);
-    CMyString(const char* str);
-    ~CMyString();
-
-    CMyString& operator=(const CMyString& other);
-    CMyString operator+(const CMyString& other) const;
-
-    std::string sToStandard() const;
-    operator bool() const;
-
 private:
-    char* data;
+    char* str;
+
+public:
+    CMyString(); // Konstruktor bezparametrowy
+    CMyString(const CMyString& other); // Konstruktor kopiujący
+    ~CMyString(); // Destruktor
+
+    CMyString& operator=(const char* newStr); // Przeciążony operator przypisania =
+    CMyString& operator+=(const char* appendString); // Przeciążony operator +=
+    CMyString operator+(const char* appendStr) const; // Przeciążony operator +
+
+    std::string sToStandard() const; // Metoda zwracająca wartość obiektu jako std::string
+    operator bool() const; // Przeciążony operator rzutowania do bool
 };
 
 #endif // CMYSTRING_H

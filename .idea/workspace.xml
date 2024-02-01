@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8aa6b7b6-6b35-4bde-a971-73dba5db0226" name="Changes" comment="" />
+    <list default="true" id="8aa6b7b6-6b35-4bde-a971-73dba5db0226" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Semester 3/Efficient Programming Techniques/Laboratories/lab7-making-up-for-lab2/lab7/lab7.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/Semester 3/Efficient Programming Techniques/Laboratories/lab7-making-up-for-lab2/lab7/lab7.vcxproj" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,7 +45,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "pp-list-8",
+    "git-widget-placeholder": "bug-iterations-loop",
     "last_opened_file_path": "D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Laboratories"
   }
 }]]></component>

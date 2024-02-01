@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a5e7084f-a133-4af2-b1ef-ab4c31e6c7cb" name="Changes" comment="" />
+    <list default="true" id="a5e7084f-a133-4af2-b1ef-ab4c31e6c7cb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/list10/User.sc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/list10/build.sbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Efficient Programming Techniques/Laboratories/lab7-making-up-for-lab2/lab7/lab7.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../../Efficient Programming Techniques/Laboratories/lab7-making-up-for-lab2/lab7/lab7.vcxproj" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,9 +40,9 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "pp-list-8",
+    "git-widget-placeholder": "bug-iterations-loop",
     "jdk.selected.JAVA_MODULE": "20",
-    "last_opened_file_path": "D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Laboratories/list9"
+    "last_opened_file_path": "D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Laboratories/list10"
   }
 }]]></component>
   <component name="RecentsManager">

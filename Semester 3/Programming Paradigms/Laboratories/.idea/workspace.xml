@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a5e7084f-a133-4af2-b1ef-ab4c31e6c7cb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/list10/User.sc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/list10/build.sbt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Efficient Programming Techniques/Laboratories/lab7-making-up-for-lab2/lab7/lab7.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../../Efficient Programming Techniques/Laboratories/lab7-making-up-for-lab2/lab7/lab7.vcxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Efficient Programming Techniques/Laboratories/temp/Project1/Project1.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/../../Efficient Programming Techniques/Laboratories/temp/Project1/Project1.vcxproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,15 +33,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "bug-iterations-loop",
-    "jdk.selected.JAVA_MODULE": "20",
-    "last_opened_file_path": "D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Laboratories/list10"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;bug-iterations-loop&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;20&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Laboratories/list10&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Programming Projects\WUST-CompSci-BSc\Semester 3\Programming Paradigms\Laboratories\list2" />

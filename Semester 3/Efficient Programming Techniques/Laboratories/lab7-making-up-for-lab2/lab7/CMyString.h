@@ -57,8 +57,9 @@ public:
     ~CMyString();
 
     CMyString& operator=(const char* newStr);
-    CMyString& operator+=(const char* appendString);
     CMyString operator+(const char* appendStr) const;
+    CMyString& operator+=(const char* appendString);
+
     std::string sToStandard() const;
     operator bool() const;
 

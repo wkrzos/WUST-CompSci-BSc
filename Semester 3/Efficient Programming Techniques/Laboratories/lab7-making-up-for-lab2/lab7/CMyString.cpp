@@ -12,6 +12,12 @@ CMyString& CMyString::operator=(const char* newStr) {
     return *this;
 }
 
+CMyString CMyString::operator+(const char* appendStr) const {
+    CMyString result(*this);
+    result += appendStr;
+    return result;
+}
+
 CMyString& CMyString::operator+=(const char* appendString) {
     if (strPtr.get() != nullptr) {
         char* temp = new char[strlen(strPtr.get()) + strlen(appendString) + 1];
@@ -20,12 +26,6 @@ CMyString& CMyString::operator+=(const char* appendString) {
         strPtr = MyStringPtr(temp);
     }
     return *this;
-}
-
-CMyString CMyString::operator+(const char* appendStr) const {
-    CMyString result(*this);
-    result += appendStr;
-    return result;
 }
 
 std::string CMyString::sToStandard() const {

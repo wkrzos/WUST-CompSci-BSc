@@ -1,53 +1,23 @@
 #include "CMyString.h"
 #include <cstring>
 
-CMyString::CMyString() {
-    str = nullptr;
-}
+CMyString::CMyString() : strPtr(nullptr) {}
 
-CMyString::CMyString(const CMyString& other) {
-    if (other.str != nullptr) {
-        str = new char[strlen(other.str) + 1];
-        strcpy_s(str, strlen(other.str) + 1, other.str);
-    }
-    else {
-        str = nullptr;
-    }
-}
+CMyString::CMyString(const CMyString& other) : strPtr(other.strPtr) {}
 
-CMyString::~CMyString() {
-    // Check if str is not nullptr to avoid deleting nullptr,
-    // which is safe but unnecessary.
-    if (str != nullptr) {
-        delete[] str;
-        str = nullptr; // Optional: Prevent dangling pointer after deletion.
-    }
-}
-
+CMyString::~CMyString() {}
 
 CMyString& CMyString::operator=(const char* newStr) {
-    if (str != nullptr) {
-        delete[] str;
-    }
-    if (newStr != nullptr) {
-        str = new char[strlen(newStr) + 1];
-        strcpy_s(str, strlen(newStr) + 1, newStr);
-    }
-    else {
-        str = nullptr;
-    }
+    strPtr = MyStringPtr(newStr);
     return *this;
 }
 
 CMyString& CMyString::operator+=(const char* appendString) {
-    if (appendString != nullptr) {
-        char* temp = new char[strlen(str) + strlen(appendString) + 1];
-        strcpy_s(temp, strlen(str) + strlen(appendString) + 1, str);
-        strcat_s(temp, strlen(str) + strlen(appendString) + strlen(appendString) + 1, appendString);
-        if (str != nullptr) {
-            delete[] str;
-        }
-        str = temp;
+    if (strPtr.get() != nullptr) {
+        char* temp = new char[strlen(strPtr.get()) + strlen(appendString) + 1];
+        strcpy_s(temp, strlen(strPtr.get()) + strlen(appendString) + 1, strPtr.get());
+        strcat_s(temp, strlen(strPtr.get()) + strlen(appendString) + strlen(appendString) + 1, appendString);
+        strPtr = MyStringPtr(temp);
     }
     return *this;
 }
@@ -59,8 +29,8 @@ CMyString CMyString::operator+(const char* appendStr) const {
 }
 
 std::string CMyString::sToStandard() const {
-    if (str != nullptr) {
-        return std::string(str);
+    if (strPtr.get() != nullptr) {
+        return std::string(strPtr.get());
     }
     else {
         return std::string();
@@ -68,5 +38,5 @@ std::string CMyString::sToStandard() const {
 }
 
 CMyString::operator bool() const {
-    return (str != nullptr && strlen(str) > 0);
+    return (strPtr.get() != nullptr && strlen(strPtr.get()) > 0);
 }

@@ -21,9 +21,6 @@
     <ClCompile Include="..\..\lab7-making-up-for-lab2\lab7\CMyString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyStringPointer.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lab7-making-up-for-lab2\lab7\CMyString.h">

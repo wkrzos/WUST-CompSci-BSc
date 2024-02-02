@@ -131,7 +131,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\lab7-making-up-for-lab2\lab7\CMyString.cpp" />
     <ClCompile Include="..\..\lab7-making-up-for-lab2\lab7\Main.cpp" />
-    <ClCompile Include="MyStringPointer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\lab7-making-up-for-lab2\lab7\CMyString.h" />

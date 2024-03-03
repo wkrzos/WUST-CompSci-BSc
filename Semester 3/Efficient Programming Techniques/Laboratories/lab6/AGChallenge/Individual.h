@@ -1,32 +1,24 @@
-#ifndef INDIVIDUAL_H
-#define INDIVIDUAL_H
-
+#pragma once
 #include <vector>
-#include <string>
+#include "Evaluator.h"
 
-class IEvaluator; // Forward declaration of IEvaluator
-
-class Individual {
+class Individual
+{
 public:
-    // Constructors
-    Individual(std::vector<int> genotype, IEvaluator* evaluator);
+    Individual(std::vector<int> genotype, CLFLnetEvaluator* evaluator);
     Individual();
+    Individual(const Individual& other);
+    Individual(Individual&& other) noexcept;
 
-    // Public methods
-    double getFitness();
-    void mutate(float probability);
-    std::vector<Individual> cross(Individual& other);
+    double getFitness() const;
+    void mutate(double probability);
+    std::vector<Individual*> cross(const Individual* with) const;
+
     Individual& operator=(const Individual& other);
-    std::string toString() const;
+    Individual& operator=(Individual&& other) noexcept;
 
 private:
-    // Member variables
     std::vector<int> genotype;
-    IEvaluator* evaluator;
+    CLFLnetEvaluator* evaluator;
     double fitness;
-
-    // Private helper methods
-    std::vector<int> createChildGenotype(const Individual& parent, int crossoverPoint);
 };
-
-#endif // INDIVIDUAL_H

@@ -16,24 +16,24 @@ y = np.exp(-x*x) # wyliczenie y
 y_err = np.random.normal(loc=np.mean(y), scale=0.1, size=len(y))
 
 # Zaznaczamy x, y oraz obszar szumu wokół funkcji
-ax[0].plot(x, y, label="exp(-x^2)") # wykreślenie y
+ax[0].plot(x, y, label="exp(-x^2)", alpha=0.8, linestyle="dashed") # wykreślenie y
 ax[0].fill_between(x, y - y_err, y + y_err, alpha=0.2, label="+/- szum")
 
 # Dodajemy oznaczenia osi i legendę na górze po lewej stronie
 ax[0].set_xlabel("x")
 ax[0].set_ylabel("y")
-ax[0].legend(loc="upper left", bbox_to_anchor=(0, 1)) # wouldn't show up without bbox_to_anchor=(0, 1)
+ax[0].legend(loc="upper left", bbox_to_anchor=(0, 1)) # wouldn't show up (on PC) without bbox_to_anchor=(0, 1)
 
 
 # Wykres drugi
 # Definiujemy dziedzinę (x) oraz funkcje do wykreślenia (y_1, y_2)
 x = np.arange(start=-50.0, stop=50.0, step=0.1)
 y_1 = np.cos(x / 3.0)
-y_2 = np.sin(x)
+y_2 = np.sin(x) * 2
 
 # Kreślimy obie funkcje
 ax[1].plot(x, y_1, label="cos(x/3)")
-ax[1].plot(x, y_2, label="sin(x)") # wykreślenie y_2
+ax[1].plot(x, y_2, label="sin(x) * 2") # wykreślenie y_2
 
 # Ustawiamy skalę osi x na symetryczną-logarytmiczną oraz dodajemy siatkę w
 # tle kreślonych krzywych

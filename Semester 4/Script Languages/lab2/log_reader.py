@@ -1,3 +1,4 @@
+#log_reader.py
 import sys
 import re
 import fileinput
@@ -34,18 +35,9 @@ def parse_log_line(line):
     else:
         raise ValueError("Line does not match log format")
 
-# List to hold Log objects
-logs = []
-
-# Reading from standard input (stdin)
 for line in fileinput.input():
     try:
         log = parse_log_line(line)
-        logs.append(log)
+        print(log.status_code)  # Change here: print only the status code
     except ValueError as e:
         print(e, file=sys.stderr)
-
-# Example usage of the logs list
-# Print all Log objects
-for log in logs:
-    print(log)

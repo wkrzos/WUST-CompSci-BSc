@@ -45,9 +45,8 @@ def get_minor_matrix(mat: List[List[int]], i: int, j: int) -> List[List[int]]:
 
     :return: minor matrix
     """
-    
-    
     return [row[:j] + row[j+1:] for row in (mat[:i]+mat[i+1:])]
+
 
 
 def matrix_determinant(mat: List[List[int]]) -> int:
@@ -66,6 +65,7 @@ def matrix_determinant(mat: List[List[int]]) -> int:
     for c in range(len(mat[0])):
         determinant += ((-1)**c) * mat[0][c] * matrix_determinant(get_minor_matrix(mat, 0, c))
     return determinant
+
 
 
 @pytest.mark.parametrize(

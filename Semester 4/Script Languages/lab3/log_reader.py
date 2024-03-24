@@ -65,19 +65,78 @@ def get_entries_by_addr(log_entries, address):
     filtered_entries = [entry for entry in log_entries if entry[0] == address]
     return filtered_entries
 
+def get_entries_by_code(log_entries, status_code):
+    """
+    Filters log entries by HTTP status code.
+
+    Parameters:
+    - log_entries: A list of tuples, each representing a log entry.
+    - status_code: An integer representing the HTTP status code to filter by.
+
+    Returns:
+    - A list of tuples representing log entries with the given status code.
+    """
+    try:
+        code = int(status_code)
+        if code < 100 or code > 599:
+            raise ValueError("Invalid HTTP status code.")
+        return [entry for entry in log_entries if entry[3] == code]
+    except ValueError as e:
+        print(f"Error: {e}")
+        return []
+
+def get_failed_reads(log_entries, combined=False):
+    """
+    Returns lists of log entries with HTTP status codes 4xx and 5xx.
+
+    Parameters:
+    - log_entries: A list of tuples representing log entries.
+    - combined: A boolean indicating whether to return a combined list or separate lists.
+
+    Returns:
+    - Either two separate lists (4xx and 5xx) or a combined list of tuples, based on the 'combined' parameter.
+    """
+    client_errors = [entry for entry in log_entries if 400 <= entry[3] < 500]
+    server_errors = [entry for entry in log_entries if 500 <= entry[3] < 600]
+    
+    if combined:
+        return client_errors + server_errors
+    else:
+        return client_errors, server_errors
+    
+def get_entries_by_extension(log_entries, extension):
+    extension = extension.lower()
+    return [entry for entry in log_entries if entry[2].lower().endswith(f".{extension}")]
+
+def print_entries(entries):
+    for entry in entries:
+        print(entry)
+    print("---------- End of Entries ----------\n")      
+    
 if __name__ == "__main__":
     # Test the log parsing
     log_entries = read_log()
-    for entry in log_entries:
-        print(entry)
+    print_entries(log_entries)
         
     # Sort by status code (index 3)
     sorted_log = sort_log(log_entries, 3)
-    for entry in sorted_log:
-        print(entry)
+    print_entries(sorted_log)
         
     # Filter by a specific IP address
     address = "unicomp6.unicomp.net"
     entries_by_addr = get_entries_by_addr(log_entries, address)
-    for entry in entries_by_addr:
-        print(entry)
+    print_entries(entries_by_addr)
+    
+    # Filter by a specfic code
+    code = 200
+    entries_by_code = get_entries_by_code(log_entries, 200)
+    print_entries(entries_by_code)
+        
+    # Get failed reads
+    failed_reads = get_failed_reads(log_entries)
+    print_entries(failed_reads)
+        
+    # Get entries by extension
+    extension = "txt"
+    entries_by_extension = get_entries_by_extension(log_entries, extension)
+    print_entries(entries_by_extension)

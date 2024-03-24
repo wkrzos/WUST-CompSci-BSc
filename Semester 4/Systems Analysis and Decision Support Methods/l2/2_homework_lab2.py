@@ -67,7 +67,6 @@ def matrix_determinant(mat: List[List[int]]) -> int:
     return determinant
 
 
-
 @pytest.mark.parametrize(
     "input_matrix, expected_result",
     [

@@ -45,10 +45,8 @@ def get_minor_matrix(mat: List[List[int]], i: int, j: int) -> List[List[int]]:
 
     :return: minor matrix
     """
-    
-    
-    return [row[:j] + row[j+1:] for row in (mat[:i]+mat[i+1:])]
 
+    return [row[:j] + row[j+1:] for row in (mat[:i]+mat[i+1:])]
 
 def matrix_determinant(mat: List[List[int]]) -> int:
     """

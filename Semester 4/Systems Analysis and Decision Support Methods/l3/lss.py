@@ -46,12 +46,42 @@ def get_polynomial_form(polynomial_degree: int) -> np.ndarray:
         [[0], [1], [2], [3]] - 3rd order, and so on...
     :return: a array with degrees of polynomial
     """
-    ...
+    list = []
+    
+    for n in range(polynomial_degree + 1):
+        list.append([n])
+        n += 1
+        
+    return np.array(list)
+        
+def print_polynomial(theta: np.ndarray, precision: int = 3) -> str:
 
+    # Initialize an empty string to build the polynomial representation.
+    polynomial_str = ""
+    
+    # Iterate through each coefficient and its index in the theta array.
+    for degree, coeff in enumerate(theta.flatten()):
+        # Format the coefficient with the specified precision, then remove trailing zeros and a trailing decimal point if present.
+        if coeff == 0:
+            formatted_coeff = "0.0"
+        else:
+            formatted_coeff = f"{coeff:.{precision}f}".rstrip('0').rstrip('.')
+            if float(formatted_coeff) == 0.0:
+                formatted_coeff = "0.0" if coeff > 0 else "-0.0"
+            elif coeff < 0 and formatted_coeff == "0":
+                formatted_coeff = "-0.0"
+        
+        # Construct the term; include the variable part only if the degree is greater than 0.
+        term = f"{formatted_coeff}*x^{degree}"
+        
+        # Add a '+' sign between terms but skip it for the very first term.
+        if degree > 0:
+            polynomial_str += " + " + term
+        else:
+            polynomial_str = term
+    
+    return polynomial_str
 
-def print_polynomial(theta: np.ndarray, precission: int = 3) -> str:
-    """Return string representation of polynomial."""
-    ...
 
 
 def least_squares_solution(
@@ -66,7 +96,9 @@ def least_squares_solution(
 
     :return: theta matrix of polynomial, shape = (1, polynomial_degree + 1)
     """
-    ...
+    X_design = np.vander(X, N=polynomial_degree + 1, increasing=True)
+    theta = np.linalg.lstsq(X_design, Y, rcond=None)[0]  # Use np.linalg.lstsq to solve
+    return theta[:, np.newaxis]  # Ensure theta is in the shape (n, 1)
 
 
 def generalised_linear_model(X: np.ndarray, T: np.ndarray) -> np.ndarray:
@@ -94,7 +126,7 @@ def visualise_LSS_method(X: np.ndarray, Y: np.ndarray, T: np.ndarray):
     plt.plot(X_test, Y_pred, color="tab:orange", label="estimated function")
     plt.xlabel("x - GDP", fontsize=14)
     plt.ylabel("y - happiness", fontsize=14)
-    plt.title(f"Fitted: \n {print_polynomial(T, precission=5)}")
+    plt.title(f"Fitted: \n {print_polynomial(T, precision=5)}")
     plt.legend()
     plt.show()
 
@@ -102,6 +134,6 @@ def visualise_LSS_method(X: np.ndarray, Y: np.ndarray, T: np.ndarray):
 if __name__ == "__main__":
     # here is a playground for your tests!
     X, Y = read_data_vectors()
-    T = least_squares_solution(X, Y, 2)
+    T = least_squares_solution(X, Y, 4)
     print(print_polynomial(T))
     visualise_LSS_method(X, Y, T)

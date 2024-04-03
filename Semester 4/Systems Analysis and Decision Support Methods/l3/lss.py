@@ -84,9 +84,16 @@ def print_polynomial(theta: np.ndarray, precision: int = 3) -> str:
 
 
 
-def least_squares_solution(
+""" def least_squares_solution(
         X: np.ndarray, Y: np.ndarray, polynomial_degree: int
 ) -> np.ndarray:
+
+    X_design = np.vander(X, N=polynomial_degree + 1, increasing=True)
+    theta = np.linalg.lstsq(X_design, Y, rcond=None)[0]  # Use np.linalg.lstsq to solve
+    return theta[:, np.newaxis]  # Ensure theta is in the shape (n, 1)
+ """
+
+def least_squares_solution(X: np.ndarray, Y: np.ndarray, polynomial_degree: int) -> np.ndarray:
     """
     Compute theta matrix with coefficients of polynomial fitted by LSS.
 
@@ -94,11 +101,15 @@ def least_squares_solution(
     :param Y: target vector, shape = (N, ) 
     :param polynomial_degree: degree of fitted polynomial
 
-    :return: theta matrix of polynomial, shape = (1, polynomial_degree + 1)
+    :return: theta matrix of polynomial, shape = (polynomial_degree + 1, )
     """
+    # Create the design matrix for a polynomial of the given degree
     X_design = np.vander(X, N=polynomial_degree + 1, increasing=True)
-    theta = np.linalg.lstsq(X_design, Y, rcond=None)[0]  # Use np.linalg.lstsq to solve
-    return theta[:, np.newaxis]  # Ensure theta is in the shape (n, 1)
+    
+    # Solve for theta using the normal equation
+    theta = np.linalg.inv(X_design.T @ X_design) @ X_design.T @ Y
+    
+    return theta[:, np.newaxis]
 
 
 def generalised_linear_model(X: np.ndarray, T: np.ndarray) -> np.ndarray:

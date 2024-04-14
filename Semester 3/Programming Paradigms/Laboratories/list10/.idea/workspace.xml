@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bc524c31-8c25-4bb4-9b8c-e412b5b712f2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/update/update_cache_2.12/inputs" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/update/update_cache_2.12/inputs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/scala-2.12/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/target/scala-2.12/update/update_cache_2.12/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/input_dsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/input_dsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/output_dsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/_global/dependencyPositions/_global/streams/update_cache_2.12/output_dsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/_global/updateClassifiers/_global/streams/update_cache_2.12/inputs" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/_global/updateClassifiers/_global/streams/update_cache_2.12/inputs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/_global/updateClassifiers/_global/streams/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/_global/updateClassifiers/_global/streams/update_cache_2.12/output" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/test/externalDependencyClasspath/_global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/test/externalDependencyClasspath/_global/streams/export" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/streams/test/managedClasspath/_global/streams/export" beforeDir="false" afterPath="$PROJECT_DIR$/target/streams/test/managedClasspath/_global/streams/export" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../Semester 4/Script Languages/lab3/apache_log_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../Semester 4/Script Languages/lab3/apache_log_parser.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,14 +38,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;bug-iterations-loop&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Laboratories/list10&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "D:/Programming Projects/WUST-CompSci-BSc/Semester 3/Programming Paradigms/Laboratories/list10"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

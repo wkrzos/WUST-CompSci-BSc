@@ -2,6 +2,10 @@ import sys
 import re
 from datetime import datetime
 
+from apache_log_dictionaries import get_addrs, log_to_dict, print_dict_entry_dates
+from apache_log_filter import get_entries_by_addr, get_entries_by_code, get_entries_by_extension, get_failed_reads
+from apache_log_sort import sort_log
+
 def parse_apache_log(log_line):
     log_pattern = r'(\S+) - - \[(.*?)\] "(.*?)" (\d{3}) (\d+|-)'
     match = re.match(log_pattern, log_line)

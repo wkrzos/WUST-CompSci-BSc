@@ -21,18 +21,44 @@ def get_ipv4s_from_log(log_entry_dict):
         return []  # Return an empty list if log_entry_dict is None
     ipv4_pattern = r"\b(?:\d{1,3}\.){3}\d{1,3}\b"
     addresses = re.findall(ipv4_pattern, log_entry_dict.get("message", ""))
-    return addresses
+    return 
 
+def get_user_from_all_ssh_logs(log_entries):
+    """
+    Extract usernames from various SSH log entries, handling different message patterns.
+    :param log_entries: A list of SSH log entry strings.
+    :return: A list of extracted usernames.
+    """
+    users = []
+    # Patterns that might indicate a user action or information
+    patterns = [
+        r"Invalid user (\S+)",  # Explicit invalid user messages
+        r"Failed password for invalid user (\S+)",  # Failed password attempts for invalid users
+        r"input_userauth_request: invalid user (\S+)",  # Invalid userauth requests
+    ]
 
-def get_user_from_log(log_entry_dict):
-    if log_entry_dict is None:
-        return None  # Return None immediately if log_entry_dict is None
-    user_pattern = r"Invalid user (\S+)"
-    match = re.search(user_pattern, log_entry_dict.get("message", ""))
-    if match:
-        return match.group(1)
-    return None
+    for log_entry in log_entries:
+        for pattern in patterns:
+            match = re.search(pattern, log_entry)
+            if match:
+                user = match.group(1)
+                if user not in users:  # Avoid duplicates
+                    users.append(user)
+    return users
 
+# Sample log entries for demonstration
+log_entries = [
+    "Dec 10 06:55:46 LabSZ sshd[24200]: reverse mapping checking getaddrinfo for ns.marryaldkfaczcz.com [173.234.31.186] failed - POSSIBLE BREAK-IN ATTEMPT!",
+    "Dec 10 06:55:46 LabSZ sshd[24200]: Invalid user webmaster from 173.234.31.186",
+    "Dec 10 06:55:48 LabSZ sshd[24200]: Failed password for invalid user webmaster from 173.234.31.186 port 38926 ssh2",
+    "Dec 10 07:07:38 LabSZ sshd[24206]: Invalid user test9 from 52.80.34.196",
+    "Dec 10 07:07:45 LabSZ sshd[24206]: Failed password for invalid user test9 from 52.80.34.196 port 36060 ssh2",
+    "Dec 10 07:11:42 LabSZ sshd[24224]: Invalid user chen from 202.100.179.208",
+]
+
+# Extract users from the provided log entries
+extracted_users = get_user_from_all_ssh_logs(log_entries)
+print(extracted_users)
 
 
 def get_message_type(log_entry_dict):

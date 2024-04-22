@@ -35,6 +35,7 @@ def get_average_duration_and_deviation(logs: Iterable[LogEntry]) -> Tuple[float,
         return average_duration, std_deviation
     else:
         return 0.0, 0.0
+    
 
 def get_sessions_stats_grouped_by_user(logs: Iterable[LogEntry]) -> Dict[str, Tuple[float, float]]:
     logs_list = list(logs)

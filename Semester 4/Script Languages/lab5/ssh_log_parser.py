@@ -1,10 +1,28 @@
 
 import argparse
+from datetime import datetime
 import re
 from collections import Counter
 import logging
+import statistics
 import sys
 import random
+import logging
+import sys
+from typing import List, Tuple
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)  # Set to lowest level globally
+
+stdout_handler = logging.StreamHandler(sys.stdout)
+stdout_handler.setLevel(logging.DEBUG)
+stdout_handler.addFilter(lambda record: record.levelno <= logging.WARNING)  # Only pass debug, info, warning to stdout
+
+stderr_handler = logging.StreamHandler(sys.stderr)
+stderr_handler.setLevel(logging.ERROR)  # Only pass error, critical to stderr
+
+logger.addHandler(stdout_handler)
+logger.addHandler(stderr_handler)
 
 def parse_log_entry(log_entry):
     pattern = (r"^(?P<date>[A-Za-z]+\s\d+\s\d+:\d+:\d+) "
@@ -23,7 +41,6 @@ def get_ipv4s_from_log(log_entry_dict):
     addresses = re.findall(ipv4_pattern, log_entry_dict.get("message", ""))
     return addresses
 
-
 def get_user_from_log(log_entry_dict):
     if log_entry_dict is None:
         return None  # Return None immediately if log_entry_dict is None
@@ -32,8 +49,6 @@ def get_user_from_log(log_entry_dict):
     if match:
         return match.group(1)
     return None
-
-
 
 def get_message_type(log_entry_dict):
     if log_entry_dict is None:
@@ -75,6 +90,35 @@ def random_log_entries_for_user(log_entries, n=1):
     random_user = random.choice(list(users_logs.keys()))
     user_logs = users_logs[random_user]
     return random.sample(user_logs, min(n, len(user_logs)))
+
+def estimate_session_durations(logs: List[str]) -> Tuple[float, float]:
+    session_starts = {}
+    session_durations = []
+
+    for log in logs:
+        # Extract timestamp, IP address, and event message
+        parts = log.split()
+        timestamp_str = " ".join(parts[:3])
+        timestamp = datetime.strptime(timestamp_str, "%b %d %H:%M:%S")
+        ip_address = parts[-1].strip("[]")
+        event_message = " ".join(parts[4:])
+
+        # Check if it's a session start or end
+        if "Connection closed by" in event_message:
+            start_time = session_starts.pop(ip_address, None)
+            if start_time:
+                duration = (timestamp - start_time).total_seconds()
+                session_durations.append(duration)
+        else:
+            if ip_address not in session_starts:
+                session_starts[ip_address] = timestamp
+
+    if session_durations:
+        average_duration = statistics.mean(session_durations)
+        std_deviation = statistics.stdev(session_durations) if len(session_durations) > 1 else 0.0
+        return average_duration, std_deviation
+    else:
+        return 0.0, 0.0
 
 def identify_frequent_users(log_entries):
     user_counts = Counter(get_user_from_log(parse_log_entry(entry)) for entry in log_entries if get_user_from_log(parse_log_entry(entry)))

@@ -13,6 +13,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+"""
+The app is provided as is. All rights go to Wojciech Krzos for the exercise implementation.
+Rights concerning the instructions go to dr. Damian Serwata.
+"""
+
 
 def fetch_data_file() -> str:
     """Download a file with target data to fit LSS algo in."""

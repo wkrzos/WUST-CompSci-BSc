@@ -7,10 +7,10 @@ def exists(pred, iterable):
 
 # n: int, pred: Callable[[int], bool], iterable: Iterable[int]
 def atleast(n, pred, iterable):
-    return sum(1 for item in iterable if pred(item)) >= n
+    return sum(1 for item in iterable if pred(item)) >= n # The sum of 1's is compared to the minimum number recquried (n), returns a boolean
 
 def atmost(n, pred, iterable):
-    return sum(1 for item in iterable if pred(item)) <= n
+    return sum(1 for item in iterable if pred(item)) <= n # The sum of 1's is compared to the maximum number recquried (n), returns a boolean
 
 numbers = [1, 2, 3, 4, 5]
 is_positive = lambda x: x > 0

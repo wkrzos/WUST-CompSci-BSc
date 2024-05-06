@@ -1,7 +1,7 @@
 from functools import lru_cache
 
 def make_generator_mem(f):
-    @lru_cache(None)  # Memoizacja z nieograniczonym cache
+    @lru_cache(None)  # Memoisation with unlimited cache
     def memoized_f(n):
         return f(n)
 

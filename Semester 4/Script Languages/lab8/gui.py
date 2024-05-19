@@ -9,7 +9,7 @@ class LogBrowserApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Log Browser')
-        self.setGeometry(100, 100, 1200, 600)  # Adjust size to better fit the new layout
+        self.setGeometry(100, 100, 1500, 600)  # Adjust size to better fit the new layout
         self.all_log_entries = []
         self.current_index = -1
         self.initUI()

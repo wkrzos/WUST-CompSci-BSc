@@ -1,15 +1,15 @@
 import sys
-from datetime import datetime
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QListWidget, QLabel, QHBoxLayout, QPushButton, QFileDialog, QFormLayout, QDateEdit, QSplitter, QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QListWidget, QHBoxLayout, QPushButton, QFileDialog, QFormLayout, QDateEdit, QSplitter, QLineEdit
 from PyQt5.QtCore import QDate, Qt
 from PyQt5.QtGui import QIcon
-import apache_log_parser as alp
+from datetime import datetime
+import apache_log_parser as aph
 
 class LogBrowserApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Log Browser')
-        self.setGeometry(100, 100, 1500, 600)  # Adjust size to better fit the new layout
+        self.setGeometry(100, 100, 1500, 600)
         self.all_log_entries = []
         self.current_index = -1
         self.initUI()
@@ -101,12 +101,7 @@ class LogBrowserApp(QMainWindow):
         options = QFileDialog.Options()
         file_path, _ = QFileDialog.getOpenFileName(self, "Open Log File", "", "Log Files (*.log);;All Files (*)", options=options)
         if file_path:
-            self.read_log_file(file_path)
-
-    def read_log_file(self, file_path):
-        print(f"Reading log file: {file_path}")
-        with open(file_path, 'r') as file:
-            self.all_log_entries = [alp.parse_apache_log(line.strip()) for line in file if line.strip()]
+            self.all_log_entries = aph.read_log_file(file_path)
             self.display_logs(self.all_log_entries)
             self.update_navigation_buttons()
 

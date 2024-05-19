@@ -1,5 +1,5 @@
-import re
 from datetime import datetime
+import re
 
 def parse_apache_log(log_line):
     log_pattern = r'(\S+) - - \[(.*?)\] "(.*?)" (\d{3}) (\d+|-)'
@@ -25,3 +25,8 @@ def parse_apache_log(log_line):
         'status_code': status_code,
         'response_size': response_size
     }
+
+def read_log_file(file_path):
+    with open(file_path, 'r') as file:
+        log_entries = [parse_apache_log(line.strip()) for line in file if line.strip()]
+    return log_entries

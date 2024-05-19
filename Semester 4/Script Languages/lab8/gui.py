@@ -1,8 +1,9 @@
 import sys
 import re
 from datetime import datetime
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QListWidget, QLabel, QHBoxLayout, QPushButton, QFileDialog, QFormLayout, QDateEdit
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QListWidget, QLabel, QHBoxLayout, QPushButton, QFileDialog, QFormLayout, QDateEdit, QSplitter, QLineEdit)
 from PyQt5.QtCore import QDate, Qt
+from PyQt5.QtGui import QIcon
 
 def parse_apache_log(log_line):
     log_pattern = r'(\S+) - - \[(.*?)\] "(.*?)" (\d{3}) (\d+|-)'
@@ -33,58 +34,29 @@ class LogBrowserApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Log Browser')
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 1200, 600)  # Adjust size to better fit the new layout
         self.all_log_entries = []
         self.current_index = -1
         self.initUI()
 
     def initUI(self):
-        central_widget = QWidget(self)
-        self.setCentralWidget(central_widget)
-        main_layout = QVBoxLayout(central_widget)
+        main_widget = QWidget()
+        self.setCentralWidget(main_widget)
+        main_layout = QHBoxLayout(main_widget)
 
+        # Splitter for resizable sections
+        splitter = QSplitter(Qt.Horizontal)
+
+        # Master section (list and controls)
+        master_layout = QVBoxLayout()
         self.log_list = QListWidget()
         self.log_list.itemSelectionChanged.connect(self.update_detail_view)
-        main_layout.addWidget(self.log_list)
+        master_layout.addWidget(self.log_list)
 
-        self.setup_detail_view(main_layout)
-        self.setup_controls(main_layout)
-
-    def setup_detail_view(self, layout):
-        detail_layout = QFormLayout()
-        self.remote_host_label = QLabel()
-        self.date_label = QLabel()
-        self.time_label = QLabel()
-        self.timezone_label = QLabel()
-        self.method_label = QLabel()
-        self.resource_label = QLabel()
-        self.status_code_label = QLabel()
-        self.response_size_label = QLabel()
-
-        self.remote_host_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.date_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.time_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.timezone_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.method_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.resource_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.status_code_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-        self.response_size_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
-
-        detail_layout.addRow("Remote host:", self.remote_host_label)
-        detail_layout.addRow("Date:", self.date_label)
-        detail_layout.addRow("Time:", self.time_label)
-        detail_layout.addRow("Timezone:", self.timezone_label)
-        detail_layout.addRow("Method:", self.method_label)
-        detail_layout.addRow("Resource:", self.resource_label)
-        detail_layout.addRow("Status code:", self.status_code_label)
-        detail_layout.addRow("Response size (B):", self.response_size_label)
-
-        layout.addLayout(detail_layout)
-
-    def setup_controls(self, layout):
+        # Controls setup
         controls_layout = QHBoxLayout()
 
-        self.load_button = QPushButton("Load Log File")
+        self.load_button = QPushButton("Open")
         self.load_button.clicked.connect(self.load_log_file)
         controls_layout.addWidget(self.load_button)
 
@@ -116,33 +88,70 @@ class LogBrowserApp(QMainWindow):
         self.next_button.setEnabled(False)
         controls_layout.addWidget(self.next_button)
 
-        layout.addLayout(controls_layout)
+        master_layout.addLayout(controls_layout)
+
+        # Creating master and detail widgets
+        master_widget = QWidget(); master_widget.setLayout(master_layout)
+        detail_widget = QWidget(); detail_widget.setLayout(self.setup_detail_view())
+
+        # Add to splitter
+        splitter.addWidget(master_widget)
+        splitter.addWidget(detail_widget)
+        main_layout.addWidget(splitter)
+
+    def setup_detail_view(self):
+        detail_layout = QFormLayout()
+        self.remote_host_label = QLineEdit(); self.remote_host_label.setReadOnly(True)
+        self.date_label = QLineEdit(); self.date_label.setReadOnly(True)
+        self.time_label = QLineEdit(); self.time_label.setReadOnly(True)
+        self.timezone_label = QLineEdit(); self.timezone_label.setReadOnly(True)
+        self.method_label = QLineEdit(); self.method_label.setReadOnly(True)
+        self.resource_label = QLineEdit(); self.resource_label.setReadOnly(True)
+        self.status_code_label = QLineEdit(); self.status_code_label.setReadOnly(True)
+        self.size_label = QLineEdit(); self.size_label.setReadOnly(True)
+
+        detail_layout.addRow("Remote Host:", self.remote_host_label)
+        detail_layout.addRow("Date:", self.date_label)
+        detail_layout.addRow("Time:", self.time_label)
+        detail_layout.addRow("Timezone:", self.timezone_label)
+        detail_layout.addRow("Status Code:", self.status_code_label)
+        detail_layout.addRow("Method:", self.method_label)
+        detail_layout.addRow("Resource:", self.resource_label)
+        detail_layout.addRow("Size:", self.size_label)
+
+        return detail_layout
 
     def load_log_file(self):
+        print("Loading log file...")
         options = QFileDialog.Options()
         file_path, _ = QFileDialog.getOpenFileName(self, "Open Log File", "", "Log Files (*.log);;All Files (*)", options=options)
         if file_path:
             self.read_log_file(file_path)
 
     def read_log_file(self, file_path):
+        print(f"Reading log file: {file_path}")
         with open(file_path, 'r') as file:
             self.all_log_entries = [parse_apache_log(line.strip()) for line in file if line.strip()]
             self.display_logs(self.all_log_entries)
             self.update_navigation_buttons()
 
     def display_logs(self, log_entries):
+        print("Displaying logs...")
         self.log_list.clear()
         for entry in log_entries:
             display_text = f"{entry['date']} - {entry['remote_host']} - {entry['status_code']}"
             self.log_list.addItem(display_text)
 
     def update_detail_view(self):
+        print("Updating detail view...")
         self.current_index = self.log_list.currentRow()
-        log_details = self.all_log_entries[self.current_index]
-        self.display_log_details(log_details)
-        self.update_navigation_buttons()
+        if self.current_index >= 0:
+            log_details = self.all_log_entries[self.current_index]
+            self.display_log_details(log_details)
+            self.update_navigation_buttons()
 
     def display_log_details(self, log_details):
+        print(f"Displaying log details: {log_details}")
         self.remote_host_label.setText(log_details['remote_host'])
         self.date_label.setText(log_details['date'])
         self.time_label.setText(log_details['time'])
@@ -150,9 +159,10 @@ class LogBrowserApp(QMainWindow):
         self.method_label.setText(log_details['method'])
         self.resource_label.setText(log_details['resource'])
         self.status_code_label.setText(str(log_details['status_code']))
-        self.response_size_label.setText(f"{log_details['response_size']} B")
+        self.size_label.setText(f"{log_details['response_size']} B")
 
     def filter_logs(self):
+        print("Filtering logs...")
         from_date = self.from_date.date().toPyDate()
         to_date = self.to_date.date().toPyDate()
         filtered_logs = [entry for entry in self.all_log_entries if from_date <= datetime.strptime(entry['date'], '%Y-%m-%d').date() <= to_date]
@@ -160,6 +170,7 @@ class LogBrowserApp(QMainWindow):
         self.update_navigation_buttons()
 
     def reset_filter(self):
+        print("Resetting filter...")
         self.display_logs(self.all_log_entries)
         self.update_navigation_buttons()
 
@@ -172,6 +183,7 @@ class LogBrowserApp(QMainWindow):
             self.log_list.setCurrentRow(self.current_index + 1)
 
     def update_navigation_buttons(self):
+        print("Updating navigation buttons...")
         self.prev_button.setEnabled(self.current_index > 0)
         self.next_button.setEnabled(self.current_index < len(self.all_log_entries) - 1)
 

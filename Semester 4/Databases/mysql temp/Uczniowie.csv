@@ -1,0 +1,62 @@
+﻿ID ucznia,Nazwisko,Imię,Data urodzenia,Płeć,Klasa,Miasto
+1,ABACKI,Adam,11-Nov-04,M,Ic,Wrocław
+2,ABACKA,Anna,02-Feb-05,K,Ib,Nowa-Wola
+3,ABACKA,Ewa,23-Apr-05,K,Ib,Święta Katarzyna
+4,KOWALSKI,Jan,01-Feb-04,M,IIa,Nowy Sącz
+5,KAMIŃSKI,Adam,27-Apr-01,K,IIa,Święta Katarzyna
+6,KAMIŃSKI,Adam,25-Jan-00,M,IVa,Wrocław
+7,ABACKI,Piotr,17-Jul-08,K,IIIa,Święta Katarzyna
+8,SUZUKI,Daiki,03-May-04,K,IIIc,Wrocław
+9,SATŌ,Emiko,18-Aug-06,K,IIIa,Wrocław
+10,SOBIESKA,Monika,,,Ib,Przedmieście Szczebrzeszyńskie
+11,KOWALSKA,Ewa,05-Feb-07,,Ic,
+12,KWASIGROCH,Piotr,03-Jul-00,K,Ic,
+13,ABACKA,Zofia,04-Jun-07,,IIc,
+14,SOBIESKI,Adam,04-Mar-08,M,IVb,Kielce
+15,KOWALCZYK,Adam,20-Jun-07,K,IIIb,Wrocław
+16,NOWAK,Zofia,01-Nov-06,K,IVa,Wrocław
+17,SOBIESKI,Jacek,31-Oct-03,K,IIIc,Wrocław
+18,WIŚNIEWSKA,Katarzyna,01-Aug-04,M,IIIa,Legnica
+19,KOWALSKA,Zofia,24-Jun-06,M,Ic,Wrocław
+20,ABACKA,Ewa,11-Feb-08,K,Ib,Wrocław
+21,ZAWADZKI,Jan,17-Jan-01,M,Ic,Legnica
+22,KAMIŃSKA,Ewa,15-Mar-08,M,,Kielce
+23,ABACKI,Jan,,K,IVa,Kielce
+24,KOWALSKA,Zofia,18-Oct-07,K,Ib,
+25,NGUYEN,Philippe,21-Jul-05,,IIa,Święta Katarzyna
+26,ABACKA,Katarzyna,11-Feb-01,K,IIc,Kraków
+27,WOLSKI,Marcin,16-Jul-03,K,,Przedmieście Szczebrzeszyńskie
+28,MORAWIECKA,Anna,18-Nov-00,M,,Bodzentyn
+29,KOWALSKA,Anna,01-Apr-05,M,Ic,Wrocław
+30,WIŚNIEWSKIA,Dorota,28-Mar-05,K,IIc,Nowa-Wola
+31,ZAWADZKI,Jacek,05-Nov-03,K,,Przedmieście Szczebrzeszyńskie
+32,MORAWIECKA,Dorota,13-Jan-03,K,IVa,Wrocław
+33,WOLSKA,Ewa,22-Jul-07,M,IVa,Kraków
+34,ABACKI,Marcin,26-Mar-04,K,IIc,Legnica
+35,VON VI'THO,Adam,01-Sep-03,M,IIIb,Nowa-Wola
+36,KOWALCZYK,Katarzyna,13-Oct-09,K,IVa,Nowy Sącz
+37,ABACKI,Piotr,23-May-02,M,IIIb,Przedmieście Szczebrzeszyńskie
+38,ABACKA,Anna,15-Jan-04,M,IVb,Bodzentyn
+39,ABACKA,Anna,06-Apr-06,K,IIIc,Legnica
+40,BOROWIEC,Katarzyna,01-May-07,M,IVb,Kielce
+41,WIŚNIEWSKA,Zofia,,K,Ib,Kielce
+42,MORAWIECKA,Zofia,,M,IIa,Kielce
+43,KAMIŃSKI,Jan,28-Sep-03,M,IIb,Wrocław
+44,ABACKA,Ewa,13-Dec-06,M,,Święta Katarzyna
+45,KOWALCZYK,Katarzyna,21-Jul-07,,IVb,
+46,ABACKI,Marcin,29-Dec-09,K,,
+47,KOWALSKA,Ewa,18-Sep-08,K,IVb,Wrocław
+48,BOROWIEC,Adam,12-Dec-05,,IIIc,Święta Katarzyna
+49,MORAWIECKA,Dorota,11-Feb-05,,IIa,Kraków
+50,KOWALCZYK,Adam,24-Dec-08,K,,Legnica
+51,SOBIESKA,Dorota,07-Aug-02,M,,Nowa-Wola
+52,SOBIESKI,Jacek,07-Jul-00,K,IVa,Bodzentyn
+53,WOLSKA,Ewa,,,,Nowy Sącz
+54,MORAWIECKI,Łukasz,12-Jun-09,M,Ic,Przedmieście Szczebrzeszyńskie
+55,MORAWIECKI,Jacek,17-Jun-00,M,IIb,Legnica
+56,ABACKA,Anna,31-Jan-04,M,,Bodzentyn
+57,WIŚNIEWSKI,Jan,31-Oct-00,,IIIb,Kraków
+58,MÜLLER,Piotr,18-Feb-01,K,IVa,Wrocław
+59,KAMIŃSKA,Anna,10-Dec-02,M,IIc,
+60,KAMIŃSKI,Jacek,18-Apr-00,K,,Wrocław
+61,MAŁECKI,Dominik,04-Sep-01,M,Iic,Brzeg
